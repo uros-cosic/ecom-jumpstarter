@@ -11,7 +11,6 @@ export interface IUser extends IBaseModel {
     password: string
     role: USER_ROLE
     cart: ObjectId
-    orders: ObjectId[]
     region: ObjectId
     passwordChangedAt?: Date | null
     resetPasswordToken?: string | null
@@ -78,13 +77,6 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
             type: Schema.Types.ObjectId,
             ref: 'Cart',
         },
-
-        orders: [
-            {
-                type: Schema.Types.ObjectId,
-                ref: 'Order',
-            },
-        ],
 
         region: { type: Schema.Types.ObjectId, ref: 'Region', required: true },
 

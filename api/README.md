@@ -18,7 +18,7 @@ Finally read swagger while in development at ```/docs``` and you can start editi
 
 **TODO:**
 
-- [*] Admin routes
+- [x] Admin routes
 - [ ] Admin tests
 - [ ] Fix redundency
 - [ ] More in depth tests

@@ -12,6 +12,8 @@ import cookieParser from 'cookie-parser'
 import i18next from 'i18next'
 import i18nextHttpMiddleware from 'i18next-http-middleware'
 import i18nextFsBackend from 'i18next-fs-backend'
+import swaggerUi from 'swagger-ui-express'
+import YAML from 'yamljs'
 
 import { AppError } from './lib/app-error'
 import globalErrorHandler from './controllers/error-controller'
@@ -99,7 +101,11 @@ app.use(hpp({ whitelist: [] }))
 app.use(express.static(path.join(process.cwd(), 'public')))
 
 if (process.env.NODE_ENV === 'development') {
-    //app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    app.use(
+        '/docs',
+        swaggerUi.serve,
+        swaggerUi.setup(YAML.load(path.join(process.cwd(), 'swagger.yaml')))
+    )
 }
 
 app.use('/api', apiRoute)

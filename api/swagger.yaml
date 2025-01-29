@@ -1,0 +1,468 @@
+openapi: 3.0.0
+info:
+    title: Ecom jumpstarter
+    version: 1.0.0
+
+paths:
+    /api/store/addresses:
+        post:
+            summary: Creates address
+            tags:
+                - Store/Addresses
+            responses:
+                201:
+                    description: Address created
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Address'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/addresses/{id}:
+        get:
+            summary: Gets the address
+            tags:
+                - Store/Addresses
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Address found
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Address'
+                404:
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Address'
+        patch:
+            summary: Updates the address
+            tags:
+                - Store/Addresses
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Address updated
+                    content:
+                        schema:
+                            type: object
+                            properties:
+                                data:
+                                    $ref: '#/components/schemas/Address'
+                401:
+                    description: Unauthorized
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+                404:
+                    description: Not found
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+        delete:
+            summary: Deletes the address
+            tags:
+                - Store/Addresses
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                204:
+                    description: Address deleted
+                    content:
+                        schema:
+                            type: object
+                            properties:
+                                data:
+                                    type: 'null'
+                401:
+                    description: Unauthorized
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+                404:
+                    description: Not found
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+    /api/admin/users:
+        get:
+            summary: Gets users
+            tags:
+                - Admin/Users
+            security:
+                - bearerAuth: []
+            responses:
+                200:
+                    description: Returns users
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/User'
+                401:
+                    description: Unauthorized
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbbiden
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+        post:
+            summary: Creates user
+            tags:
+                - Admin/Users
+            security:
+                - bearerAuth: []
+            responses:
+                201:
+                    description: Returns created user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                401:
+                    description: Unauthorized
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbbiden
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+
+    /api/admin/users/{id}:
+        get:
+            summary: Gets the user
+            tags:
+                - Admin/Users
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                401:
+                    description: Unauthorized
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+                404:
+                    description: Not found
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+        patch:
+            summary: Updates user
+            tags:
+                - Admin/Users
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns updated user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                401:
+                    description: Unauthorized
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+                404:
+                    description: Not found
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+        delete:
+            summary: Deletes user
+            tags:
+                - Admin/Users
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                204:
+                    description: User deleted
+                    content:
+                        schema:
+                            type: 'null'
+                401:
+                    description: Unauthorized
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+                404:
+                    description: Not found
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+
+    /api/admin/orders:
+        get:
+            summary: Gets orders
+            tags:
+                - Admin/Orders
+            security:
+                - bearerAuth: []
+            responses:
+                200:
+                    description: Returns orders
+                    content:
+                        schema:
+                            type: object
+                            properties:
+                                data:
+                                    $ref: '#/components/schemas/Order'
+                401:
+                    description: Unauthorized
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+                404:
+                    description: Not found
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+    /api/admin/orders/{id}:
+        get:
+            summary: Get order
+            tags:
+                - Admin/Orders
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns order
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Order'
+                401:
+                    description: Unauthorized
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+                404:
+                    description: Not found
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+        patch:
+            summary: Updates order
+            tags:
+                - Admin/Orders
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns updated order
+                    content:
+                        schema:
+                            type: object
+                            properties:
+                                data:
+                                    $ref: '#/components/schemas/Order'
+                401:
+                    description: Unauthorized
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+                404:
+                    description: Not found
+                    content:
+                        schema:
+                            $ref: '#/components/schemas/Error'
+
+components:
+    schemas:
+        Error:
+            type: object
+            properties:
+                message:
+                    type: string
+
+        User:
+            type: object
+            properties:
+                _id:
+                    type: string
+                name:
+                    type: string
+                email:
+                    type: string
+                role:
+                    type: string
+                cart:
+                    type: string
+                region:
+                    type: string
+                passwordChangedAt:
+                    oneOf:
+                        - type: string
+                          format: date-time
+                        - type: 'null'
+                resetPasswordToken:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                resetPasswordExpires:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                active:
+                    type: boolean
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        Address:
+            type: object
+            properties:
+                _id:
+                    type: string
+                user:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                company:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                firstName:
+                    type: string
+                lastName:
+                    type: string
+                address:
+                    type: string
+                city:
+                    type: string
+                country:
+                    type: string
+                province:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                postalCode:
+                    type: string
+                phone:
+                    type: string
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        Order:
+            type: object
+            properties:
+                _id:
+                    type: string
+                customer:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                cart:
+                    type: string
+                payment:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                status:
+                    type: string
+                fulfillmentStatus:
+                    type: string
+                region:
+                    type: string
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
