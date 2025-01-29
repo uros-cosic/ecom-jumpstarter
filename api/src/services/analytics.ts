@@ -32,14 +32,14 @@ export class AnalyticsService {
                     revenue: 0,
                     averageOrderValue: 0,
                 })
-
-                analytics.totalOrders += 1
-                analytics.revenue += order.cart.totalPrice
-                analytics.averageOrderValue =
-                    analytics.revenue / analytics.totalOrders
-
-                await analytics.save()
             }
+
+            analytics.totalOrders += 1
+            analytics.revenue += order.cart.totalPrice
+            analytics.averageOrderValue =
+                analytics.revenue / analytics.totalOrders
+
+            await analytics.save()
         } catch (e) {
             console.error(e)
         }

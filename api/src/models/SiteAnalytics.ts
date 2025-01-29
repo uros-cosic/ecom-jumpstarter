@@ -12,7 +12,7 @@ export interface ISiteAnalytics extends IBaseModel {
 
 const SiteAnalyticsSchema = new Schema<ISiteAnalytics>(
     {
-        date: { type: Date, required: true, default: Date.now },
+        date: { type: Date, required: true, default: Date.now, unique: true },
         totalVisits: { type: Number, default: 0 },
         newSignups: { type: Number, default: 0 },
         geoData: [{ country: String, visits: Number }],

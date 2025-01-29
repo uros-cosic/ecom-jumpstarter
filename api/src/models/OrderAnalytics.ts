@@ -11,7 +11,7 @@ export interface IOrderAnalytics extends IBaseModel {
 
 const OrderAnalyticsSchema = new Schema<IOrderAnalytics>(
     {
-        date: { type: Date, required: true, default: Date.now },
+        date: { type: Date, required: true, default: Date.now, unique: true },
         totalOrders: { type: Number, default: 0 },
         revenue: { type: Number, default: 0 },
         averageOrderValue: { type: Number, default: 0 },
