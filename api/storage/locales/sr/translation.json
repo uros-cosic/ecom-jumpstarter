@@ -1,0 +1,115 @@
+{
+    "errors": {
+        "default": "Pokušajte ponovo kasnije",
+        "bad-request": "Loš zahtev",
+        "not-found": "{{field}} nije pronađen/a",
+        "invalid": "Neispravan/na {{field}}",
+        "log-in": "Ulogujte se",
+        "recently-changed-password": "Korisnik je skoro promenio lozinku, molimo vas da se ulogujete ponovo",
+        "access-denied": "Zabranjen pristup",
+        "required-field": "{{field}} is required",
+        "incorrect-field": "{{field}} je neispravan/na",
+        "incorrect-token": "Neispravan token, ulogujte se ponovo",
+        "token-expired": "Vaš token je istekao, ulogujete se ponovo",
+        "no-document": "Ne postoji dokument sa tim ID-om",
+        "allowed-image-formats": "Dozvoljeni formati su .png, .jpg, .webp i .jpeg",
+        "no-file": "Fajl nije učitan",
+        "password-route": "Ova ruta nije za menjanje lozinke",
+        "limiter-message": "Previše zahteva sa ove IP adrese, pokušajte ponovo za sat",
+        "cors-message": "Nije dozvoljeno od CORS-a",
+        "cant-find-route": "Ne mogu da pronađem {{route}}",
+        "discount-date-error": "Važi od datum ne može da bude bliži od važi do datuma",
+        "fill-in-fields": "Popunite sva polja",
+        "already-exists": "{{field}} već postoji"
+    },
+
+    "words": {
+        "address": "Adresa",
+        "email-or-password": "email ili lozinka",
+        "user": "Korisnik",
+        "password-current": "Trenutna lozinka",
+        "password": "Lozinka",
+        "invalid": "Neispravan/na",
+        "duplicate": "Duplikat",
+        "invalid-input-data": "Neispravni ulazni podaci",
+        "newsletter": "Newsletter",
+        "cart": "Korpa",
+        "review": "Pregled",
+        "newsletter-list": "Newsletter lista",
+        "cheers": "Sve najbolje",
+        "team": "Tim",
+        "all-rights-reserved": "Sva prava zadržana",
+        "contact-us-here": "Kontaktirajte nas ovde"
+    },
+
+    "emails": {
+        "welcome": {
+            "subject": "Dobro došli u {{field}}",
+            "welcome-heading": "Dobro došli u {{field}}",
+            "greet-heading": "Pozdrav {{field}}",
+            "greet-message": "Uzbuđeni smo što ste nam se pridružili",
+            "support-contact-message": "Ako imate ikakvih pitanja, slobodno kontaktirajte naš tim korisničke podrške. Tu smo da Vam pomognemo!",
+            "warning-message": "Dobili ste ovaj email jer ste se registrovali kod nas na sajtu. Ako mislite da je ovo greška"
+        },
+        "order-confirmation": {
+            "subject": "Potvrda porudžbine",
+            "heading": "Potvrda porudžbine",
+            "thank-you-message": "Hvala Vam što kupujete sa nama!",
+            "order-summary-intro": "Detalji porudžbine:",
+            "table-header-name": "Naziv",
+            "table-header-quantity": "Količina",
+            "table-header-price": "Cena",
+            "total-label": "Ukupno",
+            "support-message": "Ako imate pitanja, tu smo da Vam pomognemo",
+            "button-label": "Pogledaj porudžbinu",
+            "closing-message": "Nadamo se da ćemo se ponovo videti",
+            "warning-message": "Dobili ste ovaj email jer ste poručili kod nas na sajtu. Ako mislite da je ovo greška"
+        },
+        "order-fulfillment": {
+            "subject": "Vaša porudžbina je ispunjena i spremna za slanje!",
+            "heading": "Vaša porudžbina je na putu ka Vama",
+            "fulfilled-message": "Sjajne vesti!",
+            "preparation-message": "Vaša porudžbina je ispunjena i upravo je spremamo za slanje",
+            "number-label": "Broj porudžbine",
+            "date-label": "Datum porudžbine",
+            "support-message": "Ako imate pitanja, kontaktirajte našu korisničku pordršku",
+            "closing-message": "Hvala Vam što kupujete kod nas",
+            "warning-message": "Dobili ste ovaj email jer ste poručili kod nas na sajtu. Ako mislite da je ovo greška"
+        },
+
+        "cart-abandonment": {
+            "subject": "Nedostajete nam - završite Vašu porudžbinu",
+            "heading": "Nedostajete nam!",
+            "subheading": "Vaši favoriti vas čekaju",
+            "intro": "Izgleda da ste ostavili neke proizvode u Vašoj korpi. Evo Vam specijalan kod za popust da završite kupovinu. Ali požurite, jer ovaj kod traje samo sledećih {{field}}!",
+            "discount-label": "Vaš kod za popust:",
+            "cart-intro": "Evo kratkog pregleda Vaše korpe:",
+            "table-header-name": "Naziv",
+            "table-header-quantity": "Količina",
+            "cta-message": "Kliknite ispod da se vratite u korpu i završite porudžbinu",
+            "return-to-cart": "Vrati se u korpu",
+            "support-message": "Potrebna Vam je pomoć? Kontaktirajte nas"
+        },
+
+        "newsletter-welcome": {
+            "subject": "Dobro došli na naš newsletter",
+            "heading": "Dobro došli na naš newsletter",
+            "subheading": "Hvala Vam što se se pridružili našoj zajednici!",
+            "welcome-message": "Uzbuđeni smo što ste se pridružili. U znak naše zahvalnosti, izvolite Vaš ekskluzivan kod za popust:",
+            "discount-label": "Vaš kod za popust je:",
+            "cta-message": "Počnite da istražujete našu kolekciju i sjajne popuste",
+            "shop-now": "Istraži",
+            "support-message": "Potrebna Vam je pomoć?"
+        },
+
+        "sale-info": {
+            "subject": "Ne propusti našu najnoviju rasprodaju!",
+            "heading": "Ne propusti našu najnoviju rasprodaju!",
+            "subheading": "Ekskluzivna ponuda samo za tebe",
+            "sale-intro": "Uzbuđeni smo što možemo da objavimo našu najnoviju rasprodaju! Uživajte u neverovatnim popustima na svoje omiljene artikle na ograničeno vreme",
+            "cta-message": "Kliknite ispod da istražite rasprodaju i zgrabite svoje favorite pre nego što nestanu!",
+            "cta-button-text": "Kupujte na rasprodaji",
+            "support-message": "Potrebna Vam je pomoć?"
+        }
+    }
+}

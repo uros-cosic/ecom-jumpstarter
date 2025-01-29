@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Order Fulfillment</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+    table {
+      border-spacing: 0;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border: 1px solid #dddddd;
+      overflow: hidden;
+    }
+    .header {
+      background-color: {{primaryColor}};
+      color: {{primaryForegroundColor}};
+      padding: 20px;
+      text-align: center;
+    }
+    .content {
+      padding: 20px;
+    }
+    .content h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .content p {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .button {
+      display: inline-block;
+      background-color: #4CAF50;
+      color: #ffffff;
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .footer {
+      background-color: #f1f1f1;
+      color: #666666;
+      text-align: center;
+      font-size: 12px;
+      padding: 10px 20px;
+    }
+    @media screen and (max-width: 600px) {
+      .content h1 {
+        font-size: 20px;
+      }
+      .content p {
+        font-size: 14px;
+      }
+      .button {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <table role="presentation" class="email-container">
+    <tr>
+      <td class="header">
+        <h1>{{fulfillmentHeading}}</h1>
+      </td>
+    </tr>
+    <tr>
+      <td class="content">
+        <h2>{{orderFulfilledMessage}}</h2>
+        <p>{{shipmentPreparationMessage}}</p>
+        <p><strong>{{orderNumberLabel}}:</strong> {{orderNumber}}</p>
+        <p><strong>{{orderDateLabel}}:</strong> {{orderDate}}</p>
+
+        <p>{{supportMessage}}</p>
+        <p>{{closingMessage}},<br>{{companyTeam}}</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="footer">
+        <p>&copy; {{year}} {{companyName}}. {{allRightsReserved}}</p>
+        <p>{{warningMessage}}, <a href="{{contactLink}}">{{contactUsHere}}</a></p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

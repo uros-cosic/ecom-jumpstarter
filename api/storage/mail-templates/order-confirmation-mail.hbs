@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="{{lang}}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Order Confirmation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      font-family: Arial, sans-serif;
+      color: #333;
+    }
+    table {
+      border-spacing: 0;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+    .email-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border: 1px solid #dddddd;
+      overflow: hidden;
+    }
+    .header {
+      background-color: {{primaryColor}};
+      color: {{primaryForegroundColor}};
+      padding: 20px;
+      text-align: center;
+    }
+    .content {
+      padding: 20px;
+    }
+    .content h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .content p {
+      font-size: 16px;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .product-table {
+      width: 100%;
+      border: 1px solid #dddddd;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    .product-table th, .product-table td {
+      border: 1px solid #dddddd;
+      padding: 10px;
+      text-align: left;
+    }
+    .product-table th {
+      background-color: #f1f1f1;
+    }
+    .button {
+      display: inline-block;
+      background-color: {{primaryColor}};
+      color: {{primaryForegroundColor}};
+      text-decoration: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      font-size: 16px;
+    }
+    .footer {
+      background-color: #f1f1f1;
+      color: #666666;
+      text-align: center;
+      font-size: 12px;
+      padding: 10px 20px;
+    }
+    @media screen and (max-width: 600px) {
+      .content h1 {
+        font-size: 20px;
+      }
+      .content p {
+        font-size: 14px;
+      }
+      .button {
+        font-size: 14px;
+        padding: 8px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <table role="presentation" class="email-container">
+    <tr>
+      <td class="header">
+        <h1>{{orderConfirmationHeading}}</h1>
+      </td>
+    </tr>
+    <tr>
+      <td class="content">
+        <h2>{{thankYouMessage}}</h2>
+        <p>{{orderSummaryIntro}}</p>
+        <table class="product-table">
+          <thead>
+            <tr>
+              <th>{{productTableHeaderName}}</th>
+              <th>{{productTableHeaderQuantity}}</th>
+              <th>{{productTableHeaderPrice}}</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each products}}
+            <tr>
+              <td style="display: flex;"><img src="{{this.thumbnail}}" alt="{{this.name}}" style="width: 50px; height: 50px; margin-right: 10px;">{{this.name}}</td>
+              <td>{{this.quantity}}</td>
+              <td>{{this.price}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
+        </table>
+        <p><strong>{{totalLabel}}:</strong> {{totalPrice}}</p>
+        <p>{{supportMessage}}</p>
+        <p>
+          <a href="{{orderDetailsLink}}" class="button">{{viewOrderButton}}</a>
+        </p>
+        <p>{{closingMessage}},<br>{{companyTeam}}</p>
+      </td>
+    </tr>
+    <tr>
+      <td class="footer">
+        <p>&copy; {{year}} {{companyName}}. {{allRightsReserved}}</p>
+        <p>{{warningMessage}}, <a href="{{contactLink}}">{{contactUsHere}}</a></p>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+

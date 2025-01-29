@@ -1,0 +1,22 @@
+{
+    "production": {
+        "regions": [],
+        "users": []
+    },
+    "development": {
+        "regions": [
+            {
+                "name": "test-region",
+                "code": "USD"
+            }
+        ],
+
+        "users": [
+            {
+                "name": "test",
+                "email": "test@mail.com",
+                "region": "test-region"
+            }
+        ]
+    }
+}

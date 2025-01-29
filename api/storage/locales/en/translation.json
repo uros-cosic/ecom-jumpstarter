@@ -1,0 +1,114 @@
+{
+    "errors": {
+        "default": "Try again later",
+        "bad-request": "Bad request",
+        "not-found": "{{field}} not found",
+        "invalid": "Invalid {{field}}",
+        "log-in": "Please log in",
+        "recently-changed-password": "User has recently changed the password, please log in again",
+        "access-denied": "Access denied",
+        "required-field": "{{field}} is required",
+        "incorrect-field": "{{field}} is incorrect",
+        "incorrect-token": "Incorrect token, please log in again",
+        "token-expired": "Your token has expired, please log in again",
+        "no-document": "No document with that ID",
+        "allowed-image-formats": "Allowed formats are .png, .jpg, .webp and .jpeg",
+        "no-file": "No file uploaded",
+        "password-route": "This route is not for changing the password",
+        "limiter-message": "Too many requests from this IP address, please try again in an hour",
+        "cors-message": "Not allowed by CORS",
+        "cant-find-route": "Can't find {{route}}",
+        "discount-date-error": "Valid from date can't be sooner than valid to date",
+        "fill-in-fields": "Fill in all required fields",
+        "already-exists": "{{field}} already exists"
+    },
+
+    "words": {
+        "address": "Address",
+        "email-or-password": "email or password",
+        "user": "User",
+        "password-current": "Current password",
+        "password": "Password",
+        "invalid": "Invalid",
+        "duplicate": "Duplicate",
+        "invalid-input-data": "Invalid input data",
+        "newsletter": "Newsletter",
+        "cart": "Cart",
+        "review": "Review",
+        "newsletter-list": "Newsletter list",
+        "cheers": "Cheers",
+        "team": "Team",
+        "all-rights-reserved": "All rights reserved",
+        "contact-us-here": "Contact us here"
+    },
+
+    "emails": {
+        "welcome": {
+            "subject": "Welcome to {{field}}",
+            "welcome-heading": "Welcome to {{field}}",
+            "greet-heading": "Hi {{field}}",
+            "greet-message": "We're thrilled to have you on board!",
+            "support-contact-message": "If you have any questions, feel free to reach out to our support team at any time. We're here to help!",
+            "warning-message": "You are receiving this email because you registered on our site. If you believe this was a mistake"
+        },
+        "order-confirmation": {
+            "subject": "Order confirmation",
+            "heading": "Your Order Confirmation",
+            "thank-you-message": "Thanks for shopping with us!",
+            "order-summary-intro": "Here are the details of your order:",
+            "table-header-name": "Name",
+            "table-header-quantity": "Quantity",
+            "table-header-price": "Price",
+            "total-label": "Total",
+            "support-message": "If you have any questions, we're here to help",
+            "button-label": "View order",
+            "closing-message": "We hope to see you again soon",
+            "warning-message": "You are receiving this email because you've ordered on our site. If you believe this was a mistake"
+        },
+        "order-fulfillment": {
+            "subject": "Your Order Has Been Fulfilled and is Ready for Shipment!",
+            "heading": "Your order is on its way!",
+            "fulfilled-message": "Great news!",
+            "preparation-message": "Your order has been fulfilled and is now being prepared for shipment.",
+            "number-label": "Order number",
+            "date-label": "Order date",
+            "support-message": "If you have any questions, feel free to reach out to our support team",
+            "closing-message": "Thank you for shopping with us",
+            "warning-message": "You are receiving this email because you've ordered on our site. If you believe this was a mistake"
+        },
+
+        "cart-abandonment": {
+            "subject": "We Miss You - Complete Your Purchase",
+            "heading": "We Miss You!",
+            "subheading": "Your favorites are waiting for you!",
+            "intro": "It looks like you left some items in your cart. Here's a special discount to complete your purchase. But hurry, this offer is only valid for the next {{field}}!",
+            "discount-label": "Your Discount Code:",
+            "cart-intro": "Here’s a quick look at your cart:",
+            "table-header-name": "Name",
+            "table-header-quantity": "Quantity",
+            "cta-message": "Click below to return to your cart and complete your purchase:",
+            "return-to-cart": "Return to Cart",
+            "support-message": "Need help? Contact us"
+        },
+        "newsletter-welcome": {
+            "subject": "Welcome to our newsletter",
+            "heading": "Welcome to our newsletter",
+            "subheading": "Thank you for joinning our community!",
+            "welcome-message": "We’re thrilled to have you on board. As a token of our appreciation, here’s your exclusive discount code:",
+            "discount-label": "Your exclusive discount code is:",
+            "cta-message": "Start exploring our collection and enjoy exclusive deals",
+            "shop-now": "Shop now",
+            "support-message": "Need help?"
+        },
+
+        "sale-info": {
+            "subject": "Don't miss out on our latest sale!",
+            "heading": "Don't miss out on our latest sale!",
+            "subheading": "Exclusive deals just for you",
+            "sale-intro": "We’re excited to announce our latest sale! Enjoy incredible discounts on your favorite items for a limited time",
+            "cta-message": "Click below to explore the sale and grab your favorites before they’re gone!",
+            "cta-button-text": "Shop the sale",
+            "support-message": "Need help?"
+        }
+    }
+}

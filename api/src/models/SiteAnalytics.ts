@@ -1,0 +1,27 @@
+import { Schema, model } from 'mongoose'
+
+import { IBaseModel } from '../lib/types'
+
+export interface ISiteAnalytics extends IBaseModel {
+    date: Date
+    totalVisits: number
+    newSignups: number
+    geoData: { country: string; visits: number }[]
+    deviceData: { deviceType: string; visits: number }[]
+}
+
+const SiteAnalyticsSchema = new Schema<ISiteAnalytics>(
+    {
+        date: { type: Date, required: true, default: Date.now },
+        totalVisits: { type: Number, default: 0 },
+        newSignups: { type: Number, default: 0 },
+        geoData: [{ country: String, visits: Number }],
+        deviceData: [{ deviceType: String, visits: Number }],
+    },
+    { timestamps: true }
+)
+
+export const SiteAnalytics = model<ISiteAnalytics>(
+    'SiteAnalytics',
+    SiteAnalyticsSchema
+)

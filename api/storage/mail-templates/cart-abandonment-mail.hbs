@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>{{heading}}</title>
+        <style>
+            body {
+              margin: 0;
+              padding: 0;
+              font-family: Arial, sans-serif;
+              background-color: #f4f4f4;
+              color: #333;
+            }
+            table {
+              border-spacing: 0;
+              width: 100%;
+            }
+            td {
+              padding: 0;
+            }
+            img {
+              border: 0;
+              display: block;
+            }
+            .container {
+              max-width: 600px;
+              margin: 0 auto;
+              background-color: #ffffff;
+              overflow: hidden;
+              border: 1px solid #dddddd;
+            }
+            .header {
+              background-color: {{primaryColor}};
+              color: {{primaryForegroundColor}};
+              padding: 20px;
+              text-align: center;
+            }
+            .header h1 {
+              margin: 0;
+              font-size: 24px;
+            }
+            .content {
+              padding: 20px;
+            }
+            .content h2 {
+              margin: 0 0 10px;
+              font-size: 20px;
+            }
+            .content p {
+              margin: 0 0 20px;
+              font-size: 16px;
+              line-height: 1.5;
+            }
+            .discount-code {
+              display: inline-block;
+              padding: 10px 20px;
+              background-color: #f4f4f4;
+              color: #666;
+              font-size: 18px;
+              font-weight: bold;
+              text-decoration: none;
+              border-radius: 4px;
+            }
+            .cart-btn {
+              display: inline-block;
+              padding: 10px 20px;
+              background-color: {{primaryColor}};
+              color: {{primaryForegroundColor}};
+              font-size: 18px;
+              font-weight: bold;
+              text-decoration: none;
+              border-radius: 4px;
+            }
+            .product-table {
+              width: 100%;
+              border-collapse: collapse;
+              margin: 20px 0;
+            }
+            .product-table th, .product-table td {
+              padding: 10px;
+              border: 1px solid #ddd;
+              text-align: left;
+            }
+            .footer {
+              background-color: #f4f4f4;
+              text-align: center;
+              padding: 20px;
+              font-size: 14px;
+              color: #666;
+            }
+            .footer a {
+              color: {{primaryColor}};
+              text-decoration: none;
+            }
+            @media (max-width: 600px) {
+              .content h2 {
+                font-size: 18px;
+              }
+              .content p {
+                font-size: 14px;
+              }
+              .discount-code {
+                font-size: 16px;
+              }
+            }
+        </style>
+    </head>
+    <body>
+        <table class="container">
+            <tr>
+                <td>
+                    <div class="header">
+                        <h1>{{heading}}</h1>
+                    </div>
+                    <div class="content">
+                        <h2>{{subheading}}</h2>
+                        <p>{{abandonmentIntro}}</p>
+                        <p>
+                            <strong
+                                >{{discountLabel}}</strong
+                            >
+                        </p>
+                        <p href="{{storeLink}}" class="discount-code">
+                            {{discountCode}}
+                        </p>
+                        <p>{{cartIntro}}</p>
+                        <table class="product-table">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        {{tableName}}
+                                    </th>
+                                    <th>
+                                        {{tableQuantity}}
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each cartItems}}
+                                <tr>
+                                    <td>{{this.name}}</td>
+                                    <td>{{this.quantity}}</td>
+                                </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                        <p>{{ctaMessage}}</p>
+                        <a href="{{cartLink}}" class="cart-btn"
+                            >{{returnToCart}}</a
+                        >
+                    </div>
+                    <div class="footer">
+                        <p>
+                            {{supportMessage}}
+                            <a href="{{contactLink}}"
+                                >{{contactUsHere}}</a
+                            >.
+                        </p>
+                        <p>
+                            &copy; {{year}} {{companyName}}.
+                            {{allRightsReserved}}
+                        </p>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>
