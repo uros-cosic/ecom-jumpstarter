@@ -70,10 +70,13 @@ export const createSendToken = async (
 
 export const logIn = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        const { email, password }: { email?: string; password?: string } =
-            req.body
+        const {
+            email,
+            password,
+            googleId,
+        }: { email?: string; password?: string; googleId?: string } = req.body
 
-        if (!email || !password)
+        if (!email)
             return next(
                 new AppError(
                     req.t('errors.invalid', {
@@ -83,9 +86,32 @@ export const logIn = catchAsync(
                 )
             )
 
+        if (!password && !googleId)
+            return next(new AppError(req.t('errors.bad-request'), 400))
+
         const user = await User.findOne({ email }).select('+password')
 
-        if (!user || !(await user.correctPassword(password, user.password)))
+        if (!user)
+            return next(
+                new AppError(
+                    req.t('errors.invalid', {
+                        field: req.t('words.email-or-password'),
+                    }),
+                    401
+                )
+            )
+
+        if (googleId && user.googleId !== googleId)
+            return next(
+                new AppError(
+                    req.t('errors.invalid', {
+                        field: req.t('errors.bad-request'),
+                    }),
+                    400
+                )
+            )
+
+        if (password && !(await user.correctPassword(password, user.password)))
             return next(
                 new AppError(
                     req.t('errors.invalid', {
@@ -102,19 +128,39 @@ export const logIn = catchAsync(
 
 export const register = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
-        const {
+        let {
             name,
             email,
             password,
             region,
-        }: { name: string; email: string; password: string; region: string } =
-            req.body
+            googleId,
+        }: {
+            name: string
+            email: string
+            password?: string
+            region: string
+            googleId?: string
+        } = req.body
 
-        if (!name || !email || !password || !region) {
+        if (!name || !email || !region) {
             return next(new AppError(req.t('errors.fill-in-fields'), 400))
         }
 
-        const newUser = await User.create({ name, email, password, region })
+        if (!googleId && !password) {
+            return next(new AppError(req.t('errors.fill-in-fields'), 400))
+        }
+
+        if (!password) {
+            password = Math.random().toString(36).slice(-12)
+        }
+
+        const newUser = await User.create({
+            name,
+            email,
+            password,
+            region,
+            googleId,
+        })
 
         await createSendToken(newUser, 201, res)
         return

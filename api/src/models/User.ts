@@ -15,6 +15,7 @@ export interface IUser extends IBaseModel {
     passwordChangedAt?: Date | null
     resetPasswordToken?: string | null
     resetPasswordExpires?: Date | null
+    googleId?: string
     active: boolean
 }
 
@@ -83,6 +84,8 @@ const UserSchema = new Schema<IUser, UserModel, IUserMethods>(
         passwordChangedAt: Date,
         resetPasswordToken: String,
         resetPasswordExpires: Date,
+
+        googleId: String,
 
         active: {
             type: Boolean,

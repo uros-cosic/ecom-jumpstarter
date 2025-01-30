@@ -1,4 +1,5 @@
 import { ObjectId, Schema, model } from 'mongoose'
+import i18next from 'i18next'
 
 import eventBus from '../services/event-bus'
 import { OrderService } from '../services/order'
@@ -9,6 +10,7 @@ import { IBaseModel } from '../lib/types'
 import { IAddress } from './Address'
 import { IShippingMethod } from './ShippingMethod'
 import { StripeService } from '../services/stripe'
+import { AppError } from '../lib/app-error'
 
 export enum AUTOMATED_PAYMENT_METHODS {
     MANUAL = 'manual',
@@ -110,10 +112,22 @@ OrderSchema.pre('save', async function (next) {
     if (!this.isNew) return next()
 
     await this.populate('cart')
+
+    const cart = this.cart as unknown as ICart
+
+    if (
+        !cart.paymentMethod ||
+        !cart.shippingMethod ||
+        !cart.address ||
+        !cart.email
+    ) {
+        next(new AppError(i18next.t('errors.fill-in-fields'), 400))
+        return
+    }
+
     await this.populate('cart.paymentMethod')
 
-    const paymentMethod = (this.cart as unknown as ICart)
-        .paymentMethod as unknown as IPaymentMethod
+    const paymentMethod = cart.paymentMethod as unknown as IPaymentMethod
 
     const paymentMethodName = paymentMethod?.name.toLowerCase()
 
