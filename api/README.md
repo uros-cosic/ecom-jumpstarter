@@ -23,5 +23,6 @@ Finally read swagger while in development at ```/docs``` and you can start editi
 - [ ] Fix redundency
 - [ ] More in depth tests
 - [ ] Switch file server to AWS?
-- [ ] Create swagger docs
+- [x] Create swagger docs
+- [ ] Finish documentation, add nullable types, parameters and query
 - [ ] Dockerize the project (app, redis, mongodb)
