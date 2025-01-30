@@ -152,43 +152,41 @@ class EmailService {
 
             const template = Handlebars.compile(templateContent)
 
-            const productsPromises = data.cart.items
-                .map(async (item) => {
-                    const product = await Product.findById(item.product)
-                        .populate('variants')
-                        .exec()
+            const productsPromises = data.cart.items.map(async (item) => {
+                const product = await Product.findById(item.product)
+                    .populate('variants')
+                    .exec()
 
-                    if (!product) return null
+                if (!product) return null
 
-                    let variant = product.variants?.find(
-                        (variant) =>
-                            String(variant._id) === String(item?.variant)
-                    )
+                let variant = product.variants?.find(
+                    (variant) => String(variant._id) === String(item?.variant)
+                )
 
-                    let price = variant?.price ?? product.price
+                let price = variant?.price ?? product.price
 
-                    // Check if there is an active sale for the product
-                    const sale = await Sale.findOne({
-                        products: item.product,
-                    }).exec()
+                // Check if there is an active sale for the product
+                const sale = await Sale.findOne({
+                    products: item.product,
+                }).exec()
 
-                    if (sale && sale.isActive()) {
-                        if (sale.type === SALE_TYPE.FIXED)
-                            price -= sale.discountAmount || 0
-                        if (sale.type === SALE_TYPE.PERCENTAGE)
-                            price -= price * (sale.discountPercentage || 0)
-                    }
+                if (sale && sale.isActive()) {
+                    if (sale.type === SALE_TYPE.FIXED)
+                        price -= sale.discountAmount || 0
+                    if (sale.type === SALE_TYPE.PERCENTAGE)
+                        price -= price * (sale.discountPercentage || 0)
+                }
 
-                    return {
-                        thumbnail: product.thumbnail,
-                        price: formatCurrency(locale, currency, price),
-                        quantity: item.quantity,
-                        name: product.name,
-                    }
-                })
-                .filter((p) => p)
+                return {
+                    thumbnail: product.thumbnail,
+                    price: formatCurrency(locale, currency, price),
+                    quantity: item.quantity,
+                    name: product.name,
+                }
+            })
 
-            const products = await Promise.all(productsPromises)
+            const productsResolved = await Promise.all(productsPromises)
+            const products = productsResolved.filter((p) => p !== null)
 
             const templateData = {
                 lang: locale,

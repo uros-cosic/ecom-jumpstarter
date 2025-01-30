@@ -11,4 +11,5 @@ export const STORE = {
     contactLink: `${url}/contact`,
     orderPreviewLink: `${url}/orders/{{id}}`,
     saleLink: `${url}/sales/{{id}}`,
+    cancelUrl: `${url}/orders/cancel`,
 } as const

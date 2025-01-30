@@ -89,7 +89,13 @@ mongoose
     .catch((e) => console.error(e))
 
 app.use(i18nextHttpMiddleware.handle(i18next))
-app.use(express.json({ limit: '100mb' }))
+app.use((req, res, next) => {
+    if (!req.path.startsWith('/api/webhook')) {
+        express.json({ limit: '100mb' })(req, res, next)
+    } else {
+        next()
+    }
+})
 app.use(express.urlencoded({ limit: '100mb', extended: true }))
 
 app.use(cors(storeCorsOptions))

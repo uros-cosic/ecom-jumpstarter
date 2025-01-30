@@ -88,7 +88,7 @@ export const logIn = catchAsync(
         if (!user || !(await user.correctPassword(password, user.password)))
             return next(
                 new AppError(
-                    req.t('error.invalid', {
+                    req.t('errors.invalid', {
                         field: req.t('words.email-or-password'),
                     }),
                     401

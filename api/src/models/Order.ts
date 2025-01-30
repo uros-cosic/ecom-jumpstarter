@@ -8,6 +8,12 @@ import { ICart } from './Cart'
 import { IBaseModel } from '../lib/types'
 import { IAddress } from './Address'
 import { IShippingMethod } from './ShippingMethod'
+import { StripeService } from '../services/stripe'
+
+export enum AUTOMATED_PAYMENT_METHODS {
+    MANUAL = 'manual',
+    STRIPE = 'stripe',
+}
 
 export enum ORDER_STATUS {
     PENDING = 'pending',
@@ -33,6 +39,7 @@ export interface IOrder extends IBaseModel {
     status: ORDER_STATUS
     fulfillmentStatus: ORDER_FULFILLMENT_STATUS
     region: ObjectId
+    stripeSessionUrl?: string | null
 }
 
 const OrderSchema = new Schema<IOrder>(
@@ -45,6 +52,12 @@ const OrderSchema = new Schema<IOrder>(
         cart: {
             type: Schema.Types.ObjectId,
             ref: 'Cart',
+            required: true,
+        },
+
+        region: {
+            type: Schema.Types.ObjectId,
+            ref: 'Region',
             required: true,
         },
 
@@ -85,6 +98,8 @@ const OrderSchema = new Schema<IOrder>(
                 message: '{VALUE} is not supported value',
             },
         },
+
+        stripeSessionUrl: String,
     },
     {
         timestamps: true,
@@ -92,16 +107,26 @@ const OrderSchema = new Schema<IOrder>(
 )
 
 OrderSchema.pre('save', async function (next) {
+    if (!this.isNew) return next()
+
     await this.populate('cart')
     await this.populate('cart.paymentMethod')
 
-    if (
-        (
-            (this.cart as unknown as ICart)
-                ?.paymentMethod as unknown as IPaymentMethod
-        )?.name?.toLowerCase() === 'manual'
-    ) {
+    const paymentMethod = (this.cart as unknown as ICart)
+        .paymentMethod as unknown as IPaymentMethod
+
+    const paymentMethodName = paymentMethod?.name.toLowerCase()
+
+    if (paymentMethodName === AUTOMATED_PAYMENT_METHODS.MANUAL) {
         this.status = ORDER_STATUS.COMPLETED
+    }
+
+    if (paymentMethodName === AUTOMATED_PAYMENT_METHODS.STRIPE) {
+        const sessionUrl = await StripeService.createCheckoutSession(
+            this.toObject() as unknown as Omit<IOrder, 'cart'> & { cart: ICart }
+        )
+
+        this.stripeSessionUrl = sessionUrl
     }
 
     next()
@@ -116,6 +141,7 @@ export type PopulatedOrder = Omit<IOrder, 'cart'> & {
 
 OrderSchema.pre('save', async function (next) {
     if (this.status === ORDER_STATUS.COMPLETED) {
+        // Populating for order confirmation email
         await Promise.all([
             this.populate('cart'),
             this.populate('cart.address'),

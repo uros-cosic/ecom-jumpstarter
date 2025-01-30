@@ -117,9 +117,7 @@ CartSchema.methods.calculateTotalPrice = async function (): Promise<number> {
     let totalPrice = 0
 
     for (const item of this.items) {
-        const product = await Product.findById(item.product)
-            .populate('variants')
-            .exec()
+        const product = await Product.findById(item.product).exec()
 
         if (!product) continue
 

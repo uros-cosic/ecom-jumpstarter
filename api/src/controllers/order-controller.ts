@@ -8,7 +8,7 @@ import { filterObj } from '../lib/util'
 export const getOrders = getAll(Order)
 export const getOrder = getOne(Order)
 export const createOrder = catchAsync(async (req: Request, res: Response) => {
-    const filteredBody = filterObj(req.body, 'customer', 'cart', 'payment')
+    const filteredBody = filterObj(req.body, 'customer', 'cart', 'region')
 
     const order = await Order.create(filteredBody)
 
