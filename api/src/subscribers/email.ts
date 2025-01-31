@@ -15,9 +15,16 @@ import { UserService } from '../services/user'
 
 // Users
 
-eventBus.on(UserService.Events.CREATED, async (data: IUser) => {
+eventBus.on(UserService.Events.CREATED, async (data) => {
     EmailService.sendWelcomeMail(data)
 })
+
+eventBus.on(
+    UserService.Events.PASSWORD_RESET,
+    async (data: { user: IUser; token: string }) => {
+        EmailService.sendPasswordResetMail(data.user, data.token)
+    }
+)
 
 // Orders
 

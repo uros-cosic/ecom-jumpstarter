@@ -106,6 +106,7 @@ beforeAll(async () => {
         shippingMethod: String(shippingMethod._id),
         address: String(address._id),
         paymentMethod: String(paymentMethod._id),
+        email: user.email,
     })
 
     await Order.create({
@@ -210,5 +211,17 @@ describe('Email service', () => {
 
         expect(html).toBeDefined()
         expect(typeof html).toBe('string')
+    })
+
+    test('Reset password mail test', async () => {
+        const user = await User.findOne({})
+
+        const message = await EmailService.sendPasswordResetMail(
+            user!.toObject(),
+            'test-token-123'
+        )
+
+        expect(message).toBeDefined()
+        expect(typeof message).toBe('string')
     })
 })

@@ -12,4 +12,5 @@ export const STORE = {
     orderPreviewLink: `${url}/orders/{{id}}`,
     saleLink: `${url}/sales/{{id}}`,
     cancelUrl: `${url}/orders/cancel`,
+    passwordResetUrl: `${url}/password-reset/{{token}}`,
 } as const

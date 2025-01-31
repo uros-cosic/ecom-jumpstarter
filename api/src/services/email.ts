@@ -110,12 +110,12 @@ class EmailService {
             if (process.env.NODE_ENV === 'test') return htmlContent
 
             this.sendEmail({
-                html: htmlContent,
                 to: data.email,
                 subject: i18next.t('emails.welcome.subject', {
                     lng: locale,
                     field: STORE.name,
                 }),
+                html: htmlContent,
             })
         } catch (e) {
             console.error('Error sending welcome mail', e)
@@ -268,6 +268,7 @@ class EmailService {
                     lng: locale,
                 }),
                 to: data.cart.email,
+                html: htmlContent,
             })
         } catch (e) {
             console.error('Error sending order confirmation mail', e)
@@ -364,6 +365,7 @@ class EmailService {
                     lng: locale,
                 }),
                 to: data.cart.email,
+                html: htmlContent,
             })
         } catch (e) {
             console.error('Error sending order fulfillment mail', e)
@@ -472,6 +474,7 @@ class EmailService {
                     lng: locale,
                 }),
                 to: data.email,
+                html: htmlContent,
             })
         } catch (e) {
             console.error('Error sending cart abandonment mail', e)
@@ -555,6 +558,7 @@ class EmailService {
                     lng: locale,
                 }),
                 to: data.email,
+                html: htmlContent,
             })
         } catch (e) {
             console.error('Error sending newsletter welcome mail', e)
@@ -628,9 +632,38 @@ class EmailService {
                     lng: locale,
                 }),
                 to: emails,
+                html: htmlContent,
             })
         } catch (e) {
             console.error('Error sending sale info mail', e)
+        }
+    }
+
+    sendPasswordResetMail = async (user: IUser, token: string) => {
+        try {
+            let locale = 'en'
+
+            const region = await Region.findById(user.region)
+
+            if (region && region.countries.length) {
+                const country = await Country.findById(region.countries[0])
+
+                if (country) locale = country.iso_2.toLowerCase()
+            }
+
+            const message = `${i18next.t('emails.password-reset.heading', { lng: locale })}\n\n${i18next.t('emails.password-reset.reset-link-label', { lng: locale })}: ${STORE.passwordResetUrl.replace('{{token}}', token)}\n\n${i18next.t('emails.password-reset.outro', { lng: locale })}`
+
+            if (process.env.NODE_ENV === 'test') return message
+
+            this.sendEmail({
+                subject: i18next.t('emails.password-reset.subject', {
+                    lng: locale,
+                }),
+                to: user.email,
+                text: message,
+            })
+        } catch (e) {
+            console.error('Error sending password reset token', e)
         }
     }
 }

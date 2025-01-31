@@ -20,7 +20,8 @@
         "cant-find-route": "Ne mogu da pronađem {{route}}",
         "discount-date-error": "Važi od datum ne može da bude bliži od važi do datuma",
         "fill-in-fields": "Popunite sva polja",
-        "already-exists": "{{field}} već postoji"
+        "already-exists": "{{field}} već postoji",
+        "password-token-expired": "Vaš token za zamenu lozinke je istekao"
     },
 
     "words": {
@@ -39,7 +40,8 @@
         "cheers": "Sve najbolje",
         "team": "Tim",
         "all-rights-reserved": "Sva prava zadržana",
-        "contact-us-here": "Kontaktirajte nas ovde"
+        "contact-us-here": "Kontaktirajte nas ovde",
+        "password-reset-sent": "Email za resetovanje lozinke je poslat"
     },
 
     "emails": {
@@ -110,6 +112,13 @@
             "cta-message": "Kliknite ispod da istražite rasprodaju i zgrabite svoje favorite pre nego što nestanu!",
             "cta-button-text": "Kupujte na rasprodaji",
             "support-message": "Potrebna Vam je pomoć?"
+        },
+
+        "password-reset": {
+            "subject": "Vaš link za resetovanje lozinke",
+            "heading": "Vaš link za resetovanje lozinke",
+            "reset-link-label": "Koristite ovaj link za resetovanje lozinke",
+            "outro": "Ako niste zatražili resetovanje lozinke, ignorišite ovaj mail"
         }
     }
 }

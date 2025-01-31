@@ -20,7 +20,8 @@
         "cant-find-route": "Can't find {{route}}",
         "discount-date-error": "Valid from date can't be sooner than valid to date",
         "fill-in-fields": "Fill in all required fields",
-        "already-exists": "{{field}} already exists"
+        "already-exists": "{{field}} already exists",
+        "password-token-expired": "Password reset token has expired"
     },
 
     "words": {
@@ -39,7 +40,8 @@
         "cheers": "Cheers",
         "team": "Team",
         "all-rights-reserved": "All rights reserved",
-        "contact-us-here": "Contact us here"
+        "contact-us-here": "Contact us here",
+        "password-reset-sent": "Password reset email sent"
     },
 
     "emails": {
@@ -109,6 +111,13 @@
             "cta-message": "Click below to explore the sale and grab your favorites before they’re gone!",
             "cta-button-text": "Shop the sale",
             "support-message": "Need help?"
+        },
+
+        "password-reset": {
+            "subject": "Your password reset link",
+            "heading": "Your password reset link",
+            "reset-link-label": "Use this link to reset your password",
+            "outro": "If you didn't request password reset, just ignore this email"
         }
     }
 }

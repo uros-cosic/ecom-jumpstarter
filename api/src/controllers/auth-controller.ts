@@ -8,6 +8,8 @@ import catchAsync from '../lib/catch-async'
 import { AppError } from '../lib/app-error'
 import RefreshToken from '../models/RefreshToken'
 import * as redis from '../services/redis'
+import eventBus from '../services/event-bus'
+import { UserService } from '../services/user'
 
 const signToken = (id: string) => {
     return jwt.sign({ id }, process.env.JWT_SECRET!, {
@@ -284,6 +286,99 @@ export const logOut = (_req: Request, res: Response) => {
     })
     return
 }
+
+export const generatePasswordResetToken = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { email } = req.body
+
+        if (!email) return next(new AppError(req.t('errors.bad-request'), 400))
+
+        const user = await User.findOne({ email })
+
+        if (!user)
+            return next(
+                new AppError(
+                    req.t('errors.not-found', { field: req.t('words.user') }),
+                    404
+                )
+            )
+
+        if (user.resetPasswordExpires && new Date() < user.resetPasswordExpires)
+            return next(new AppError(req.t('errors.bad-request'), 400))
+
+        const resetToken = crypto.randomBytes(32).toString('hex')
+
+        const hashedToken = crypto
+            .createHash('sha256')
+            .update(resetToken)
+            .digest('hex')
+
+        user.resetPasswordToken = hashedToken
+        user.resetPasswordExpires = new Date(Date.now() + 15 * 60 * 1000)
+
+        await user.save()
+        await redis.deleteCachedValueByKey(
+            `${User.modelName.toLowerCase()}:${String(user._id)}`
+        )
+
+        eventBus.emit(UserService.Events.PASSWORD_RESET, {
+            token: resetToken,
+            user: user.toObject(),
+        })
+
+        res.status(201).json({ data: req.t('words.password-reset-sent') })
+        return
+    }
+)
+
+export const resetPassword = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const { token, email, password } = req.body
+
+        if (!token || !email || !password)
+            return next(new AppError('errors.bad-request', 400))
+
+        const user = await User.findOne({ email })
+
+        if (!user) return next(new AppError('errors.bad-request', 400))
+
+        if (
+            !user.resetPasswordExpires ||
+            new Date(user.resetPasswordExpires) < new Date()
+        ) {
+            user.resetPasswordToken = null
+            user.resetPasswordExpires = null
+            await user.save()
+            await redis.deleteCachedValueByKey(
+                `${User.modelName.toLowerCase()}:${String(user._id)}`
+            )
+
+            return next(new AppError('errors.token-expired', 400))
+        }
+
+        const hashedToken = crypto
+            .createHash('sha256')
+            .update(token)
+            .digest('hex')
+
+        if (hashedToken !== user.resetPasswordToken)
+            return next(
+                new AppError(req.t('errors.invalid', { field: 'Token' }), 400)
+            )
+
+        user.password = password
+        user.resetPasswordToken = null
+        user.resetPasswordExpires = null
+
+        await user.save()
+        await redis.deleteCachedValueByKey(
+            `${User.modelName.toLowerCase()}:${String(user._id)}`
+        )
+
+        res.status(201).json({ data: user.toObject() })
+        return
+    }
+)
 
 export const updatePassword = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
