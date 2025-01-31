@@ -29,3 +29,7 @@ Repeat the process for each directory.
 
 Check the ```package.json``` for all available scripts and dependencies versions.
 
+**TODO:**
+
+- [ ] Storefront
+- [ ] Admin
