@@ -1,18 +1,23 @@
 import { PopulatedOrder } from '../models/Order'
 import { OrderAnalytics } from '../models/OrderAnalytics'
 import { SiteAnalytics } from '../models/SiteAnalytics'
+import * as redis from '../services/redis'
 
 export class AnalyticsService {
     public static updateSignups = async () => {
         try {
             const today = new Date().toISOString().split('T')[0]
 
-            await SiteAnalytics.findOneAndUpdate(
+            const siteAnalytic = await SiteAnalytics.findOneAndUpdate(
                 { date: today },
                 {
                     $inc: { newSignups: 1 },
                 },
                 { upsert: true, new: true }
+            )
+
+            await redis.deleteCachedValueByKey(
+                `${SiteAnalytics.modelName.toLowerCase()}:${String(siteAnalytic._id)}`
             )
         } catch (e) {
             console.error(e)
@@ -40,6 +45,10 @@ export class AnalyticsService {
                 analytics.revenue / analytics.totalOrders
 
             await analytics.save()
+
+            await redis.deleteCachedValueByKey(
+                `${SiteAnalytics.modelName.toLowerCase()}:${String(analytics._id)}`
+            )
         } catch (e) {
             console.error(e)
         }

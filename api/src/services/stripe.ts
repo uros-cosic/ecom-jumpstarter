@@ -1,4 +1,7 @@
 import Stripe from 'stripe'
+import { Request } from 'express'
+
+import '../config'
 import Order, { IOrder, ORDER_STATUS } from '../models/Order'
 import { ICart } from '../models/Cart'
 import { STORE } from '../lib/constants'
@@ -6,10 +9,8 @@ import Region from '../models/Region'
 import Currency from '../models/Currency'
 import Product from '../models/Product'
 import Sale, { SALE_TYPE } from '../models/Sale'
-
-import '../config'
-import { Request } from 'express'
 import Payment, { PAYMENT_STATUS } from '../models/Payment'
+import * as redis from './redis'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -120,10 +121,16 @@ export class StripeService {
                                 payment.status = PAYMENT_STATUS.COMPLETED
 
                                 await payment.save()
+                                await redis.deleteCachedValueByKey(
+                                    `${Payment.modelName.toLowerCase()}:${String(payment._id)}`
+                                )
                             }
                         }
 
                         await order.save()
+                        await redis.deleteCachedValueByKey(
+                            `${Order.modelName.toLowerCase()}:${String(order._id)}`
+                        )
                     }
                 }
             } else if (
@@ -148,10 +155,16 @@ export class StripeService {
                                 payment.status = PAYMENT_STATUS.FAILED
 
                                 await payment.save()
+                                await redis.deleteCachedValueByKey(
+                                    `${Payment.modelName.toLowerCase()}:${String(payment._id)}`
+                                )
                             }
                         }
 
                         await order.save()
+                        await redis.deleteCachedValueByKey(
+                            `${Order.modelName.toLowerCase()}:${String(order._id)}`
+                        )
                     }
                 }
             }

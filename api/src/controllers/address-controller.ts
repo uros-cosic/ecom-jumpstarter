@@ -5,6 +5,7 @@ import Address from '../models/Address'
 import { createOne, getOne } from './handler-factory'
 import { AppError } from '../lib/app-error'
 import { filterObj } from '../lib/util'
+import * as redis from '../services/redis'
 
 export const getAddress = getOne(Address)
 
@@ -52,6 +53,10 @@ export const updateAddress = catchAsync(
             }
         )
 
+        await redis.deleteCachedValueByKey(
+            `${Address.modelName.toLowerCase()}:${String(address._id)}`
+        )
+
         res.status(200).json({
             data: newAddress,
         })
@@ -81,6 +86,10 @@ export const deleteAddress = catchAsync(
             return next(new AppError(req.t('errors.bad-request'), 400))
 
         await Address.findByIdAndDelete(address._id)
+
+        await redis.deleteCachedValueByKey(
+            `${Address.modelName.toLowerCase()}:${String(address._id)}`
+        )
 
         res.status(204).json({
             data: null,

@@ -7,6 +7,7 @@ import User, { IUser } from '../models/User'
 import catchAsync from '../lib/catch-async'
 import { AppError } from '../lib/app-error'
 import RefreshToken from '../models/RefreshToken'
+import * as redis from '../services/redis'
 
 const signToken = (id: string) => {
     return jwt.sign({ id }, process.env.JWT_SECRET!, {
@@ -327,6 +328,10 @@ export const updatePassword = catchAsync(
         user.password = req.body.password
 
         await user.save()
+
+        await redis.deleteCachedValueByKey(
+            `${User.modelName.toLowerCase()}:${String(user._id)}`
+        )
 
         createSendToken(user, 200, res)
         return

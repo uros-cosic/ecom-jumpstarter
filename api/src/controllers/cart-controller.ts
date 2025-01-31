@@ -5,6 +5,7 @@ import Cart from '../models/Cart'
 import { getOne } from './handler-factory'
 import { AppError } from '../lib/app-error'
 import { filterObj } from '../lib/util'
+import * as redis from '../services/redis'
 
 export const getCart = getOne(Cart)
 export const createCart = catchAsync(async (req: Request, res: Response) => {
@@ -59,6 +60,10 @@ export const updateCart = catchAsync(
 
         // Trigger pre-save middleware
         await cart.save()
+
+        await redis.deleteCachedValueByKey(
+            `${Cart.modelName.toLowerCase()}:${String(cart._id)}`
+        )
 
         res.status(200).json({
             data: cart,

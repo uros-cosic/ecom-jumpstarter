@@ -8,6 +8,7 @@ import { filterObj } from '../lib/util'
 import User from '../models/User'
 import { AppError } from '../lib/app-error'
 import { SiteAnalytics } from '../models/SiteAnalytics'
+import * as redis from '../services/redis'
 
 export const getMe = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
@@ -43,9 +44,14 @@ export const updateMe = catchAsync(
                 )
             )
 
-        return res.status(200).json({
+        await redis.deleteCachedValueByKey(
+            `${User.modelName.toLowerCase()}:${String(updatedUser._id)}`
+        )
+
+        res.status(200).json({
             data: updatedUser,
         })
+        return
     }
 )
 
@@ -67,9 +73,14 @@ export const deleteUser = catchAsync(
                 )
             )
 
-        return res.status(204).json({
+        await redis.deleteCachedValueByKey(
+            `${User.modelName.toLowerCase()}:${String(user._id)}`
+        )
+
+        res.status(204).json({
             data: null,
         })
+        return
     }
 )
 

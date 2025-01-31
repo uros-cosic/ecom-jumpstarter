@@ -9,6 +9,7 @@ import Newsletter from '../models/Newsletter'
 import { getAll, getOne, updateOne } from './handler-factory'
 import { AppError } from '../lib/app-error'
 import { filterObj } from '../lib/util'
+import * as redis from '../services/redis'
 
 export const getNewsletters = getAll(Newsletter)
 export const getNewsletter = getOne(Newsletter)
@@ -38,6 +39,10 @@ export const deleteNewsletter = catchAsync(
 
         if (!newsletter)
             return next(new AppError(req.t('errors.bad-request'), 400))
+
+        await redis.deleteCachedValueByKey(
+            `${Newsletter.modelName.toLowerCase()}:${String(newsletter._id)}`
+        )
 
         res.status(204).json({
             data: null,
