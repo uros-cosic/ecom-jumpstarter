@@ -1,6 +1,6 @@
 import path from 'path'
 
-export const filterObj = (obj: any, ...allowedFields: Array<string>) => {
+export const filterObj = (obj: any, ...allowedFields: string[]) => {
     const newObj: any = {}
     Object.keys(obj).forEach((el) => {
         if (allowedFields.includes(el)) newObj[el] = obj[el]
@@ -8,7 +8,7 @@ export const filterObj = (obj: any, ...allowedFields: Array<string>) => {
     return newObj
 }
 
-export const generateUniqueFileName = (file: any) => {
+export const generateUniqueFileName = (file: Express.Multer.File) => {
     const uniqueSuffix = String(Math.round(Math.random() * 1e9))
     const fileName =
         path.parse(file.originalname).name +
@@ -19,8 +19,7 @@ export const generateUniqueFileName = (file: any) => {
 }
 
 export const generateRandomString = (length: number = 5): string => {
-    const characters =
-        'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz'
 
     let result = ''
 
