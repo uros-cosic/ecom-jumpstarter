@@ -13,6 +13,7 @@ export interface IBlogPost extends IBaseModel {
     handle: string
     content: string
     thumbnail: string
+    region: ObjectId
     author?: ObjectId
     keywords: string[]
     metadata: Record<string, string>
@@ -78,6 +79,12 @@ const BlogPostSchema = new Schema<IBlogPost>(
         author: {
             type: Schema.Types.ObjectId,
             ref: 'User',
+        },
+
+        region: {
+            type: Schema.Types.ObjectId,
+            ref: 'Region',
+            required: true,
         },
 
         keywords: {

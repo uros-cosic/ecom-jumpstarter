@@ -16,12 +16,16 @@ import { UserService } from '../services/user'
 // Users
 
 eventBus.on(UserService.Events.CREATED, async (data) => {
+    if (process.env.NODE_ENV === 'test') return
+
     EmailService.sendWelcomeMail(data)
 })
 
 eventBus.on(
     UserService.Events.PASSWORD_RESET,
     async (data: { user: IUser; token: string }) => {
+        if (process.env.NODE_ENV === 'test') return
+
         EmailService.sendPasswordResetMail(data.user, data.token)
     }
 )
@@ -29,16 +33,22 @@ eventBus.on(
 // Orders
 
 eventBus.on(OrderService.Events.COMPLETED, async (data) => {
+    if (process.env.NODE_ENV === 'test') return
+
     EmailService.sendOrderConfirmationMail(data)
 })
 
 eventBus.on(OrderService.Events.FULFILLED, async (data) => {
+    if (process.env.NODE_ENV === 'test') return
+
     EmailService.sendOrderConfirmationMail(data)
 })
 
 // Carts
 
 eventBus.on(CartService.Events.CREATED, async (data: ICart) => {
+    if (process.env.NODE_ENV === 'test') return
+
     setTimeout(
         async () => {
             try {
@@ -81,6 +91,8 @@ eventBus.on(CartService.Events.CREATED, async (data: ICart) => {
 // Newsletters
 
 eventBus.on(NewsletterService.Events.CREATED, async (data: INewsletter) => {
+    if (process.env.NODE_ENV === 'test') return
+
     try {
         const discountCode = await Discount.create({
             code: `${generateRandomString().toUpperCase()}10`,
@@ -98,6 +110,8 @@ eventBus.on(NewsletterService.Events.CREATED, async (data: INewsletter) => {
 // Sales
 
 eventBus.on(SaleService.Events.CREATED, async (data: ISale) => {
+    if (process.env.NODE_ENV === 'test') return
+
     const delay = Math.max(
         data.startDate ? calculateMillisecondsToDate(data.startDate) : 0,
         0

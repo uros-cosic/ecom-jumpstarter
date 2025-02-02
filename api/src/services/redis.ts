@@ -27,6 +27,8 @@ export const setCachedValue = async (
     value: any,
     ttlInSeconds?: number
 ) => {
+    if (process.env.NODE_ENV === 'test') return false
+
     try {
         const options: SetOptions = {}
 
@@ -42,6 +44,8 @@ export const setCachedValue = async (
 }
 
 export const deleteCachedValueByKey = async (key: string) => {
+    if (process.env.NODE_ENV === 'test') return false
+
     try {
         await redisClient.del(key)
 
@@ -53,6 +57,8 @@ export const deleteCachedValueByKey = async (key: string) => {
 }
 
 export const deleteCachedValuesByKeyPrefix = async (prefix: string) => {
+    if (process.env.NODE_ENV === 'test') return false
+
     try {
         const keys = await redisClient.keys(`${prefix}*`)
 

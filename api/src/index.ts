@@ -58,7 +58,11 @@ const storeCorsOptions = {
         origin: string | undefined,
         callback: (err: Error | null, allow?: boolean) => void
     ) => {
-        if (!origin || STORE_CORS.includes(origin)) {
+        if (
+            process.env.NODE_ENV === 'dev' ||
+            !origin ||
+            STORE_CORS.includes(origin)
+        ) {
             callback(null, true)
         } else {
             callback(new Error(i18next.t('errors.cors-message')))
@@ -73,7 +77,11 @@ const adminCorsOptions = {
         origin: string | undefined,
         callback: (err: Error | null, allow?: boolean) => void
     ) => {
-        if (!origin || ADMIN_CORS.includes(origin)) {
+        if (
+            process.env.NODE_ENV === 'dev' ||
+            !origin ||
+            ADMIN_CORS.includes(origin)
+        ) {
             callback(null, true)
         } else {
             callback(new Error(i18next.t('errors.cors-message')))

@@ -198,7 +198,7 @@ router.route('/sales/:id').get(getSale).patch(updateSale).delete(deleteSale)
 // Discounts
 router.route('/discounts').get(getDiscounts).post(createDiscount)
 router
-    .route('/discounts:id')
+    .route('/discounts/:id')
     .get(getDiscount)
     .patch(updateDiscount)
     .delete(deleteDiscount)
