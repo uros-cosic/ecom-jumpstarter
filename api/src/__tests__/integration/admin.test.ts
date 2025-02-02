@@ -167,7 +167,62 @@ describe('Admin routes', () => {
 
     describe('POST /admin/users', () => {
         it('Should create new user', async () => {
-            // todo
+            const loginRes = await request(app).post('/api/auth/login').send({
+                email: mockAdminUser.email,
+                password: mockAdminUser.password,
+            })
+
+            expect(loginRes.status).toBe(200)
+            const token = loginRes.body.token
+            expect(token).toBeDefined()
+
+            const region = await Region.findOne({})
+
+            const res = await request(app)
+                .post('/api/admin/users')
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    email: 'test3@mail.com',
+                    password: 'test1234',
+                    region: String(region!._id),
+                    name: 'tester',
+                })
+
+            expect(res.status).toBe(201)
+            expect(res.body).toHaveProperty('data')
+        })
+
+        it('Should not allow to create new user for non auth', async () => {
+            const res = await request(app).post('/api/admin/users')
+
+            expect(res.status).toBe(401)
+            expect(res.body).toHaveProperty('message')
+        })
+
+        it('Should not create new user with non admin', async () => {
+            const loginRes = await request(app).post('/api/auth/login').send({
+                email: mockUser.email,
+                password: mockUser.password,
+            })
+
+            expect(loginRes.status).toBe(200)
+            const token = loginRes.body.token
+            expect(token).toBeDefined()
+
+            const region = await Region.findOne({})
+
+            const res = await request(app)
+                .post('/api/admin/users')
+                .set('Authorization', `Bearer ${token}`)
+                .send({
+                    email: 'test3@mail.com',
+                    password: 'test1234',
+                    region: String(region!._id),
+                    name: 'tester',
+                })
+
+            expect(res.status).toBe(403)
+            expect(res.body).toHaveProperty('message')
         })
     })
 })
