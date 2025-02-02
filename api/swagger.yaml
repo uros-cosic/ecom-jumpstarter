@@ -120,6 +120,198 @@ paths:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+
+    /api/auth/login:
+        post:
+            summary: Logs in a user
+            tags:
+                - Auth
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                password:
+                                    type: string
+            responses:
+                200:
+                    description: Login successful
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    token:
+                                        type: string
+                                    refreshToken:
+                                        type: string
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                400:
+                    description: Invalid credentials
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/auth/register:
+        post:
+            summary: Registers a new user
+            tags:
+                - Auth
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                name:
+                                    type: string
+                                email:
+                                    type: string
+                                    format: email
+                                password:
+                                    oneOf:
+                                        - type: string
+                                        - type: 'null'
+                                region:
+                                    type: string
+                                googleId:
+                                    oneOf:
+                                        - type: string
+                                        - type: 'null'
+            responses:
+                201:
+                    description: Registration successful
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    token:
+                                        type: string
+                                    refreshToken:
+                                        type: string
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                400:
+                    description: Registration failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/auth/logout:
+        post:
+            summary: Logs out a user
+            tags:
+                - Auth
+            responses:
+                200:
+                    description: Logout successful
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: 'null'
+                400:
+                    description: Logout failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/auth/changePassword:
+        patch:
+            summary: Changes user password
+            tags:
+                - Auth
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                passwordCurrent:
+                                    type: string
+                                password:
+                                    type: string
+            responses:
+                200:
+                    description: Password updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    token:
+                                        type: string
+                                    refreshToken:
+                                        type: string
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                400:
+                    description: Password update failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/auth/resetPassword:
+        post:
+            summary: Changes password
+            tags:
+                - Auth
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                token:
+                                    type: string
+                                password:
+                                    type: string
+            responses:
+                200:
+                    description: Password changed
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    token:
+                                        type: string
+                                    refreshToken:
+                                        type: string
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                400:
+                    description: Password reset failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
     /api/admin/users:
         get:
             summary: Gets users

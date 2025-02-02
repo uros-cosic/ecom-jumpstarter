@@ -375,7 +375,7 @@ export const resetPassword = catchAsync(
             `${User.modelName.toLowerCase()}:${String(user._id)}`
         )
 
-        res.status(201).json({ data: user.toObject() })
+        await createSendToken(user, 200, res)
         return
     }
 )
