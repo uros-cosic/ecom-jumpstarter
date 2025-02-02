@@ -9,6 +9,12 @@ paths:
             summary: Creates address
             tags:
                 - Store/Addresses
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Address'
             responses:
                 201:
                     description: Address created
@@ -65,6 +71,12 @@ paths:
                   required: true
                   schema:
                       type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Address'
             responses:
                 200:
                     description: Address updated
@@ -96,13 +108,6 @@ paths:
             responses:
                 204:
                     description: Address deleted
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    data:
-                                        type: 'null'
                 401:
                     description: Unauthorized
                     content:
@@ -122,6 +127,8 @@ paths:
                 - Admin/Users
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             responses:
                 200:
                     description: Returns users
@@ -141,7 +148,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -152,6 +159,14 @@ paths:
                 - Admin/Users
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
             responses:
                 201:
                     description: Returns created user
@@ -169,7 +184,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -182,6 +197,8 @@ paths:
                 - Admin/Users
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             parameters:
                 - in: path
                   name: id
@@ -205,7 +222,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -216,6 +233,14 @@ paths:
                 - Admin/Users
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
             parameters:
                 - in: path
                   name: id
@@ -239,7 +264,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -250,6 +275,8 @@ paths:
                 - Admin/Users
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             parameters:
                 - in: path
                   name: id
@@ -259,10 +286,6 @@ paths:
             responses:
                 204:
                     description: User deleted
-                    content:
-                        application/json:
-                            schema:
-                                type: 'null'
                 401:
                     description: Unauthorized
                     content:
@@ -270,7 +293,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -283,6 +306,8 @@ paths:
                 - Admin/Orders
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             responses:
                 200:
                     description: Returns orders
@@ -302,7 +327,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -314,6 +339,8 @@ paths:
                 - Admin/Orders
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             parameters:
                 - in: path
                   name: id
@@ -337,7 +364,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -348,12 +375,20 @@ paths:
                 - Admin/Orders
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             parameters:
                 - in: path
                   name: id
                   required: true
                   schema:
                       type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Order'
             responses:
                 200:
                     description: Returns updated order
@@ -371,7 +406,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -384,6 +419,8 @@ paths:
                 - Admin/SiteAnalytics
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             responses:
                 200:
                     description: Returns site analytics
@@ -403,7 +440,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -416,6 +453,8 @@ paths:
                 - Admin/SiteAnalytics
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             parameters:
                 - in: path
                   name: id
@@ -439,7 +478,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -452,6 +491,8 @@ paths:
                 - Admin/OrderAnalytics
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             responses:
                 200:
                     description: Returns orders analytics
@@ -471,7 +512,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -484,6 +525,8 @@ paths:
                 - Admin/OrderAnalytics
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             parameters:
                 - in: path
                   name: id
@@ -507,7 +550,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -520,6 +563,18 @@ paths:
                 - Admin/Uploads
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                image:
+                                    type: string
+                                    format: binary
             responses:
                 200:
                     description: Returns uploaded image link
@@ -537,7 +592,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -550,6 +605,18 @@ paths:
                 - Admin/Uploads
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                thumbnail:
+                                    type: string
+                                    format: binary
             responses:
                 200:
                     description: Returns uploaded image link
@@ -567,7 +634,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -580,6 +647,18 @@ paths:
                 - Admin/Uploads
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                images:
+                                    type: string
+                                    format: binary
             responses:
                 200:
                     description: Returns uploaded image links
@@ -599,7 +678,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -612,6 +691,18 @@ paths:
                 - Admin/Uploads
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                thumbnail:
+                                    type: string
+                                    format: binary
             responses:
                 200:
                     description: Returns uploaded image link
@@ -629,7 +720,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -642,6 +733,18 @@ paths:
                 - Admin/Uploads
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                thumbnail:
+                                    type: string
+                                    format: binary
             responses:
                 200:
                     description: Returns uploaded image link
@@ -659,7 +762,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -672,6 +775,18 @@ paths:
                 - Admin/Uploads
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
+            requestBody:
+                required: true
+                content:
+                    multipart/form-data:
+                        schema:
+                            type: object
+                            properties:
+                                thumbnail:
+                                    type: string
+                                    format: binary
             responses:
                 200:
                     description: Returns uploaded image link
@@ -689,7 +804,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -702,6 +817,8 @@ paths:
                 - Admin/Regions
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             responses:
                 200:
                     description: Returns regions
@@ -721,7 +838,7 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
@@ -732,6 +849,8 @@ paths:
                 - Admin/Regions
             security:
                 - bearerAuth: []
+            x-roles:
+                - admin
             responses:
                 201:
                     description: Creates region
@@ -749,35 +868,31 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
 
-    /api/admin/regions/{id}:
+    /api/admin/products:
         get:
-            summary: Gets region
+            summary: Gets all products
             tags:
-                - Admin/Regions
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
+                - Admin/Products
             security:
                 - bearerAuth: []
             responses:
                 200:
-                    description: Retruns the region
+                    description: Returns all products
                     content:
                         application/json:
                             schema:
                                 type: object
                                 properties:
                                     data:
-                                        $ref: '#/components/schemas/Region'
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Product'
                 401:
                     description: Unauthorized
                     content:
@@ -785,33 +900,129 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+
+        post:
+            summary: Creates a new product
+            tags:
+                - Admin/Products
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Product'
+            responses:
+                201:
+                    description: Product created successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Product'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/admin/products/{id}:
+        get:
+            summary: Gets a product by ID
+            tags:
+                - Admin/Products
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the product
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Product'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                404:
+                    description: Product not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
         patch:
-            summary: Updates region
+            summary: Updates a product by ID
             tags:
-                - Admin/Regions
+                - Admin/Products
+            security:
+                - bearerAuth: []
             parameters:
                 - in: path
                   name: id
                   required: true
                   schema:
                       type: string
-            security:
-                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Product'
             responses:
                 200:
-                    description: Updates region
+                    description: Product updated successfully
                     content:
                         application/json:
                             schema:
                                 type: object
                                 properties:
                                     data:
-                                        $ref: '#/components/schemas/Region'
+                                        $ref: '#/components/schemas/Product'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
                 401:
                     description: Unauthorized
                     content:
@@ -819,30 +1030,33 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
                     content:
                         application/json:
                             schema:
                                 $ref: '#/components/schemas/Error'
+                404:
+                    description: Product not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
         delete:
-            summary: Deletes region
+            summary: Deletes a product by ID
             tags:
-                - Admin/Regions
+                - Admin/Products
+            security:
+                - bearerAuth: []
             parameters:
                 - in: path
                   name: id
                   required: true
                   schema:
                       type: string
-            security:
-                - bearerAuth: []
             responses:
                 204:
-                    description: Updates region
-                    content:
-                        application/json:
-                            schema:
-                                type: 'null'
+                    description: Product deleted successfully
                 401:
                     description: Unauthorized
                     content:
@@ -850,7 +1064,722 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
                 403:
-                    description: Forbbiden
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                404:
+                    description: Product not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+            /api/admin/regions/{id}:
+                get:
+                    summary: Gets region
+                    tags:
+                        - Admin/Regions
+                    parameters:
+                        - in: path
+                          name: id
+                          required: true
+                          schema:
+                              type: string
+                    security:
+                        - bearerAuth: []
+                    x-roles:
+                        - admin
+                    responses:
+                        200:
+                            description: Returns the region
+                            content:
+                                application/json:
+                                    schema:
+                                        type: object
+                                        properties:
+                                            data:
+                                                $ref: '#/components/schemas/Region'
+                        401:
+                            description: Unauthorized
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/Error'
+                        403:
+                            description: Forbidden
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/Error'
+                patch:
+                    summary: Updates region
+                    tags:
+                        - Admin/Regions
+                    parameters:
+                        - in: path
+                          name: id
+                          required: true
+                          schema:
+                              type: string
+                    security:
+                        - bearerAuth: []
+                    x-roles:
+                        - admin
+                    responses:
+                        200:
+                            description: Updates region
+                            content:
+                                application/json:
+                                    schema:
+                                        type: object
+                                        properties:
+                                            data:
+                                                $ref: '#/components/schemas/Region'
+                        401:
+                            description: Unauthorized
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/Error'
+                        403:
+                            description: Forbidden
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/Error'
+                delete:
+                    summary: Deletes region
+                    tags:
+                        - Admin/Regions
+                    parameters:
+                        - in: path
+                          name: id
+                          required: true
+                          schema:
+                              type: string
+                    security:
+                        - bearerAuth: []
+                    x-roles:
+                        - admin
+                    responses:
+                        204:
+                            description: Deletes region
+                        401:
+                            description: Unauthorized
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/Error'
+                        403:
+                            description: Forbidden
+                            content:
+                                application/json:
+                                    schema:
+                                        $ref: '#/components/schemas/Error'
+
+    /api/admin/productCategories:
+        get:
+            summary: Gets all product categories
+            tags:
+                - Admin/ProductCategories
+            security:
+                - bearerAuth: []
+            responses:
+                200:
+                    description: Returns all product categories
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/ProductCategory'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+        post:
+            summary: Creates a new product category
+            tags:
+                - Admin/ProductCategories
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProductCategory'
+            responses:
+                201:
+                    description: Product category created successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/ProductCategory'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/admin/productCategories/{id}:
+        get:
+            summary: Gets a product category by ID
+            tags:
+                - Admin/ProductCategories
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the product category
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/ProductCategory'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                404:
+                    description: Product category not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+        patch:
+            summary: Updates a product category by ID
+            tags:
+                - Admin/ProductCategories
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProductCategory'
+            responses:
+                200:
+                    description: Product category updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/ProductCategory'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                404:
+                    description: Product category not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+        delete:
+            summary: Deletes a product category by ID
+            tags:
+                - Admin/ProductCategories
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                204:
+                    description: Product category deleted successfully
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                404:
+                    description: Product category not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/admin/productCollections:
+        get:
+            summary: Gets all product collections
+            tags:
+                - Admin/ProductCollections
+            security:
+                - bearerAuth: []
+            responses:
+                200:
+                    description: Returns all product collections
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/ProductCollection'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+        post:
+            summary: Creates a new product collection
+            tags:
+                - Admin/ProductCollections
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProductCollection'
+            responses:
+                201:
+                    description: Product collection created successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/ProductCollection'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/admin/productCollections/{id}:
+        get:
+            summary: Gets a product collection by ID
+            tags:
+                - Admin/ProductCollections
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the product collection
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/ProductCollection'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                404:
+                    description: Product collection not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+        patch:
+            summary: Updates a product collection by ID
+            tags:
+                - Admin/ProductCollections
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProductCollection'
+            responses:
+                200:
+                    description: Product collection updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/ProductCollection'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                404:
+                    description: Product collection not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+        delete:
+            summary: Deletes a product collection by ID
+            tags:
+                - Admin/ProductCollections
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                204:
+                    description: Product collection deleted successfully
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                404:
+                    description: Product collection not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/admin/sales:
+        get:
+            summary: Gets all sales
+            tags:
+                - Admin/Sales
+            security:
+                - bearerAuth: []
+            responses:
+                200:
+                    description: Returns all sales
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Sale'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+        post:
+            summary: Creates a new sale
+            tags:
+                - Admin/Sales
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Sale'
+            responses:
+                201:
+                    description: Sale created successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Sale'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/admin/sales/{id}:
+        get:
+            summary: Gets a sale by ID
+            tags:
+                - Admin/Sales
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the sale
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Sale'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                404:
+                    description: Sale not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+        patch:
+            summary: Updates a sale by ID
+            tags:
+                - Admin/Sales
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Sale'
+            responses:
+                200:
+                    description: Sale updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Sale'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                404:
+                    description: Sale not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+        delete:
+            summary: Deletes a sale by ID
+            tags:
+                - Admin/Sales
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                204:
+                    description: Sale deleted successfully
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                404:
+                    description: Sale not found
                     content:
                         application/json:
                             schema:
@@ -1043,6 +1972,240 @@ components:
                         type: string
                 taxRate:
                     type: number
+                metadata:
+                    type: object
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+        Product:
+            type: object
+            properties:
+                _id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                details:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                keywords:
+                    type: array
+                    items:
+                        type: string
+                handle:
+                    type: string
+                type:
+                    type: string
+                thumbnail:
+                    type: string
+                images:
+                    type: array
+                    items:
+                        type: string
+                productCategory:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                productCollection:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                options:
+                    oneOf:
+                        - type: array
+                          items:
+                              type: object
+                              properties:
+                                  name:
+                                      type: string
+                                  values:
+                                      type: array
+                                      items:
+                                          type: string
+                        - type: 'null'
+                variants:
+                    oneOf:
+                        - type: array
+                          items:
+                              type: object
+                              properties:
+                                  title:
+                                      type: string
+                                  options:
+                                      type: array
+                                      items:
+                                          type: object
+                                          properties:
+                                              name:
+                                                  type: string
+                                              value:
+                                                  type: string
+                                  sku:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  barcode:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  ean:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  upc:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  hsCode:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  midCode:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  originCountry:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  weight:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  length:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  height:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  width:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  material:
+                                      oneOf:
+                                          - type: string
+                                          - type: 'null'
+                                  price:
+                                      type: number
+                                  quantity:
+                                      type: number
+                        - type: 'null'
+                region:
+                    type: string
+                sizeGuide:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                price:
+                    type: number
+                quantity:
+                    type: number
+                active:
+                    type: boolean
+                metadata:
+                    type: object
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        ProductCategory:
+            type: object
+            properties:
+                _id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                handle:
+                    type: string
+                keywords:
+                    type: array
+                    items:
+                        type: string
+                parentCategory:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                metadata:
+                    type: object
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        ProductCollection:
+            type: object
+            properties:
+                _id:
+                    type: string
+                name:
+                    type: string
+                description:
+                    type: string
+                handle:
+                    type: string
+                keywords:
+                    type: array
+                    items:
+                        type: string
+                metadata:
+                    type: object
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        Sale:
+            type: object
+            properties:
+                _id:
+                    type: string
+                name:
+                    type: string
+                products:
+                    type: array
+                    items:
+                        type: string
+                type:
+                    type: string
+                region:
+                    type: string
+                thumbnail:
+                    type: string
+                dicsountPercentage:
+                    oneOf:
+                        - type: number
+                        - type: 'null'
+                discountAmount:
+                    oneOf:
+                        - type: number
+                        - type: 'null'
+                startDate:
+                    oneOf:
+                        - type: string
+                          format: date-time
+                        - type: 'null'
+                endDate:
+                    oneOf:
+                        - type: string
+                          format: date-time
+                        - type: 'null'
                 metadata:
                     type: object
                 createdAt:
