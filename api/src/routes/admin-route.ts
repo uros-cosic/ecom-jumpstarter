@@ -97,12 +97,14 @@ import {
     updateShippingMethod,
 } from '../controllers/shipping-method-controller'
 import {
+    downloadMailList,
     getNewsletter,
     getNewsletters,
     updateNewsletter,
 } from '../controllers/newsletter-controller'
 import {
     deleteProductReview,
+    getProductReview,
     getProductReviews,
     updateProductReview,
 } from '../controllers/product-review-controller'
@@ -232,12 +234,14 @@ router
 
 // Newsletters
 router.route('/newsletters').get(getNewsletters)
+router.route('/newsletters/download').get(downloadMailList)
 router.route('/newsletters/:id').get(getNewsletter).patch(updateNewsletter)
 
 // Reviews
 router.route('/productReviews').get(getProductReviews)
 router
     .route('/productReviews/:id')
+    .get(getProductReview)
     .patch(updateProductReview)
     .delete(deleteProductReview)
 

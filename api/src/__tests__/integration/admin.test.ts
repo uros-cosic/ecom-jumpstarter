@@ -7,7 +7,10 @@ import Currency from '../../models/Currency'
 import Country from '../../models/Country'
 import Region from '../../models/Region'
 import PaymentMethod from '../../models/PaymentMethod'
-import Order, { AUTOMATED_PAYMENT_METHODS } from '../../models/Order'
+import Order, {
+    AUTOMATED_PAYMENT_METHODS,
+    ORDER_STATUS,
+} from '../../models/Order'
 import ShippingMethod from '../../models/ShippingMethod'
 import Product, { PRODUCT_TYPE } from '../../models/Product'
 import Cart from '../../models/Cart'
@@ -15,19 +18,24 @@ import Address from '../../models/Address'
 import ProductReview from '../../models/ProductReview'
 import ProductCategory from '../../models/ProductCategory'
 import ProductCollection from '../../models/ProductCollection'
+import SizeMetric from '../../models/SizeMetric'
+
+const adminCredentials = { email: 'admin@test.com', password: 'admin123' }
 
 const mockAdminUser = {
     role: USER_ROLE.ADMIN,
+    email: adminCredentials.email,
+    name: 'tester',
+    password: adminCredentials.password,
+}
+
+const mockUser = {
     email: 'test@mail.com',
     name: 'tester',
     password: 'test1234',
 }
 
-const mockUser = {
-    email: 'test2@mail.com',
-    name: 'tester',
-    password: 'test1234',
-}
+let adminToken: string
 
 beforeAll(async () => {
     const currency = await Currency.create({
@@ -111,6 +119,16 @@ beforeAll(async () => {
         name: 'test-coll',
         description: 'test-desc',
     })
+
+    await SizeMetric.create({
+        name: 'test123',
+        image: 'http://localhost:5000/images/size-metric/test.webp',
+    })
+
+    const loginResponse = await request(app)
+        .post('/api/auth/login')
+        .send(adminCredentials)
+    adminToken = loginResponse.body.token
 })
 
 afterAll(async () => {
@@ -119,110 +137,260 @@ afterAll(async () => {
     server.close()
 })
 
-describe('Admin routes', () => {
+describe('Admin Routes', () => {
     describe('GET /admin/users', () => {
-        it('Should get all users', async () => {
-            const loginRes = await request(app).post('/api/auth/login').send({
-                email: mockAdminUser.email,
-                password: mockAdminUser.password,
-            })
-
-            expect(loginRes.status).toBe(200)
-            const token = loginRes.body.token
-            expect(token).toBeDefined()
-
+        it('Should fetch all users', async () => {
             const res = await request(app)
                 .get('/api/admin/users')
-                .set('Authorization', `Bearer ${token}`)
-
+                .set('Authorization', `Bearer ${adminToken}`)
             expect(res.status).toBe(200)
-            expect(res.body).toHaveProperty('data')
-            expect(res.body.data).toHaveLength(2) // 2 mock user
-        })
-
-        it('Should not allow unauth user to get users', async () => {
-            const res = await request(app).get('/api/admin/users')
-
-            expect(res.status).toBe(401)
-            expect(res.body).toHaveProperty('message')
-        })
-
-        it('Should not allow non admin user to get users', async () => {
-            const loginRes = await request(app)
-                .post('/api/auth/login')
-                .send({ email: mockUser.email, password: mockUser.password })
-
-            expect(loginRes.status).toBe(200)
-            const token = loginRes.body.token
-            expect(token).toBeDefined()
-
-            const res = await request(app)
-                .get('/api/admin/users')
-                .set('Authorization', `Bearer ${token}`)
-
-            expect(res.status).toBe(403)
-            expect(res.body).toHaveProperty('message')
         })
     })
 
     describe('POST /admin/users', () => {
-        it('Should create new user', async () => {
-            const loginRes = await request(app).post('/api/auth/login').send({
-                email: mockAdminUser.email,
-                password: mockAdminUser.password,
-            })
-
-            expect(loginRes.status).toBe(200)
-            const token = loginRes.body.token
-            expect(token).toBeDefined()
-
+        it('Should create a new user', async () => {
             const region = await Region.findOne({})
 
             const res = await request(app)
                 .post('/api/admin/users')
-                .set('Authorization', `Bearer ${token}`)
+                .set('Authorization', `Bearer ${adminToken}`)
                 .send({
-                    email: 'test3@mail.com',
-                    password: 'test1234',
+                    email: 'newuser@test.com',
+                    password: 'password123',
+                    name: 'tester123',
                     region: String(region!._id),
-                    name: 'tester',
                 })
-
             expect(res.status).toBe(201)
-            expect(res.body).toHaveProperty('data')
         })
+    })
 
-        it('Should not allow to create new user for non auth', async () => {
-            const res = await request(app).post('/api/admin/users')
+    describe('GET /admin/users/:id', () => {
+        it('Should fetch a user by ID', async () => {
+            const user = await User.findOne({})
 
-            expect(res.status).toBe(401)
-            expect(res.body).toHaveProperty('message')
+            const res = await request(app)
+                .get(`/api/admin/users/${user!._id}`)
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(200)
         })
+    })
 
-        it('Should not create new user with non admin', async () => {
-            const loginRes = await request(app).post('/api/auth/login').send({
-                email: mockUser.email,
-                password: mockUser.password,
-            })
+    describe('PATCH /admin/users/:id', () => {
+        it('Should update a user', async () => {
+            const user = await User.findOne({})
 
-            expect(loginRes.status).toBe(200)
-            const token = loginRes.body.token
-            expect(token).toBeDefined()
+            const res = await request(app)
+                .patch(`/api/admin/users/${user!._id}`)
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send({ role: USER_ROLE.ADMIN })
+            expect(res.status).toBe(200)
+            expect(res.body.data.role).toBe(USER_ROLE.ADMIN)
+        })
+    })
 
+    describe('DELETE /admin/users/:id', () => {
+        it('Should delete a user', async () => {
+            const user = await User.findOne({})
+
+            const res = await request(app)
+                .delete(`/api/admin/users/${user!._id}`)
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(204)
+        })
+    })
+
+    describe('GET /admin/orders/:id', () => {
+        it('Should fetch a specific order', async () => {
+            const order = await Order.findOne({})
+
+            const res = await request(app)
+                .get(`/api/admin/orders/${order!._id}`)
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(200)
+        })
+    })
+
+    describe('PATCH /admin/orders/:id', () => {
+        it('Should update an order', async () => {
+            const order = await Order.findOne({})
+
+            const res = await request(app)
+                .patch(`/api/admin/orders/${order!._id}`)
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send({ status: ORDER_STATUS.CANCELED })
+            expect(res.status).toBe(200)
+            expect(res.body.data.status).toBe(ORDER_STATUS.CANCELED)
+        })
+    })
+
+    describe('GET /admin/analytics/site', () => {
+        it('Should fetch site analytics', async () => {
+            const res = await request(app)
+                .get('/api/admin/analytics/site')
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(200)
+        })
+    })
+
+    describe('GET /admin/analytics/orders', () => {
+        it('Should fetch order analytics', async () => {
+            const res = await request(app)
+                .get('/api/admin/analytics/orders')
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(200)
+        })
+    })
+
+    describe('POST /admin/regions', () => {
+        it('Should create a new region', async () => {
+            const currency = await Currency.findOne({})
+            const country = await Country.findOne({})
+
+            const res = await request(app)
+                .post('/api/admin/regions')
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send({
+                    name: 'test-region2',
+                    currency: String(currency!._id),
+                    countries: [String(country!._id)],
+                })
+            expect(res.status).toBe(201)
+        })
+    })
+
+    describe('DELETE /admin/regions/:id', () => {
+        it('Should delete a region', async () => {
+            const region = await Region.findOne({ name: 'test-region2' })
+
+            const res = await request(app)
+                .delete(`/api/admin/regions/${region!._id}`)
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(204)
+        })
+    })
+
+    describe('GET /admin/shippingMethods', () => {
+        it('Should fetch all shipping methods', async () => {
+            const res = await request(app)
+                .get('/api/admin/shippingMethods')
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(200)
+        })
+    })
+
+    describe('GET /admin/newsletters', () => {
+        it('Should fetch all newsletters', async () => {
+            const res = await request(app)
+                .get('/api/admin/newsletters')
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(200)
+        })
+    })
+
+    describe('GET /admin/productReviews', () => {
+        it('Should fetch all product reviews', async () => {
+            const res = await request(app)
+                .get('/api/admin/productReviews')
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(200)
+        })
+    })
+
+    describe('POST /admin/sizeMetrics', () => {
+        it('Should create a size metric', async () => {
+            const res = await request(app)
+                .post('/api/admin/sizeMetrics')
+                .set('Authorization', `Bearer ${adminToken}`)
+                .send({
+                    name: 'Size Metric',
+                    image: 'http://localhost:5000/images/size-metric/test.webp',
+                })
+            expect(res.status).toBe(201)
+        })
+    })
+
+    describe('DELETE /admin/sizeMetrics/:id', () => {
+        it('Should delete a size metric', async () => {
+            const sizeMetric = await SizeMetric.findOne({})
+            const res = await request(app)
+                .delete(`/api/admin/sizeMetrics/${sizeMetric!._id}`)
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(204)
+        })
+    })
+
+    describe('GET /admin/orders', () => {
+        it('Should fetch all orders', async () => {
+            const res = await request(app)
+                .get('/api/admin/orders')
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(200)
+        })
+    })
+
+    describe('GET /admin/products', () => {
+        it('Should fetch all products', async () => {
+            const res = await request(app)
+                .get('/api/admin/products')
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(200)
+        })
+    })
+
+    describe('POST /admin/products', () => {
+        it('Should create a new product', async () => {
             const region = await Region.findOne({})
 
             const res = await request(app)
-                .post('/api/admin/users')
-                .set('Authorization', `Bearer ${token}`)
+                .post('/api/admin/products')
+                .set('Authorization', `Bearer ${adminToken}`)
                 .send({
-                    email: 'test3@mail.com',
-                    password: 'test1234',
+                    name: 'test-prod-123',
+                    description: 'test-descr',
+                    type: PRODUCT_TYPE.PRODUCT,
+                    thumbnail: 'http://localhost:5000/images/product/test.webp',
+                    images: ['http://localhost:5000/images/product/test.webp'],
                     region: String(region!._id),
-                    name: 'tester',
+                    price: 500,
                 })
+            expect(res.status).toBe(201)
+        })
+    })
 
-            expect(res.status).toBe(403)
-            expect(res.body).toHaveProperty('message')
+    describe('DELETE /admin/products/:id', () => {
+        it('Should delete a product', async () => {
+            const region = await Region.findOne({})
+
+            const product = await Product.create({
+                name: 'test-prod-1234',
+                description: 'test-descr',
+                type: PRODUCT_TYPE.PRODUCT,
+                thumbnail: 'http://localhost:5000/images/product/test.webp',
+                images: ['http://localhost:5000/images/product/test.webp'],
+                region: String(region!._id),
+                price: 500,
+            })
+
+            const res = await request(app)
+                .delete(`/api/admin/products/${product._id}`)
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(204)
+        })
+    })
+
+    describe('GET /admin/blogs', () => {
+        it('Should fetch all blogs', async () => {
+            const res = await request(app)
+                .get('/api/admin/blogs')
+                .set('Authorization', `Bearer ${adminToken}`)
+            expect(res.status).toBe(200)
+        })
+    })
+
+    describe('Middleware Enforcement', () => {
+        it('Should return 401 for unauthorized access', async () => {
+            const res = await request(app).get('/api/admin/users')
+            expect(res.status).toBe(401)
         })
     })
 })

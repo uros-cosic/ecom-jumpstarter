@@ -18,11 +18,6 @@ Finally read swagger while in development at ```/docs``` and you can start editi
 
 **TODO:**
 
-- [x] Admin routes
-- [ ] Admin tests
 - [ ] Fix redundency
-- [ ] More in depth tests
-- [ ] Switch file server to AWS?
-- [x] Create swagger docs
-- [ ] Finish documentation
-- [ ] Dockerize the project (app, redis, mongodb)
+- [ ] Unit and integration tests for all routes
+- [ ] Dockerize the project
