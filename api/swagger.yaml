@@ -4,123 +4,6 @@ info:
     version: 1.0.0
 
 paths:
-    /api/store/addresses:
-        post:
-            summary: Creates address
-            tags:
-                - Store/Addresses
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/Address'
-            responses:
-                201:
-                    description: Address created
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    data:
-                                        $ref: '#/components/schemas/Address'
-                400:
-                    description: Bad request
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-
-    /api/store/addresses/{id}:
-        get:
-            summary: Gets the address
-            tags:
-                - Store/Addresses
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            responses:
-                200:
-                    description: Address found
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    data:
-                                        $ref: '#/components/schemas/Address'
-                404:
-                    description: Not found
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-        patch:
-            summary: Updates the address
-            tags:
-                - Store/Addresses
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            requestBody:
-                required: true
-                content:
-                    application/json:
-                        schema:
-                            $ref: '#/components/schemas/Address'
-            responses:
-                200:
-                    description: Address updated
-                    content:
-                        application/json:
-                            schema:
-                                type: object
-                                properties:
-                                    data:
-                                        $ref: '#/components/schemas/Address'
-                401:
-                    description: Unauthorized
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-        delete:
-            summary: Deletes the address
-            tags:
-                - Store/Addresses
-            security:
-                - bearerAuth: []
-            parameters:
-                - in: path
-                  name: id
-                  required: true
-                  schema:
-                      type: string
-            responses:
-                204:
-                    description: Address deleted
-                401:
-                    description: Unauthorized
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-                400:
-                    description: Bad request
-                    content:
-                        application/json:
-                            schema:
-                                $ref: '#/components/schemas/Error'
-
     /api/auth/login:
         post:
             summary: Logs in a user
@@ -307,6 +190,1011 @@ paths:
                                         $ref: '#/components/schemas/User'
                 400:
                     description: Password reset failed
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/addresses:
+        post:
+            summary: Creates address
+            tags:
+                - Store/Addresses
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Address'
+            responses:
+                201:
+                    description: Address created
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Address'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/addresses/{id}:
+        get:
+            summary: Gets the address
+            tags:
+                - Store/Addresses
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Address found
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Address'
+                404:
+                    description: Not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        patch:
+            summary: Updates the address
+            tags:
+                - Store/Addresses
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Address'
+            responses:
+                200:
+                    description: Address updated
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Address'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        delete:
+            summary: Deletes the address
+            tags:
+                - Store/Addresses
+            security:
+                - bearerAuth: []
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                204:
+                    description: Address deleted
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/carts:
+        post:
+            summary: Creates a new cart
+            tags:
+                - Store/Carts
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Cart'
+            responses:
+                201:
+                    description: Cart created successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Cart'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/carts/{id}:
+        get:
+            summary: Gets a cart by ID
+            tags:
+                - Store/Carts
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the cart
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Cart'
+                404:
+                    description: Cart not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+        patch:
+            summary: Updates a cart by ID
+            tags:
+                - Store/Carts
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Cart'
+            responses:
+                200:
+                    description: Cart updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Cart'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/currencies:
+        get:
+            summary: Gets all currencies
+            tags:
+                - Store/Currencies
+            responses:
+                200:
+                    description: Returns all currencies
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Currency'
+
+    /api/store/currencies/{id}:
+        get:
+            summary: Gets a currency by ID
+            tags:
+                - Store/Currencies
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the currency
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Currency'
+                404:
+                    description: Currency not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/discounts/{id}:
+        get:
+            summary: Gets a discount by ID
+            tags:
+                - Store/Discounts
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the discount
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Discount'
+                404:
+                    description: Discount not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/paymentMethods:
+        get:
+            summary: Gets all payment methods
+            tags:
+                - Store/PaymentMethods
+            responses:
+                200:
+                    description: Returns all payment methods
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/PaymentMethod'
+
+    /api/store/paymentMethods/{id}:
+        get:
+            summary: Gets a payment method by ID
+            tags:
+                - Store/PaymentMethods
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the payment method
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/PaymentMethod'
+                404:
+                    description: Payment method not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/payments/{id}:
+        get:
+            summary: Gets a payment by ID
+            tags:
+                - Store/Payments
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the payment
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Payment'
+                404:
+                    description: Payment not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/productCategories:
+        get:
+            summary: Gets all product categories
+            tags:
+                - Store/ProductCategories
+            responses:
+                200:
+                    description: Returns all product categories
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/ProductCategory'
+
+    /api/store/productCategories/{id}:
+        get:
+            summary: Gets a product category by ID
+            tags:
+                - Store/ProductCategories
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the product category
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/ProductCategory'
+                404:
+                    description: Product category not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/products:
+        get:
+            summary: Gets all products
+            tags:
+                - Store/Products
+            responses:
+                200:
+                    description: Returns all products
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Product'
+
+    /api/store/products/{id}:
+        get:
+            summary: Gets a product by ID
+            tags:
+                - Store/Products
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the product
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Product'
+                404:
+                    description: Product not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/users/me:
+        get:
+            summary: Gets current authenticated user
+            tags:
+                - Store/Users
+            security:
+                - bearerAuth: []
+            responses:
+                200:
+                    description: Returns the current user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/User'
+
+    /api/store/users/updateMe:
+        patch:
+            summary: Updates the current authenticated user
+            tags:
+                - Store/Users
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/User'
+            responses:
+                200:
+                    description: User updated successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                400:
+                    description: Bad request
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/orders:
+        post:
+            summary: Creates a new order
+            tags:
+                - Store/Orders
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/Order'
+            responses:
+                201:
+                    description: Order created successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Order'
+
+    /api/store/orders/latest:
+        get:
+            summary: Gets the latest order of the authenticated user
+            tags:
+                - Store/Orders
+            security:
+                - bearerAuth: []
+            responses:
+                200:
+                    description: Returns the latest order
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Order'
+
+    /api/store/orders/{id}:
+        get:
+            summary: Gets an order by ID
+            tags:
+                - Store/Orders
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the order
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Order'
+                404:
+                    description: Order not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/productReviews:
+        get:
+            summary: Gets all product reviews
+            tags:
+                - Store/ProductReviews
+            responses:
+                200:
+                    description: Returns all product reviews
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/ProductReview'
+
+        post:
+            summary: Creates a product review
+            tags:
+                - Store/ProductReviews
+            security:
+                - bearerAuth: []
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/ProductReview'
+            responses:
+                201:
+                    description: Review created successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/ProductReview'
+
+    /api/store/productReviews/{id}:
+        get:
+            summary: Gets a product review by ID
+            tags:
+                - Store/ProductReviews
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the review
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/ProductReview'
+                404:
+                    description: Review not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/newsletters:
+        post:
+            summary: Subscribes to the newsletter
+            tags:
+                - Store/Newsletters
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    format: email
+            responses:
+                200:
+                    description: Subscription successful
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+
+    /api/store/newsletters/unsubscribe:
+        delete:
+            summary: Unsubscribes from the newsletter
+            tags:
+                - Store/Newsletters
+            requestBody:
+                required: true
+                content:
+                    application/json:
+                        schema:
+                            type: object
+                            properties:
+                                email:
+                                    type: string
+                                    format: email
+            responses:
+                200:
+                    description: Unsubscribed successfully
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    message:
+                                        type: string
+
+    /api/store/blogs:
+        get:
+            summary: Gets all blog posts
+            tags:
+                - Store/Blogs
+            responses:
+                200:
+                    description: Returns all blogs
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Blog'
+
+    /api/store/blogs/{id}:
+        get:
+            summary: Gets a blog post by ID
+            tags:
+                - Store/Blogs
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the blog post
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Blog'
+                404:
+                    description: Blog post not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/productCollections:
+        get:
+            summary: Gets all product collections
+            tags:
+                - Store/ProductCollections
+            responses:
+                200:
+                    description: Returns all product collections
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/ProductCollection'
+
+    /api/store/productCollections/{id}:
+        get:
+            summary: Gets a product collection by ID
+            tags:
+                - Store/ProductCollections
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the product collection
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/ProductCollection'
+                404:
+                    description: Product collection not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/sales:
+        get:
+            summary: Gets all sales
+            tags:
+                - Store/Sales
+            responses:
+                200:
+                    description: Returns all sales
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Sale'
+
+    /api/store/sales/{id}:
+        get:
+            summary: Gets a sale by ID
+            tags:
+                - Store/Sales
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the sale
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Sale'
+                404:
+                    description: Sale not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/shippingMethods:
+        get:
+            summary: Gets all shipping methods
+            tags:
+                - Store/ShippingMethods
+            responses:
+                200:
+                    description: Returns all shipping methods
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/ShippingMethod'
+
+    /api/store/shippingMethods/{id}:
+        get:
+            summary: Gets a shipping method by ID
+            tags:
+                - Store/ShippingMethods
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the shipping method
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/ShippingMethod'
+                404:
+                    description: Shipping method not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/countries:
+        get:
+            summary: Gets all countries
+            tags:
+                - Store/Countries
+            responses:
+                200:
+                    description: Returns all countries
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Country'
+
+    /api/store/countries/{id}:
+        get:
+            summary: Gets a country by ID
+            tags:
+                - Store/Countries
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the country
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Country'
+                404:
+                    description: Country not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/regions:
+        get:
+            summary: Gets all regions
+            tags:
+                - Store/Regions
+            responses:
+                200:
+                    description: Returns all regions
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Region'
+
+    /api/store/regions/{id}:
+        get:
+            summary: Gets a region by ID
+            tags:
+                - Store/Regions
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the region
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Region'
+                404:
+                    description: Region not found
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/store/sizeMetrics:
+        get:
+            summary: Gets all size metrics
+            tags:
+                - Store/SizeMetrics
+            responses:
+                200:
+                    description: Returns all size metrics
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/SizeMetric'
+
+    /api/store/sizeMetrics/{id}:
+        get:
+            summary: Gets a size metric by ID
+            tags:
+                - Store/SizeMetrics
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns the size metric
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/SizeMetric'
+                404:
+                    description: Size metric not found
                     content:
                         application/json:
                             schema:
@@ -1268,108 +2156,108 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
 
-            /api/admin/regions/{id}:
-                get:
-                    summary: Gets region
-                    tags:
-                        - Admin/Regions
-                    parameters:
-                        - in: path
-                          name: id
-                          required: true
-                          schema:
-                              type: string
-                    security:
-                        - bearerAuth: []
-                    x-roles:
-                        - admin
-                    responses:
-                        200:
-                            description: Returns the region
-                            content:
-                                application/json:
-                                    schema:
-                                        type: object
-                                        properties:
-                                            data:
-                                                $ref: '#/components/schemas/Region'
-                        401:
-                            description: Unauthorized
-                            content:
-                                application/json:
-                                    schema:
-                                        $ref: '#/components/schemas/Error'
-                        403:
-                            description: Forbidden
-                            content:
-                                application/json:
-                                    schema:
-                                        $ref: '#/components/schemas/Error'
-                patch:
-                    summary: Updates region
-                    tags:
-                        - Admin/Regions
-                    parameters:
-                        - in: path
-                          name: id
-                          required: true
-                          schema:
-                              type: string
-                    security:
-                        - bearerAuth: []
-                    x-roles:
-                        - admin
-                    responses:
-                        200:
-                            description: Updates region
-                            content:
-                                application/json:
-                                    schema:
-                                        type: object
-                                        properties:
-                                            data:
-                                                $ref: '#/components/schemas/Region'
-                        401:
-                            description: Unauthorized
-                            content:
-                                application/json:
-                                    schema:
-                                        $ref: '#/components/schemas/Error'
-                        403:
-                            description: Forbidden
-                            content:
-                                application/json:
-                                    schema:
-                                        $ref: '#/components/schemas/Error'
-                delete:
-                    summary: Deletes region
-                    tags:
-                        - Admin/Regions
-                    parameters:
-                        - in: path
-                          name: id
-                          required: true
-                          schema:
-                              type: string
-                    security:
-                        - bearerAuth: []
-                    x-roles:
-                        - admin
-                    responses:
-                        204:
-                            description: Deletes region
-                        401:
-                            description: Unauthorized
-                            content:
-                                application/json:
-                                    schema:
-                                        $ref: '#/components/schemas/Error'
-                        403:
-                            description: Forbidden
-                            content:
-                                application/json:
-                                    schema:
-                                        $ref: '#/components/schemas/Error'
+    /api/admin/regions/{id}:
+        get:
+            summary: Gets region
+            tags:
+                - Admin/Regions
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            security:
+                - bearerAuth: []
+            x-roles:
+                - admin
+            responses:
+                200:
+                    description: Returns the region
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Region'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        patch:
+            summary: Updates region
+            tags:
+                - Admin/Regions
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            security:
+                - bearerAuth: []
+            x-roles:
+                - admin
+            responses:
+                200:
+                    description: Updates region
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Region'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+        delete:
+            summary: Deletes region
+            tags:
+                - Admin/Regions
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            security:
+                - bearerAuth: []
+            x-roles:
+                - admin
+            responses:
+                204:
+                    description: Deletes region
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
 
     /api/admin/productCategories:
         get:
@@ -3926,6 +4814,53 @@ components:
                     type: string
                 metadata:
                     type: object
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
+        Cart:
+            type: object
+            properties:
+                _id:
+                    type: string
+                items:
+                    type: object
+                    properties:
+                        product:
+                            type: string
+                        variant:
+                            oneOf:
+                                - type: string
+                                - type: 'null'
+                        quantity:
+                            type: number
+                region:
+                    type: string
+                address:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                email:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                shippingMethod:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                paymentMethod:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                discountCode:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
+                totalPrice:
+                    type: number
                 createdAt:
                     type: string
                     format: date-time
