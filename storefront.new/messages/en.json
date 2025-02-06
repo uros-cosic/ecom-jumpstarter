@@ -1,0 +1,37 @@
+{
+    "Header": {
+        "Navbar": {
+            "search-label": "search",
+            "account-label": "account",
+            "bag-label": "bag",
+            "search-sheet-title": "search sheet",
+            "search-input-label": "Search products",
+            "categories": "Categories",
+            "collections": "Collections",
+            "sale": "Sale",
+            "contact": "Contact",
+            "menu": "Menu",
+            "empty-bag-title": "Your bag is empty",
+            "empty-bag-description": "There are no items in your bag",
+            "shop-collections": "Shop collections",
+            "shop-categories": "Shop categories",
+            "from-label": "From"
+        }
+    },
+    "Home": {
+        "metadata": {
+            "title": "Hello world",
+            "description": "Hi",
+            "keywords": "one, two, three"
+        },
+        "Hero": {
+            "heading": "Heading",
+            "subheading": "Subheading",
+            "primary-cta": "Shop now",
+            "secondary-cta": "Browse collections"
+        },
+        "latest-collection-label": "Latest collections",
+        "latest-category-label": "You migh like",
+        "from-label": "From"
+    }
+}
