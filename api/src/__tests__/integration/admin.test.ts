@@ -3,7 +3,6 @@ import request from 'supertest'
 
 import { server, app } from '../../index'
 import User, { USER_ROLE } from '../../models/User'
-import Currency from '../../models/Currency'
 import Country from '../../models/Country'
 import Region from '../../models/Region'
 import PaymentMethod from '../../models/PaymentMethod'
@@ -38,19 +37,17 @@ const mockUser = {
 let adminToken: string
 
 beforeAll(async () => {
-    const currency = await Currency.create({
-        name: 'test-currency',
-        code: 'usd',
-        symbol: '$',
-    })
     const country = await Country.create({
         name: 'test-country',
-        iso_2: 'sr',
+        code: 'us',
+        currency: 'usd',
+        languages: ['en'],
     })
     const region = await Region.create({
         name: 'test-region',
-        currency: String(currency._id),
+        currency: 'usd',
         countries: [String(country._id)],
+        defaultLocale: 'en',
     })
     const user = await User.create({ ...mockUser, region: String(region._id) })
     await User.create({ ...mockAdminUser, region: String(region._id) })
@@ -113,11 +110,13 @@ beforeAll(async () => {
     await ProductCategory.create({
         name: 'test-ctg',
         description: 'test-ctg',
+        region: String(region._id),
     })
 
     await ProductCollection.create({
         name: 'test-coll',
         description: 'test-desc',
+        region: String(region._id),
     })
 
     await SizeMetric.create({
@@ -243,7 +242,6 @@ describe('Admin Routes', () => {
 
     describe('POST /admin/regions', () => {
         it('Should create a new region', async () => {
-            const currency = await Currency.findOne({})
             const country = await Country.findOne({})
 
             const res = await request(app)
@@ -251,8 +249,9 @@ describe('Admin Routes', () => {
                 .set('Authorization', `Bearer ${adminToken}`)
                 .send({
                     name: 'test-region2',
-                    currency: String(currency!._id),
+                    currency: 'usd',
                     countries: [String(country!._id)],
+                    defaultLocale: 'en',
                 })
             expect(res.status).toBe(201)
         })

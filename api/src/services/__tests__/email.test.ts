@@ -8,7 +8,6 @@ import '../../config'
 import EmailService from '../email'
 import User from '../../models/User'
 import Region from '../../models/Region'
-import Currency from '../../models/Currency'
 import Address from '../../models/Address'
 import ShippingMethod from '../../models/ShippingMethod'
 import Cart, { ICart } from '../../models/Cart'
@@ -45,14 +44,10 @@ i18next
     })
 
 beforeAll(async () => {
-    const currency = await Currency.create({
-        name: 'test',
-        code: 'usd',
-        symbol: 'test',
-    })
     const region = await Region.create({
         name: 'test-region',
-        currency: String(currency._id),
+        currency: 'usd',
+        defaultLocale: 'en',
     })
     const user = await User.create({
         region: String(region._id),

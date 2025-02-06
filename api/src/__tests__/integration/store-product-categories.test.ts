@@ -1,5 +1,5 @@
 import request from 'supertest'
-import mongoose from 'mongoose'
+import mongoose, { Types } from 'mongoose'
 
 import { app, server } from '../../index'
 import ProductCategory from '../../models/ProductCategory'
@@ -8,10 +8,12 @@ const mockProductCategories = [
     {
         name: 'tester',
         description: 'test-desc',
+        region: new Types.ObjectId(),
     },
     {
         name: 'tester2',
         description: 'test-desc',
+        region: new Types.ObjectId(),
     },
 ]
 

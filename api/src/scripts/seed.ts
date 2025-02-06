@@ -1,40 +1,36 @@
-import CurrencyList from 'currency-list'
-import { getData } from 'country-list'
 import mongoose from 'mongoose'
+import bcrypt from 'bcrypt'
+import { countries, ICountry } from 'countries-list'
 
 import '../config'
 import seedData from '../../storage/data/seed-data.json'
-import Currency from '../models/Currency'
 import Country from '../models/Country'
 import Region from '../models/Region'
-import User from '../models/User'
+import User, { USER_ROLE } from '../models/User'
 
 const env = (process.env.NODE_ENV || 'development') as keyof typeof seedData
 
 mongoose.connect(process.env.MONGO_URI!)
 
-const seedCurrencies = async () => {
-    try {
-        const obj = CurrencyList.getAll('en_US')
-        const currencies = Object.values(obj).map((v) => ({
-            name: v.name,
-            code: v.code,
-            symbol: v.symbol,
-        }))
-
-        const data = await Currency.insertMany(currencies)
-
-        console.log(`Inserted ${data.length} currencies`)
-    } catch (e) {
-        console.error('Error seeding currencies', e)
-    }
-}
-
 const seedCountries = async () => {
     try {
-        const data = await Country.insertMany(
-            getData().map((c) => ({ name: c.name, iso_2: c.code }))
-        )
+        const countryCodes = Object.keys(countries)
+        const formattedCountries = []
+
+        for (const code of countryCodes) {
+            const country = countries[
+                code as keyof typeof countries
+            ] as ICountry
+
+            formattedCountries.push({
+                name: country.name,
+                code: code.toLowerCase(),
+                currency: country.currency[0]?.toLowerCase() ?? 'usd',
+                languages: country.languages.map((l) => l.toLowerCase()),
+            })
+        }
+
+        const data = await Country.insertMany(formattedCountries)
 
         console.log(`Inserted ${data.length} countries`)
     } catch (e) {
@@ -48,20 +44,7 @@ const seedRegions = async () => {
 
         if (!regions.length) throw new Error('No regions data')
 
-        const currencies = await Currency.find({
-            code: { $in: regions.map((i) => i.code) },
-        })
-
-        const formatedRegions = regions
-            .map((r) => ({
-                ...r,
-                currency: String(
-                    currencies.find((c) => c.code === r.code)?._id
-                ),
-            }))
-            .filter((r) => r.currency !== 'undefined') // Becuase String(undefied) = 'undefined'
-
-        const data = await Region.insertMany(formatedRegions)
+        const data = await Region.insertMany(regions)
 
         console.log(`Inserted ${data.length} regions`)
     } catch (e) {
@@ -83,7 +66,8 @@ const seedUsers = async () => {
             .map((u) => ({
                 ...u,
                 region: String(regions.find((r) => r.name === u.region)?._id),
-                password: process.env.SEED_PW,
+                password: bcrypt.hashSync(process.env.SEED_PW!, 12),
+                role: USER_ROLE.ADMIN,
             }))
             .filter((u) => u.region !== 'undefined')
 
@@ -97,7 +81,6 @@ const seedUsers = async () => {
 
 const seed = async () => {
     try {
-        await seedCurrencies()
         await seedCountries()
         await seedRegions()
         await seedUsers()

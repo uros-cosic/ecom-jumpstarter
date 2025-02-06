@@ -20,6 +20,29 @@ export const createProduct = createOne(Product)
 export const updateProduct = updateOne(Product)
 export const deleteProduct = deleteOne(Product)
 
+export const searchProducts = catchAsync(
+    async (req: Request, res: Response) => {
+        const { q } = req.query
+
+        if (!q) {
+            res.status(200).json({ data: [] })
+            return
+        }
+
+        const limit = Number(req.query.limit || 5)
+
+        const products = await Product.find({
+            name: {
+                $regex: q,
+                $options: 'i',
+            },
+        }).limit(limit)
+
+        res.status(200).json({ data: products })
+        return
+    }
+)
+
 export const uploadProductThumbnail = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         if (!req.file) return next(new AppError(req.t('errors.no-file'), 400))

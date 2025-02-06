@@ -9,6 +9,7 @@ export interface IProductCategory extends IBaseModel {
     handle: string
     keywords: string[]
     parentCategory?: ObjectId
+    region: ObjectId
     metadata: Record<string, string>
 }
 
@@ -56,6 +57,12 @@ const ProductCategorySchema = new Schema<IProductCategory>(
         parentCategory: {
             type: Schema.Types.ObjectId,
             ref: 'ProductCategory',
+        },
+
+        region: {
+            type: Schema.Types.ObjectId,
+            ref: 'Region',
+            required: true,
         },
 
         metadata: {

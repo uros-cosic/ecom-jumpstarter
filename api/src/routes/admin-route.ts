@@ -109,7 +109,6 @@ import {
     updateProductReview,
 } from '../controllers/product-review-controller'
 import { getCountries, getCountry } from '../controllers/country-controller'
-import { getCurrencies, getCurrency } from '../controllers/currency-controller'
 
 const router = Router()
 
@@ -208,10 +207,6 @@ router
 // Countries
 router.route('/countries').get(getCountries)
 router.route('/countries/:id').get(getCountry)
-
-// Currencies
-router.route('/currencies').get(getCurrencies)
-router.route('/currencies/:id').get(getCurrency)
 
 // Shipping
 router

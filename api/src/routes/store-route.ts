@@ -11,7 +11,6 @@ import discountsRoute from './discounts-route'
 import shippingMethodsRoute from './shipping-methods-route'
 import countriesRoute from './countries-route'
 import regionsRoute from './regions-route'
-import currenciesRoute from './currencies-route'
 import sizeMetricsRoute from './size-metrics-route'
 import ordersRoute from './orders-route'
 import paymentMethodsRoute from './payment-methods-route'
@@ -37,7 +36,6 @@ router.use('/discounts', discountsRoute)
 router.use('/shippingMethods', shippingMethodsRoute)
 router.use('/countries', countriesRoute)
 router.use('/regions', regionsRoute)
-router.use('/currencies', currenciesRoute)
 router.use('/sizeMetrics', sizeMetricsRoute)
 router.use('/orders', ordersRoute)
 router.use('/paymentMethods', paymentMethodsRoute)

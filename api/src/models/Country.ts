@@ -1,11 +1,12 @@
-import { model, ObjectId, Schema } from 'mongoose'
+import { model, Schema } from 'mongoose'
 
 import { IBaseModel } from '../lib/types'
 
 export interface ICountry extends IBaseModel {
     name: string
-    iso_2: string
-    region: ObjectId
+    code: string
+    currency: string
+    languages: string[]
 }
 
 const CountrySchema = new Schema<ICountry>(
@@ -17,17 +18,29 @@ const CountrySchema = new Schema<ICountry>(
             unique: true,
         },
 
-        iso_2: {
+        code: {
             type: String,
             required: true,
             trim: true,
             unique: true,
+            lowercase: true,
         },
 
-        region: {
-            type: Schema.Types.ObjectId,
-            ref: 'Region',
+        currency: {
+            type: String,
+            required: true,
+            trim: true,
+            lowercase: true,
         },
+
+        languages: [
+            {
+                type: String,
+                required: true,
+                trim: true,
+                lowercase: true,
+            },
+        ],
     },
     {
         timestamps: true,

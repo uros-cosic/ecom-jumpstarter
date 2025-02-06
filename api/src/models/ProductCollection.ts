@@ -1,4 +1,4 @@
-import { model, Schema } from 'mongoose'
+import { model, ObjectId, Schema } from 'mongoose'
 import slugify from 'slugify'
 
 import { IBaseModel } from '../lib/types'
@@ -7,6 +7,7 @@ export interface IProductCollection extends IBaseModel {
     name: string
     description: string
     handle: string
+    region: ObjectId
     keywords: string[]
     metadata: Record<string, string>
 }
@@ -50,6 +51,12 @@ const ProductCollectionSchema = new Schema<IProductCollection>(
         keywords: {
             type: [String],
             default: [],
+        },
+
+        region: {
+            type: Schema.Types.ObjectId,
+            ref: 'Region',
+            required: true,
         },
 
         metadata: {

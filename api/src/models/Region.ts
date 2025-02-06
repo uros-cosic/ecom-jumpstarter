@@ -4,8 +4,9 @@ import { IBaseModel } from '../lib/types'
 
 export interface IRegion extends IBaseModel {
     name: string
-    currency: ObjectId
+    currency: string
     countries: ObjectId[]
+    defaultLocale: string
     taxRate: number
     metadata: Record<string, string>
 }
@@ -19,18 +20,23 @@ const RegionSchema = new Schema<IRegion>(
             trim: true,
         },
 
-        currency: {
-            type: Schema.Types.ObjectId,
-            ref: 'Currency',
-            required: true,
-        },
-
         countries: [
             {
                 type: Schema.Types.ObjectId,
                 ref: 'Country',
             },
         ],
+
+        defaultLocale: {
+            type: String,
+            required: true,
+            trim: true,
+        },
+
+        currency: {
+            type: String,
+            required: true,
+        },
 
         taxRate: {
             type: Number,

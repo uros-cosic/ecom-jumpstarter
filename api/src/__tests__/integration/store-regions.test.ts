@@ -8,8 +8,9 @@ beforeAll(async () => {
     // Mock regions
     await Region.create({
         name: 'test',
-        currency: new mongoose.Types.ObjectId(),
+        currency: 'usd',
         countries: [new mongoose.Types.ObjectId()],
+        defaultLocale: 'en',
     })
 })
 

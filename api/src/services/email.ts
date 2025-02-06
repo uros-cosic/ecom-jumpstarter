@@ -7,13 +7,11 @@ import i18next from 'i18next'
 
 import { IUser } from '../models/User'
 import Region from '../models/Region'
-import Country from '../models/Country'
 import { COLORS, STORE } from '../lib/constants'
 import { IOrder, PopulatedOrder } from '../models/Order'
 import Product from '../models/Product'
 import Sale, { ISale, SALE_TYPE } from '../models/Sale'
 import { formatCurrency, formatDate } from '../lib/util'
-import Currency from '../models/Currency'
 import { ICart } from '../models/Cart'
 import { IDiscount } from '../models/Discount'
 import { INewsletter } from '../models/Newsletter'
@@ -53,11 +51,7 @@ class EmailService {
 
             let locale = 'en'
 
-            if (region && region.countries.length) {
-                const country = await Country.findById(region.countries[0])
-
-                if (country) locale = country.iso_2.toLowerCase()
-            }
+            if (region) locale = region.defaultLocale
 
             const templatePath = path.join(
                 process.cwd(),
@@ -129,16 +123,9 @@ class EmailService {
 
             const region = await Region.findById(data.region)
 
-            if (region && region.countries.length) {
-                const country = await Country.findById(region.countries[0])
-
-                if (country) locale = country.iso_2.toLowerCase()
-            }
-
-            if (region && region.currency) {
-                const c = await Currency.findById(region.currency)
-
-                if (c) currency = c.code
+            if (region) {
+                locale = region.defaultLocale
+                currency = region.currency
             }
 
             const templatePath = path.join(
@@ -283,11 +270,7 @@ class EmailService {
 
             const region = await Region.findById(data.region)
 
-            if (region && region.countries.length) {
-                const country = await Country.findById(region.countries[0])
-
-                if (country) locale = country.iso_2.toLowerCase()
-            }
+            if (region) locale = region.defaultLocale
 
             const templatePath = path.join(
                 process.cwd(),
@@ -378,11 +361,7 @@ class EmailService {
 
             const region = await Region.findById(data.region)
 
-            if (region && region.countries.length) {
-                const country = await Country.findById(region.countries[0])
-
-                if (country) locale = country.iso_2.toLowerCase()
-            }
+            if (region) locale = region.defaultLocale
 
             const cartItems = await Promise.all(
                 data.items
@@ -490,11 +469,7 @@ class EmailService {
 
             const region = await Region.findById(data.region)
 
-            if (region && region.countries.length) {
-                const country = await Country.findById(region.countries[0])
-
-                if (country) locale = country.iso_2.toLowerCase()
-            }
+            if (region) locale = region.defaultLocale
 
             const templatePath = path.join(
                 process.cwd(),
@@ -571,11 +546,7 @@ class EmailService {
 
             const region = await Region.findById(data.region)
 
-            if (region && region.countries.length) {
-                const country = await Country.findById(region.countries[0])
-
-                if (country) locale = country.iso_2.toLowerCase()
-            }
+            if (region) locale = region.defaultLocale
 
             const templatePath = path.join(
                 process.cwd(),
@@ -645,11 +616,7 @@ class EmailService {
 
             const region = await Region.findById(user.region)
 
-            if (region && region.countries.length) {
-                const country = await Country.findById(region.countries[0])
-
-                if (country) locale = country.iso_2.toLowerCase()
-            }
+            if (region) locale = region.defaultLocale
 
             const message = `${i18next.t('emails.password-reset.heading', { lng: locale })}\n\n${i18next.t('emails.password-reset.reset-link-label', { lng: locale })}: ${STORE.passwordResetUrl.replace('{{token}}', token)}\n\n${i18next.t('emails.password-reset.outro', { lng: locale })}`
 

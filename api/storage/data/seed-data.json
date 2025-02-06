@@ -1,21 +1,35 @@
 {
     "production": {
-        "regions": [],
-        "users": []
+        "regions": [
+            {
+                "name": "Default",
+                "defaultLocale": "en",
+                "currency": "usd"
+            }
+        ],
+        "users": [
+            {
+                "email": "admin@mail.com",
+                "name": "Admin",
+                "region": "Default"
+            }
+        ]
     },
+
     "development": {
         "regions": [
             {
-                "name": "test-region",
-                "code": "USD"
+                "name": "Default",
+                "defaultLocale": "en",
+                "currency": "usd"
             }
         ],
 
         "users": [
             {
-                "name": "test",
-                "email": "test@mail.com",
-                "region": "test-region"
+                "name": "Admin",
+                "email": "admin@mail.com",
+                "region": "Default"
             }
         ]
     }

@@ -6,7 +6,6 @@ import Order, { IOrder, ORDER_STATUS } from '../models/Order'
 import { ICart } from '../models/Cart'
 import { STORE } from '../lib/constants'
 import Region from '../models/Region'
-import Currency from '../models/Currency'
 import Product from '../models/Product'
 import Sale, { SALE_TYPE } from '../models/Sale'
 import Payment, { PAYMENT_STATUS } from '../models/Payment'
@@ -31,11 +30,7 @@ export class StripeService {
                 throw new Error('Invalid region')
             }
 
-            const currency = await Currency.findById(region.currency)
-
-            if (!currency) {
-                throw new Error('Invalid region currency')
-            }
+            const currency = region.currency
 
             const lineItemsPromises = order.cart.items.map(async (item) => {
                 const product = await Product.findById(item.product).exec()
@@ -61,7 +56,7 @@ export class StripeService {
                 }
                 return {
                     price_data: {
-                        currency: currency.code,
+                        currency: currency,
                         product_data: { name: product.name },
                         unit_amount: price * 100,
                     },
