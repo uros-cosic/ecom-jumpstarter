@@ -32,6 +32,31 @@ export const getProducts = cache(async function (
     }
 })
 
+export const getProductsOnSale = cache(async function (
+    query: RequestQuery<IProduct> = {}
+): Promise<IProduct[] | null> {
+    try {
+        const q = toQueryString(query)
+
+        const res = await fetch(
+            `${API_STORE_URL}/products/sale?${q}`,
+            await getOptions(['products-sale'])
+        )
+
+        const data = await res.json()
+
+        if (res.ok) {
+            return data.data
+        }
+
+        console.error(data.message)
+        return null
+    } catch (e) {
+        console.error(e)
+        return null
+    }
+})
+
 export const searchProducts = cache(async function (
     query: string,
     countryCode: string,

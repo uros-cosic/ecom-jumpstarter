@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from "next";
 import { Montserrat, Roboto } from "next/font/google";
+import { Toaster } from "sonner";
+import { getLocale } from "next-intl/server";
 
 import { STORE } from "@/lib/constants";
 import "./globals.css"
-import { getLocale } from "next-intl/server";
 import Header from "@/components/layout/header";
+import Footer from "@/components/layout/footer";
 
 export const viewport: Viewport = {
     width: "device-width",
@@ -59,10 +61,12 @@ export default async function RootLayout({
     return (
         <html lang={locale}>
             <body
-                className={`${montserrat.variable} ${roboto.className} antialiased pt-16`}
+                className={`${montserrat.variable} ${roboto.className} antialiased`}
             >
                 <Header />
                 {children}
+                <Footer />
+                <Toaster />
             </body>
         </html>
     );

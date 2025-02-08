@@ -31,6 +31,27 @@ export const getRegions = cache(
     }
 )
 
+export const getRegionById = cache(async function (
+    id: string
+): Promise<IRegion | null> {
+    try {
+        const res = await fetch(
+            `${API_STORE_URL}/regions/${id}`,
+            await getOptions([`region-${id}`])
+        )
+
+        const data = await res.json()
+
+        if (res.ok) return data.data
+
+        console.error(data.message)
+        return null
+    } catch (e) {
+        console.error(e)
+        return null
+    }
+})
+
 export const getRegionByCountryCode = cache(
     async (countryCode: string): Promise<IRegion | null> => {
         try {

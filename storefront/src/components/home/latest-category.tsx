@@ -20,11 +20,11 @@ const LatestCategory = async ({ region }: Props) => {
     if (!latestCategory) return null
 
     const products = await getProducts({
-        productCollection: latestCategory._id,
+        productCategory: latestCategory._id,
         limit: 4
     })
 
-    if (!products) return null
+    if (!products || !products.length) return null
 
     const t = await getTranslations("Home")
 

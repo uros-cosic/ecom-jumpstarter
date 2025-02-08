@@ -18,9 +18,29 @@
             "from-label": "From"
         }
     },
+
+    "Footer": {
+        "all-rights-reserved": "All rights reserved",
+        "socials": "Socials",
+        "newsletter-heading": "Subscribe to our newsletter",
+        "newsletter-copywriting": "Subscribe to receive exclusive offers, news and more!",
+        "collections": "Collections",
+        "categories": "Categories",
+        "sale": "Sale",
+        "contact": "Contact",
+        "pages": "Pages",
+        "policies": "Policies",
+        "privacy": "Privacy",
+        "terms-of-use": "Terms of use",
+        "refund": "Refund",
+        "contact-us": "Contact us",
+        "newsletter-cta-label": "Subscribe",
+        "newsletter-success-message": "Subscription successful"
+    },
+
     "Home": {
         "metadata": {
-            "title": "Hello world",
+            "title": "Ecom jumpstarter",
             "description": "Hi",
             "keywords": "one, two, three"
         },
@@ -28,10 +48,49 @@
             "heading": "Heading",
             "subheading": "Subheading",
             "primary-cta": "Shop now",
-            "secondary-cta": "Browse collections"
+            "secondary-cta": "Browse collection"
+        },
+        "InfoSection": {
+            "heading": "Lorem ipsum",
+            "copywriting": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
+            "cta-label": "Contact us"
         },
         "latest-collection-label": "Latest collections",
         "latest-category-label": "You migh like",
+        "from-label": "From"
+    },
+
+    "Categories": {
+        "sort-placeholder-label": "Sort by",
+        "created-at-ascending": "Date asc",
+        "created-at-descending": "Date desc",
+        "price-ascending": "Price asc",
+        "price-descending": "Price desc"
+    },
+
+    "Collections": {
+        "sort-placeholder-label": "Sort by",
+        "created-at-ascending": "Date asc",
+        "created-at-descending": "Date desc",
+        "price-ascending": "Price asc",
+        "price-descending": "Price desc"
+    },
+
+    "Sale": {
+        "heading": "Products on sale",
+        "metadata": {
+            "title": "Products on sale",
+            "description": "Products on sale",
+            "keywords": "products, on, sale"
+        },
+        "sort-placeholder-label": "Sort by",
+        "created-at-ascending": "Date asc",
+        "created-at-descending": "Date desc",
+        "price-ascending": "Price asc",
+        "price-descending": "Price desc"
+    },
+
+    "Product": {
         "from-label": "From"
     }
 }

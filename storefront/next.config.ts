@@ -6,6 +6,11 @@ import { BACKEND_URL } from '@/lib/constants'
 const withNextIntl = createNextIntlPlugin()
 
 const nextConfig: NextConfig = {
+    logging: {
+        fetches: {
+            fullUrl: true,
+        },
+    },
     images: {
         remotePatterns: [
             {
@@ -15,6 +20,11 @@ const nextConfig: NextConfig = {
             {
                 protocol: 'https',
                 hostname: BACKEND_URL,
+            },
+            // Remove if using backend file server to serve images
+            {
+                protocol: 'https',
+                hostname: 'static.vecteezy.com',
             },
         ],
     },

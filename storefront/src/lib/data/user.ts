@@ -1,3 +1,5 @@
+'use server'
+
 import { API_STORE_URL } from '@/lib/constants'
 import { getOptions } from './factory'
 

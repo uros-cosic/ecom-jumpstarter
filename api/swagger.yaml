@@ -567,6 +567,24 @@ paths:
                                         items:
                                             $ref: '#/components/schemas/Product'
 
+    /api/store/products/sale:
+        get:
+            summary: Gets all products on sale
+            tags:
+                - Store/Products
+            responses:
+                200:
+                    description: Returns all products on sale
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        type: array
+                                        items:
+                                            $ref: '#/components/schemas/Product'
+
     /api/store/products/search:
         get:
             summary: Gets searched products

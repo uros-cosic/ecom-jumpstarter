@@ -24,7 +24,7 @@ const LatestCollection = async ({ region }: Props) => {
         limit: 4
     })
 
-    if (!products) return null
+    if (!products || !products.length) return null
 
     const t = await getTranslations("Home")
 

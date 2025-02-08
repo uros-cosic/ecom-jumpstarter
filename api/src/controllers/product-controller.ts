@@ -13,6 +13,8 @@ import {
 import { AppError } from '../lib/app-error'
 import { UploadService } from '../services/upload'
 import { generateUniqueFileName } from '../lib/util'
+import Sale from '../models/Sale'
+import { APIFeatures } from '../lib/api-features'
 
 export const getProducts = getAll(Product)
 export const getProduct = getOne(Product)
@@ -39,6 +41,33 @@ export const searchProducts = catchAsync(
         }).limit(limit)
 
         res.status(200).json({ data: products })
+        return
+    }
+)
+
+export const getProductsOnSale = catchAsync(
+    async (req: Request, res: Response) => {
+        const sales = await Sale.find({})
+
+        const uniqueProducts = Array.from(
+            new Set(
+                sales
+                    .filter((sale) => sale.isActive())
+                    .map((sale) => sale.products)
+                    .flat()
+            )
+        )
+        const features = new APIFeatures(
+            Product.find({ _id: { $in: uniqueProducts } }),
+            req.query
+        )
+            .sort()
+            .limitFields()
+            .paginate()
+
+        const doc = await features.query
+
+        res.status(200).json({ status: 'success', data: doc })
         return
     }
 )

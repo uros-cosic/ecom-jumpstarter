@@ -9,6 +9,9 @@ import { getRegionByCountryCode } from "@/lib/data/regions"
 import LatestCollection from "@/components/home/latest-collections"
 import LatestCategory from "@/components/home/latest-category"
 import ProductCardsSkeleton from "@/components/skeletons/product-cards"
+import InfoSection from "@/components/home/info-section"
+import FadeIn from "@/components/fade-in"
+import SiteNavigation from "@/components/home/site-navigation"
 
 type Props = {
     params: Promise<{ countryCode: string }>
@@ -50,12 +53,22 @@ const Home = async ({ params }: Props) => {
 
     return (
         <div className="flex flex-col gap-10">
-            <Hero />
+            <FadeIn>
+                <Hero />
+            </FadeIn>
             <Suspense fallback={<ProductCardsSkeleton />}>
-                <LatestCollection region={region} />
+                <FadeIn>
+                    <LatestCollection region={region} />
+                </FadeIn>
             </Suspense>
             <Suspense fallback={<ProductCardsSkeleton />}>
-                <LatestCategory region={region} />
+                <FadeIn>
+                    <LatestCategory region={region} />
+                </FadeIn>
+            </Suspense>
+            <InfoSection />
+            <Suspense fallback={<>Todo skeleton...</>}>
+                <SiteNavigation region={region} />
             </Suspense>
         </div>
     )

@@ -10,4 +10,5 @@ export const locales = ['en'] as const
 export const STORE = {
     name: 'Ecom jumpstarter',
     baseUrl: 'http://localhost:3000',
+    supportMail: 'support@mail.com',
 } as const

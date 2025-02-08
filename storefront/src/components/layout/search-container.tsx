@@ -11,6 +11,7 @@ import { formatCurrency } from "@/lib/utils"
 import LocalizedLink from "../localized-link"
 import { useParams } from "next/navigation"
 import { getRegionByCountryCode } from "@/lib/data/regions"
+import { SheetClose } from "../ui/sheet"
 
 type Props = {
     searchInputLabel: string
@@ -75,26 +76,28 @@ const SearchContainer = ({ searchInputLabel, fromLabel, locale }: Props) => {
                     <ul className="flex flex-col py-5 gap-3">
                         {products.map(prod => (
                             <li key={prod._id}>
-                                <LocalizedLink href={`/products/${prod._id}`} className="hover:opacity-70">
-                                    <div className="grid grid-cols-10 gap-3">
-                                        <div className="col-span-8 lg:col-span-9 flex items-center gap-3">
-                                            <Image
-                                                src={prod.thumbnail}
-                                                alt={prod.name}
-                                                height={50}
-                                                width={50}
-                                                quality={70}
-                                            />
-                                            <span className="line-clamp-2 truncate text-sm lg:text-base">{prod.name}</span>
-                                        </div>
-                                        {!!region &&
-                                            <div className="col-span-2 xl:col-span-1 flex flex-col items-start justify-center text-xs lg:text-sm">
-                                                <span className="font-medium">{fromLabel}:</span>
-                                                <span>{formatCurrency(locale, region.currency, prod.price)}</span>
+                                <SheetClose className="w-full">
+                                    <LocalizedLink href={`/products/${prod.handle}`} className="hover:opacity-70 w-full">
+                                        <div className="grid grid-cols-10 gap-3">
+                                            <div className="col-span-8 lg:col-span-9 flex items-center gap-3">
+                                                <Image
+                                                    src={prod.thumbnail}
+                                                    alt={prod.name}
+                                                    height={50}
+                                                    width={50}
+                                                    quality={70}
+                                                />
+                                                <span className="line-clamp-2 truncate text-sm lg:text-base">{prod.name}</span>
                                             </div>
-                                        }
-                                    </div>
-                                </LocalizedLink>
+                                            {!!region &&
+                                                <div className="col-span-2 xl:col-span-1 flex flex-col items-start justify-center text-xs lg:text-sm">
+                                                    <span className="font-medium">{fromLabel}:</span>
+                                                    <span>{formatCurrency(locale, region.currency, prod.price)}</span>
+                                                </div>
+                                            }
+                                        </div>
+                                    </LocalizedLink>
+                                </SheetClose>
                             </li>
                         ))}
                     </ul>

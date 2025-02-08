@@ -15,7 +15,7 @@ export const getNewsletters = getAll(Newsletter)
 export const getNewsletter = getOne(Newsletter)
 export const createNewsletter = catchAsync(
     async (req: Request, res: Response) => {
-        const body = filterObj(req.body, 'email')
+        const body = filterObj(req.body, 'email', 'region')
 
         const doc = await Newsletter.create(body)
 

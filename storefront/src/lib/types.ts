@@ -127,3 +127,10 @@ export interface IProductCollection extends IBaseModel {
     keywords: string[]
     metadata: Record<string, string>
 }
+
+export interface INewsletter extends IBaseModel {
+    email: string
+    region: string
+    canceledAt?: Date | null
+    active: boolean
+}
