@@ -13,7 +13,7 @@ import PaginatedProducts from "@/components/paginated-products";
 import { getRegionById } from "@/lib/data/regions";
 import ProductsSkeleton from "@/components/skeletons/products";
 
-export async function generateMetada({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { handle, countryCode } = await params
 
     const category = await getCategoryByHandle(handle)

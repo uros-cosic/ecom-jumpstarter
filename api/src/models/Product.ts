@@ -106,7 +106,7 @@ const ProductVariantSchema = new Schema<IProductVariant>({
     width: { type: Number, min: 0 },
     material: { type: String, trim: true },
     price: { type: Number, required: true, min: 0 },
-    quantity: { type: Number, required: true, min: 1, default: 1 },
+    quantity: { type: Number, required: true, min: 0, default: 1 },
     options: [ProductOptionSchema],
 })
 
@@ -229,9 +229,10 @@ const ProductSchema = new Schema<IProduct>(
         price: {
             type: Number,
             required: true,
-            default: 0,
             min: 0,
         },
+
+        quantity: { type: Number, required: true, min: 0, default: 1 },
 
         active: {
             type: Boolean,

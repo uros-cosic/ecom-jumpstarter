@@ -11,7 +11,7 @@ import { getRegionById } from "@/lib/data/regions";
 import { getCollectionByHandle } from "@/lib/data/collections";
 import ProductsSkeleton from "@/components/skeletons/products";
 
-export async function generateMetada({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { handle, countryCode } = await params
 
     const collection = await getCollectionByHandle(handle)

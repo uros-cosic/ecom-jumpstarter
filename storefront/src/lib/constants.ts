@@ -2,6 +2,7 @@ export const BACKEND_URL = 'http://localhost:5000'
 export const API_URL = `${BACKEND_URL}/api`
 export const API_STORE_URL = `${API_URL}/store`
 export const API_AUTH_URL = `${API_URL}/auth`
+export const WS_URL = 'ws://localhost:5001'
 
 export const DEFAULT_REGION = 'us'
 

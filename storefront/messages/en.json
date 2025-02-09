@@ -91,6 +91,23 @@
     },
 
     "Product": {
-        "from-label": "From"
+        "from-label": "From",
+        "product-label": "Product",
+        "product-available": "product in stock",
+        "product-not-available": "product not in stock",
+        "quantity-label": "Quantity",
+        "minus-label": "Minus",
+        "plus-label": "Plus",
+        "items-left-in-stock": "Only #quantity# left in stock",
+        "not-in-stock": "Not in stock",
+        "variant-label": "Variant",
+        "add-to-bag": "Add to bag",
+        "fast-shipping": "Fast shipping",
+        "shipping-copywriting": "Your product will be delivered within 3-5 business days",
+        "quality-guarantee": "Quality guaranteed",
+        "quality-guarantee-copywriting": "All products we offer are brand new and come with a quality guarantee",
+        "easy-returns": "Easy returns",
+        "easy-returns-copywriting": "With our customer support, you can easily and simply submit a complaint request",
+        "similar-products-title": "You might also like"
     }
 }

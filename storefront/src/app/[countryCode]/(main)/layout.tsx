@@ -1,3 +1,5 @@
+import WebsocketProvider from "@/components/websocket-provider"
+
 type Props = {
     children: Readonly<React.ReactNode>
 }
@@ -5,7 +7,9 @@ type Props = {
 const Layout = ({ children }: Props) => {
     return (
         <main className="min-h-screen flex flex-col pt-16">
-            {children}
+            <WebsocketProvider>
+                {children}
+            </WebsocketProvider>
         </main>
     )
 }

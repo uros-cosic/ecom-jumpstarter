@@ -32,6 +32,16 @@ export const getProducts = cache(async function (
     }
 })
 
+export const getProductByHandle = cache(async function (
+    handle: string
+): Promise<IProduct | null> {
+    const data = await getProducts({ handle, limit: 1 })
+
+    if (!data || !data.length) return null
+
+    return data[0]
+})
+
 export const getProductsOnSale = cache(async function (
     query: RequestQuery<IProduct> = {}
 ): Promise<IProduct[] | null> {

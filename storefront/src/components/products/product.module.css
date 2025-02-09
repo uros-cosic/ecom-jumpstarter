@@ -1,0 +1,19 @@
+.product-details-content h2 {
+  @apply text-2xl font-medium;
+}
+
+.product-details-content h3 {
+  @apply text-lg font-semibold;
+}
+
+.product-details-content p {
+  @apply text-base leading-relaxed;
+}
+
+.product-details-content a {
+  @apply text-blue-500 underline font-medium;
+}
+
+.product-details-content img {
+  @apply max-w-full h-auto
+}
