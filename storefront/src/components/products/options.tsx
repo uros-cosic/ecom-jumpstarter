@@ -22,7 +22,7 @@ const ProductOptions = ({ options }: Props) => {
     }
 
     return (
-        <div className="flex flex-col gap-7 max-w-md w-full">
+        <div className="flex flex-col gap-4 max-w-md w-full">
             {
                 options.map(option => (
                     <div key={option._id} className="flex flex-col gap-2 text-sm">

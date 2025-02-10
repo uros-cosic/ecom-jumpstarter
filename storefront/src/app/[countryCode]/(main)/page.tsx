@@ -12,6 +12,7 @@ import ProductCardsSkeleton from "@/components/skeletons/product-cards"
 import InfoSection from "@/components/home/info-section"
 import FadeIn from "@/components/fade-in"
 import SiteNavigation from "@/components/home/site-navigation"
+import SiteNavigationSkeleton from "@/components/skeletons/site-navigation"
 
 type Props = {
     params: Promise<{ countryCode: string }>
@@ -40,6 +41,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
             title,
             description,
         },
+        alternates: {
+            canonical: new URL(countryCode, STORE.baseUrl),
+        }
     }
 }
 
@@ -67,7 +71,7 @@ const Home = async ({ params }: Props) => {
                 </FadeIn>
             </Suspense>
             <InfoSection />
-            <Suspense fallback={<>Todo skeleton...</>}>
+            <Suspense fallback={<SiteNavigationSkeleton />}>
                 <SiteNavigation region={region} />
             </Suspense>
         </div>

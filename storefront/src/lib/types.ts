@@ -134,3 +134,67 @@ export interface INewsletter extends IBaseModel {
     canceledAt?: Date | null
     active: boolean
 }
+
+export enum USER_ROLE {
+    ADMIN = 'admin',
+    USER = 'user',
+}
+
+export interface IUser extends IBaseModel {
+    name: string
+    email: string
+    password: string
+    role: USER_ROLE
+    cart: string
+    region: string
+    passwordChangedAt?: Date | null
+    resetPasswordToken?: string | null
+    resetPasswordExpires?: Date | null
+    googleId?: string
+    active: boolean
+}
+
+export enum AUTOMATED_PAYMENT_METHODS {
+    MANUAL = 'manual',
+    STRIPE = 'stripe',
+}
+
+export enum ORDER_STATUS {
+    PENDING = 'pending',
+    COMPLETED = 'completed',
+    CANCELED = 'canceled',
+}
+
+export enum ORDER_FULFILLMENT_STATUS {
+    NOT_FULFILLED = 'not fulfilled',
+    FULFILLED = 'fulfilled',
+    PARTIALLY_FULFILLED = 'partially fulfilled',
+    SHIPPED = 'shipped',
+    PARTIALLY_SHIPPED = 'partially shipped',
+    RETURNED = 'returned',
+    PARTIALLY_RETURNED = 'partially returned',
+    CANCELED = 'canceled',
+}
+
+export interface IOrder extends IBaseModel {
+    customer?: string
+    cart: string
+    payment?: string
+    status: ORDER_STATUS
+    fulfillmentStatus: ORDER_FULFILLMENT_STATUS
+    region: string
+    stripeSessionUrl?: string | null
+}
+
+export interface IAddress extends IBaseModel {
+    user?: string
+    company?: string
+    firstName: string
+    lastName: string
+    address: string
+    city: string
+    country: string
+    province?: string
+    postalCode: string
+    phone: string
+}

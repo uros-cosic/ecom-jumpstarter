@@ -74,6 +74,7 @@ const NewsletterForm = ({ successMessage, ctaLabel, className }: Props) => {
                                     type="email"
                                     className='rounded-none bg-secondary text-secondary-foreground'
                                     placeholder='Email'
+                                    autoComplete='email'
                                     required
                                 />
                             </FormControl>

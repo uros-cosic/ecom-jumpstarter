@@ -109,5 +109,60 @@
         "easy-returns": "Easy returns",
         "easy-returns-copywriting": "With our customer support, you can easily and simply submit a complaint request",
         "similar-products-title": "You might also like"
+    },
+
+    "Login": {
+        "metadata": {
+            "title": "Log in",
+            "description": "Log in"
+        },
+        "login-label": "Log in",
+        "password-label": "Password",
+        "submit-label": "Submit",
+        "no-account-label": "Don't have an account",
+        "register-label": "Register",
+        "already-registered-label": "Aldready registered",
+        "password-confirm-label": "Repeat password",
+        "name-label": "Name"
+    },
+
+    "Account": {
+        "overview": "Overview",
+        "profile": "Profile",
+        "addresses": "Addresses",
+        "log-out-label": "Log out",
+        "hello-label": "Hi",
+        "signed-in-as": "Signed in as",
+        "recent-orders": "Recent orders",
+        "order-status": "Order status",
+        "fulfillment-status": "Fulfillment status",
+        "date": "Date",
+        "no-recent-orders": "No recent orders",
+        "profile-description": "Review and manage your account",
+        "new-password-label": "New password",
+        "password-label": "Password",
+        "name-label": "Name",
+        "password-not-shown-text": "Password not shown due to security reasons",
+        "change-label": "Change",
+        "cancel-label": "Cancel",
+        "submit-label": "Submit",
+        "success-change-message": "{field} updated successfully",
+        "success-add-message": "{field} created successfully",
+        "success-delete-message": "{field} deleted successfully",
+        "password-current-label": "Current password",
+        "addresses-description": "Review and manage your shipping addresses. They will be available during the checkout process",
+        "new-address-dialog-description": "Create address to speed up the checkout process",
+        "new-address-dialog-title": "Add new address",
+        "new-address-create-label": "Add new address",
+        "delete": "Delete",
+        "first-name-label": "First name",
+        "last-name-label": "Last name",
+        "company-label": "Company",
+        "address-label": "Address",
+        "postal-code-label": "Postal code",
+        "city-label": "City",
+        "province-label": "Province",
+        "phone-label": "Phone",
+        "country-label": "Country"
     }
 }

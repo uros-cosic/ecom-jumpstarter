@@ -1,11 +1,11 @@
 import { Metadata } from "next"
 import { notFound } from "next/navigation"
+import { getLocale } from "next-intl/server"
 
 import { getProductByHandle } from "@/lib/data/products"
 import { STORE } from "@/lib/constants"
 import JsonLD from "@/components/json-ld"
 import { getRegionById } from "@/lib/data/regions"
-import { getLocale } from "next-intl/server"
 import ProductTemplate from "@/components/products/product-template"
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -39,12 +39,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 type Props = {
     params: Promise<{ countryCode: string; handle: string }>
-    searchParams: Promise<Record<string, string>>
 }
 
-const Page = async ({ params, searchParams }: Props) => {
-    const { countryCode, handle } = await params
-    const options = await searchParams
+const Page = async ({ params }: Props) => {
+    const { handle } = await params
 
     const product = await getProductByHandle(handle)
 

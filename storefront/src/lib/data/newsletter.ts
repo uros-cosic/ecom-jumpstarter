@@ -6,6 +6,7 @@ import { getOptions } from './factory'
 
 /**
  * Subscribes the user to the newsletter
+ * Returns tuple indicating [data, error]
  */
 export const subscribeToNewsletter = async (
     email: string,
