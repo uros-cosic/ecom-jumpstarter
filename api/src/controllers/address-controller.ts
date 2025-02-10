@@ -11,6 +11,21 @@ export const getAddress = getOne(Address)
 
 export const createAddress = createOne(Address)
 
+export const getMyAddresses = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const user = res.locals.user
+
+        if (!user) return next(new AppError(req.t('errors.bad-request'), 400))
+
+        const addresses = await Address.find({ user: String(user._id) })
+            .limit(5)
+            .sort('-createdAt')
+
+        res.status(200).json({ data: addresses })
+        return
+    }
+)
+
 export const updateAddress = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         const user = res.locals.user

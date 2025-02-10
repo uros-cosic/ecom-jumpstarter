@@ -12,7 +12,7 @@
         "incorrect-token": "Neispravan token, ulogujte se ponovo",
         "token-expired": "Vaš token je istekao, ulogujete se ponovo",
         "no-document": "Ne postoji dokument sa tim ID-om",
-        "allowed-image-formats": "Dozvoljeni formati su .png, .jpg, .webp i .jpeg",
+        "allowed-image-formats": "Dozvoljeni formati su .png, .jpg, .webp .gif i .jpeg",
         "no-file": "Fajl nije učitan",
         "password-route": "Ova ruta nije za menjanje lozinke",
         "limiter-message": "Previše zahteva sa ove IP adrese, pokušajte ponovo za sat",
@@ -41,7 +41,9 @@
         "team": "Tim",
         "all-rights-reserved": "Sva prava zadržana",
         "contact-us-here": "Kontaktirajte nas ovde",
-        "password-reset-sent": "Email za resetovanje lozinke je poslat"
+        "password-reset-sent": "Email za resetovanje lozinke je poslat",
+        "product": "Proizvod",
+        "discount-code": "Kod za popust"
     },
 
     "emails": {

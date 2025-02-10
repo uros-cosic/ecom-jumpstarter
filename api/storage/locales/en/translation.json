@@ -12,7 +12,7 @@
         "incorrect-token": "Incorrect token, please log in again",
         "token-expired": "Your token has expired, please log in again",
         "no-document": "No document with that ID",
-        "allowed-image-formats": "Allowed formats are .png, .jpg, .webp and .jpeg",
+        "allowed-image-formats": "Allowed formats are .png, .jpg, .webp .gif and .jpeg",
         "no-file": "No file uploaded",
         "password-route": "This route is not for changing the password",
         "limiter-message": "Too many requests from this IP address, please try again in an hour",
@@ -41,7 +41,9 @@
         "team": "Team",
         "all-rights-reserved": "All rights reserved",
         "contact-us-here": "Contact us here",
-        "password-reset-sent": "Password reset email sent"
+        "password-reset-sent": "Password reset email sent",
+        "product": "Product",
+        "discount-code": "Discount code"
     },
 
     "emails": {

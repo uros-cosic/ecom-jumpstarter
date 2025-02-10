@@ -15,10 +15,10 @@ const Hero = () => {
                 <p>{t("subheading")}</p>
             </div>
             <div className="flex gap-3 items-center">
-                <LocalizedLink href="/#">
+                <LocalizedLink href="/collections">
                     <Button variant={"outline"}>{t("secondary-cta")}</Button>
                 </LocalizedLink>
-                <LocalizedLink href="/#">
+                <LocalizedLink href="/categories">
                     <Button>{t("primary-cta")}</Button>
                 </LocalizedLink>
             </div>

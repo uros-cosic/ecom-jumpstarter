@@ -1,21 +1,24 @@
-import { useTranslations } from "next-intl"
-
 import { IProduct, IRegion } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import ProductOptions from "./options"
 import CartAction from "./cart-action"
 import InfoTags from "./info-tags"
+import { getTranslations } from "next-intl/server"
+import { getProductPrice } from "@/lib/data/products"
 
 type Props = {
     product: IProduct
     region: IRegion
     locale: string
+    variantId: string | null
 }
 
-const ProductOffer = ({ locale, region, product }: Props) => {
-    const t = useTranslations("Product")
+const ProductOffer = async ({ locale, region, product, variantId }: Props) => {
+    const t = await getTranslations("Product")
 
     const isAvailable = product.active && product.quantity > 0
+
+    const priceObj = await getProductPrice(product._id, variantId ?? undefined)
 
     return (
         <div className="flex flex-col gap-10">
@@ -37,6 +40,7 @@ const ProductOffer = ({ locale, region, product }: Props) => {
             }
             <CartAction
                 product={product}
+                priceObj={priceObj}
                 region={region}
                 locale={locale}
                 quantityLabel={t("quantity-label")}

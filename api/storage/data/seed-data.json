@@ -13,6 +13,16 @@
                 "name": "Admin",
                 "region": "Default"
             }
+        ],
+        "paymentMethods": [
+            {
+                "name": "manual",
+                "region": "Default"
+            },
+            {
+                "name": "stripe",
+                "region": "Default"
+            }
         ]
     },
 
@@ -24,11 +34,20 @@
                 "currency": "usd"
             }
         ],
-
         "users": [
             {
                 "name": "Admin",
                 "email": "admin@mail.com",
+                "region": "Default"
+            }
+        ],
+        "paymentMethods": [
+            {
+                "name": "manual",
+                "region": "Default"
+            },
+            {
+                "name": "stripe",
                 "region": "Default"
             }
         ]

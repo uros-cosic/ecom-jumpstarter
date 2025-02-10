@@ -13,7 +13,7 @@ import {
 import { AppError } from '../lib/app-error'
 import { UploadService } from '../services/upload'
 import { generateUniqueFileName } from '../lib/util'
-import Sale from '../models/Sale'
+import Sale, { SALE_TYPE } from '../models/Sale'
 import { APIFeatures } from '../lib/api-features'
 
 export const getProducts = getAll(Product)
@@ -41,6 +41,49 @@ export const searchProducts = catchAsync(
         }).limit(limit)
 
         res.status(200).json({ data: products })
+        return
+    }
+)
+
+export const getProductPrice = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const product = await Product.findById(req.params.id)
+
+        if (!product)
+            return next(
+                new AppError(
+                    req.t('errors.not-found', {
+                        field: req.t('words.product'),
+                    }),
+                    404
+                )
+            )
+
+        const { variantId } = req.query
+
+        let variant = product.variants?.find(
+            (variant) => String(variant._id) === String(variantId)
+        )
+
+        let price = variant?.price ?? product.price
+
+        // Check if there is an active sale for the product
+        const sale = await Sale.findOne({
+            products: String(product._id),
+        }).exec()
+
+        if (sale && sale.isActive()) {
+            if (sale.type === SALE_TYPE.FIXED) price -= sale.discountAmount || 0
+            if (sale.type === SALE_TYPE.PERCENTAGE)
+                price -= price * (sale.discountPercentage || 0)
+        }
+
+        const data = {
+            originalPrice: variant?.price ?? product.price,
+            discountedPrice: price,
+        }
+
+        res.status(200).json({ data })
         return
     }
 )

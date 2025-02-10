@@ -1,11 +1,13 @@
 "use client"
 
-import { IProduct, IProductVariant, IRegion } from "@/lib/types"
+import { ICartItem, IProduct, IProductVariant, IRegion } from "@/lib/types"
 import { cn, formatCurrency } from "@/lib/utils"
 import { Minus, Plus, ShoppingBag } from "lucide-react"
-import { useSearchParams } from "next/navigation"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { useEffect, useState } from "react"
 import { Button } from "../ui/button"
+import { addToCart } from "@/lib/data/cart"
+import { toast } from "sonner"
 
 type Props = {
     product: IProduct,
@@ -19,10 +21,11 @@ type Props = {
     variantLabel: string
     productLabel: string
     addToBagLabel: string
+    priceObj?: { discountedPrice: number; originalPrice: number } | null
 }
 
-const CartAction = ({ product, region, locale, quantityLabel, plusLabel, minusLabel, leftInStockText, notInStock, productLabel, variantLabel, addToBagLabel }: Props) => {
-    const [price, setPrice] = useState(product.price)
+const CartAction = ({ priceObj, product, region, locale, quantityLabel, plusLabel, minusLabel, leftInStockText, notInStock, productLabel, variantLabel, addToBagLabel }: Props) => {
+    const [price, setPrice] = useState(priceObj?.discountedPrice ?? product.price)
     const [quantity, setQuantity] = useState(1)
     const [available, setAvailable] = useState(!!product.quantity)
     const [variant, setVariant] = useState<IProductVariant | null>(null)
@@ -30,6 +33,20 @@ const CartAction = ({ product, region, locale, quantityLabel, plusLabel, minusLa
     const availableQuantity = variant?.quantity ?? product.quantity
 
     const searchParams = useSearchParams()
+    const router = useRouter()
+    const pathname = usePathname()
+
+    const handleAddToCart = async () => {
+        const item: Omit<ICartItem, '_id' | 'createdAt' | 'updatedAt'> = { product: product._id, quantity }
+
+        if (variant) item.variant = variant._id
+
+        const [, err] = await addToCart(item)
+
+        if (err) {
+            toast.error(err)
+        }
+    }
 
     const calculatePrice = () => {
         if (!product.variants || !searchParams.keys().toArray().length) return
@@ -57,12 +74,26 @@ const CartAction = ({ product, region, locale, quantityLabel, plusLabel, minusLa
         }
 
         setAvailable(variantAvailable)
+        if (!variantAvailable) setVariant(null)
+    }
+
+    const handleVariantChange = (v: IProductVariant | null) => {
+        const params = new URLSearchParams(searchParams)
+
+        if (!v) params.delete('variantId')
+        else params.set('variantId', v._id)
+
+        router.replace(`${pathname}?${params.toString()}`)
     }
 
     useEffect(() => {
         setQuantity(1)
         calculatePrice()
     }, [searchParams])
+
+    useEffect(() => {
+        handleVariantChange(variant)
+    }, [variant])
 
 
     return (
@@ -80,9 +111,12 @@ const CartAction = ({ product, region, locale, quantityLabel, plusLabel, minusLa
                         </button>
                     </div>
                 </div>
-                <span className="text-2xl font-medium">{formatCurrency(locale, region.currency, price)}</span>
+                <div className="flex flex-col gap-1">
+                    {(priceObj && priceObj.discountedPrice !== priceObj.originalPrice) && <span className="line-through text-gray-500">{formatCurrency(locale, region.currency, priceObj.originalPrice)}</span>}
+                    <span className="text-2xl font-medium">{formatCurrency(locale, region.currency, priceObj?.discountedPrice ?? price)}</span>
+                </div>
             </div>
-            <Button disabled={!available} className="max-w-md">
+            <Button disabled={!available} className="max-w-md" onClick={handleAddToCart}>
                 {!available ? `${searchParams.keys().toArray().length ? variantLabel : productLabel} ${notInStock.toLowerCase()}` : <>
                     <ShoppingBag />
                     <span>{addToBagLabel}</span>

@@ -33,6 +33,7 @@ const LatestCategory = async ({ region }: Props) => {
             title={t("latest-category-label")}
             products={products}
             region={region}
+            prefetch={true}
         />
     )
 }

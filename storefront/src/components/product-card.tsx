@@ -4,19 +4,23 @@ import { IProduct, IRegion } from "@/lib/types"
 import LocalizedLink from "./localized-link"
 import { formatCurrency } from "@/lib/utils"
 import { getLocale, getTranslations } from "next-intl/server"
+import { getProductPrice } from "@/lib/data/products"
 
 type Props = {
     product: IProduct,
     region: IRegion,
+    prefetch?: boolean
 }
 
-const ProductCard = async ({ product, region }: Props) => {
+const ProductCard = async ({ product, region, prefetch = false }: Props) => {
     const t = await getTranslations("Product")
     const locale = await getLocale()
 
+    const price = await getProductPrice(product._id)
+
     return (
         <div className='bg-white border rounded-md h-96 flex flex-col'>
-            <LocalizedLink href={`/products/${product.handle}`} className="relative rounded-t-md max-h-64 min-h-64 h-full w-full overflow-hidden bg-gray-50 hover:opacity-90 transition-opacity">
+            <LocalizedLink prefetch={prefetch} href={`/products/${product.handle}`} className="relative rounded-t-md max-h-64 min-h-64 h-full w-full overflow-hidden bg-gray-50 hover:opacity-90 transition-opacity">
                 <Image
                     src={product.thumbnail}
                     alt={product.name}
@@ -31,7 +35,7 @@ const ProductCard = async ({ product, region }: Props) => {
                 </LocalizedLink>
                 <div className="col-span-2 xl:col-span-1 flex flex-col items-start justify-center text-xs lg:text-sm">
                     <span className="font-medium">{t("from-label")}:</span>
-                    <span className='text-base font-medium'>{formatCurrency(locale, region.currency, product.price)}</span>
+                    <span className='text-base font-medium'>{formatCurrency(locale, region.currency, price?.discountedPrice ?? product.price)}</span>
                 </div>
             </div>
         </div>

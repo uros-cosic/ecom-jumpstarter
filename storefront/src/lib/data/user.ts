@@ -1,9 +1,10 @@
 'use server'
 
+import { revalidateTag } from 'next/cache'
+
 import { API_STORE_URL } from '@/lib/constants'
 import { getOptions } from './factory'
 import { IUser } from '../types'
-import { revalidateTag } from 'next/cache'
 
 export const getMe = async (): Promise<IUser | null> => {
     try {

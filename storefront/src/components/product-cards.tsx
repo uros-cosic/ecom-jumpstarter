@@ -5,9 +5,10 @@ type Props = {
     title: string
     products: IProduct[]
     region: IRegion
+    prefetch?: boolean
 }
 
-const ProductCards = ({ title, products, region }: Props) => {
+const ProductCards = ({ title, products, region, prefetch = false }: Props) => {
     return (
         <section className='flex flex-col gap-3 max-w-screen-2xl mx-auto w-full px-2'>
             <h1 className="font-[family-name:var(--font-montserrat)] text-2xl">
@@ -19,6 +20,7 @@ const ProductCards = ({ title, products, region }: Props) => {
                         <ProductCard
                             product={prod}
                             region={region}
+                            prefetch={prefetch}
                         />
                     </li>
                 ))}

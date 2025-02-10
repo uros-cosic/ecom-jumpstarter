@@ -39,10 +39,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 type Props = {
     params: Promise<{ countryCode: string; handle: string }>
+    searchParams: Promise<Record<string, string>>
 }
 
-const Page = async ({ params }: Props) => {
+const Page = async ({ params, searchParams }: Props) => {
     const { handle } = await params
+    const query = await searchParams
 
     const product = await getProductByHandle(handle)
 
@@ -72,6 +74,7 @@ const Page = async ({ params }: Props) => {
                 }}
             />
             <ProductTemplate
+                variantId={query?.variantId ?? null}
                 product={product}
                 locale={locale}
                 region={region}

@@ -281,6 +281,8 @@ export const logOut = (_req: Request, res: Response) => {
     removeCookie('jwt', res)
     removeCookie('refreshToken', res)
 
+    res.locals.user = null
+
     res.status(200).json({
         data: null,
     })

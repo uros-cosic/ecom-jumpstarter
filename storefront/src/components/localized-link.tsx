@@ -10,13 +10,14 @@ type Props = {
     children: Readonly<React.ReactNode>
     href: string
     className?: ClassNameValue
+    prefetch?: boolean
 }
 
-const LocalizedLink = ({ children, href, className }: Props) => {
+const LocalizedLink = ({ children, href, className, prefetch = false }: Props) => {
     const { countryCode } = useParams()
 
     return (
-        <Link href={`/${countryCode}${href}`} className={cn(className)}>
+        <Link href={`/${countryCode}${href}`} className={cn(className)} prefetch={prefetch}>
             {children}
         </Link>
     )

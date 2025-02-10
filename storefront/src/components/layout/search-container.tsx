@@ -76,8 +76,8 @@ const SearchContainer = ({ searchInputLabel, fromLabel, locale }: Props) => {
                     <ul className="flex flex-col py-5 gap-3">
                         {products.map(prod => (
                             <li key={prod._id}>
-                                <SheetClose className="w-full">
-                                    <LocalizedLink href={`/products/${prod.handle}`} className="hover:opacity-70 w-full">
+                                <LocalizedLink href={`/products/${prod.handle}`} className="hover:opacity-70 w-full">
+                                    <SheetClose className="w-full">
                                         <div className="grid grid-cols-10 gap-3">
                                             <div className="col-span-8 lg:col-span-9 flex items-center gap-3">
                                                 <Image
@@ -96,8 +96,8 @@ const SearchContainer = ({ searchInputLabel, fromLabel, locale }: Props) => {
                                                 </div>
                                             }
                                         </div>
-                                    </LocalizedLink>
-                                </SheetClose>
+                                    </SheetClose>
+                                </LocalizedLink>
                             </li>
                         ))}
                     </ul>

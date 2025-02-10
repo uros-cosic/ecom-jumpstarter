@@ -33,6 +33,7 @@ const LatestCollection = async ({ region }: Props) => {
             title={t("latest-collection-label")}
             products={products}
             region={region}
+            prefetch={true}
         />
     )
 }

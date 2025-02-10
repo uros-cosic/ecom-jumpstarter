@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form'
 import { Input } from '../ui/input'
 import { Button } from '../ui/button'
 import { usePathname, useRouter, useSearchParams } from 'next/navigation'
-import { logIn, register } from '@/lib/data/auth'
+import { register } from '@/lib/data/auth'
 import { toast } from 'sonner'
 import registerFormSchema, { registerFormSchemaValues } from '@/lib/forms/register'
 import { IRegion } from '@/lib/types'
@@ -83,7 +83,6 @@ const RegisterForm = ({ region, loginLabel, submitLabel, alreadyRegisteredLabel,
                                     {...field}
                                     type="email"
                                     className="bg-white"
-                                    autoFocus={true}
                                     autoComplete='email'
                                 />
                             </FormControl>

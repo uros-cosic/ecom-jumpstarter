@@ -108,8 +108,14 @@ export async function middleware(request: NextRequest) {
         countryCode &&
         request.nextUrl.pathname.split('/')[1].includes(countryCode)
 
+    response.cookies.set('countryCode', countryCode ?? DEFAULT_REGION)
+
     if (urlHasCountryCode) {
-        return NextResponse.next()
+        response = NextResponse.next()
+
+        response.cookies.set('countryCode', countryCode ?? DEFAULT_REGION)
+
+        return response
     }
 
     if (request.nextUrl.pathname.includes('.')) {
@@ -124,6 +130,7 @@ export async function middleware(request: NextRequest) {
     if (!urlHasCountryCode && countryCode) {
         redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`
         response = NextResponse.redirect(`${redirectUrl}`, 307)
+        response.cookies.set('countryCode', countryCode ?? DEFAULT_REGION)
     }
 
     return response

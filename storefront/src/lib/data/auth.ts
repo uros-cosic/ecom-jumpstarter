@@ -8,6 +8,7 @@ import { cookies } from 'next/headers'
 import { IUser } from '../types'
 import { registerFormSchemaValues } from '../forms/register'
 import { passwordChangeFormSchemaValues } from '../forms/account'
+import { getCart, updateCart } from './cart'
 
 export const setAuthToken = async (name: string, token: string) => {
     ;(await cookies()).set(name, token, {
@@ -50,6 +51,12 @@ export const logIn = async (
             await setAuthToken('refreshToken', data.refreshToken)
 
             revalidateTag('user')
+            const cart = await getCart()
+
+            if (cart) {
+                await updateCart({ customer: data.data._id })
+                revalidateTag(`cart-${cart._id}`)
+            }
 
             return [data.data, null]
         }
@@ -86,6 +93,12 @@ export const register = async (
             await setAuthToken('refreshToken', data.refreshToken)
 
             revalidateTag('user')
+            const cart = await getCart()
+
+            if (cart) {
+                await updateCart({ customer: data.data._id })
+                revalidateTag(`cart-${cart._id}`)
+            }
 
             return [data.data, null]
         }
@@ -106,6 +119,12 @@ export const logOut = async () => {
         await removeAuthToken('jwt')
         await removeAuthToken('refreshToken')
         revalidateTag('user')
+        const cart = await getCart()
+
+        if (cart) {
+            await updateCart({ customer: null })
+            revalidateTag(`cart-${cart._id}`)
+        }
     }
 }
 

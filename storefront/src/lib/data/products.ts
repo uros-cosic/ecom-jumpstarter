@@ -32,6 +32,28 @@ export const getProducts = cache(async function (
     }
 })
 
+export const getProductPrice = async (
+    id: string,
+    variantId?: string
+): Promise<{ originalPrice: number; discountedPrice: number } | null> => {
+    try {
+        const res = await fetch(
+            `${API_STORE_URL}/products/price/${id}?${variantId ? `variantId=${variantId}` : ''}`,
+            await getOptions()
+        )
+
+        const data = await res.json()
+
+        if (res.ok) return data.data
+
+        console.error(data.message)
+        return null
+    } catch (e) {
+        console.error(e)
+        return null
+    }
+}
+
 export const getProductByHandle = cache(async function (
     handle: string
 ): Promise<IProduct | null> {

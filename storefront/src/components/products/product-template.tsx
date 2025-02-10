@@ -10,12 +10,13 @@ import ProductCardsSkeleton from '../skeletons/product-cards'
 import FadeIn from '../fade-in'
 
 type Props = {
+    variantId: string | null
     product: IProduct
     region: IRegion
     locale: string
 }
 
-const ProductTemplate = ({ locale, product, region }: Props) => {
+const ProductTemplate = ({ locale, product, region, variantId }: Props) => {
     const t = useTranslations('Product')
 
     return (
@@ -31,6 +32,7 @@ const ProductTemplate = ({ locale, product, region }: Props) => {
                 </div>
                 <div className='w-full lg:w-1/2'>
                     <ProductOffer
+                        variantId={variantId}
                         product={product}
                         region={region}
                         locale={locale}

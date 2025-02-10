@@ -139,13 +139,6 @@ CartSchema.methods.calculateTotalPrice = async function (): Promise<number> {
         totalPrice += price * item.quantity
     }
 
-    if (this.shippingMethod) {
-        const shippingMethod = await ShippingMethod.findById(
-            this.shippingMethod
-        )
-        if (shippingMethod) totalPrice += shippingMethod.cost
-    }
-
     if (this.discountCode) {
         const discount = await Discount.findById(this.discountCode)
         if (discount && discount.isValid()) {
@@ -154,6 +147,13 @@ CartSchema.methods.calculateTotalPrice = async function (): Promise<number> {
             if (discount.type === DISCOUNT_TYPE.PERCENTAGE)
                 totalPrice -= totalPrice * (discount.percentage || 0)
         }
+    }
+
+    if (this.shippingMethod) {
+        const shippingMethod = await ShippingMethod.findById(
+            this.shippingMethod
+        )
+        if (shippingMethod) totalPrice += shippingMethod.cost
     }
 
     this.totalPrice = parseFloat(Number(Math.max(totalPrice, 0)).toFixed(2))

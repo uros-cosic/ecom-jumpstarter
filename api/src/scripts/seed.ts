@@ -7,6 +7,7 @@ import seedData from '../../storage/data/seed-data.json'
 import Country from '../models/Country'
 import Region from '../models/Region'
 import User, { USER_ROLE } from '../models/User'
+import PaymentMethod from '../models/PaymentMethod'
 
 const env = (process.env.NODE_ENV || 'development') as keyof typeof seedData
 
@@ -79,11 +80,35 @@ const seedUsers = async () => {
     }
 }
 
+const seedPaymentMethods = async () => {
+    try {
+        const paymentMethods = seedData[env].paymentMethods
+
+        const regions = await Region.find({
+            name: { $in: paymentMethods.map((p) => p.region) },
+        })
+
+        const formatedPaymentMethods = paymentMethods
+            .map((p) => ({
+                ...p,
+                region: String(regions.find((r) => r.name === p.region)?._id),
+            }))
+            .filter((p) => p.region !== 'undefined')
+
+        const data = await PaymentMethod.insertMany(formatedPaymentMethods)
+
+        console.log(`Inserted ${data.length} payment methods`)
+    } catch (e) {
+        console.error('Error seeding payment methods', e)
+    }
+}
+
 const seed = async () => {
     try {
         await seedCountries()
         await seedRegions()
         await seedUsers()
+        await seedPaymentMethods()
     } catch (e) {
         console.error('Error seeding data', e)
     } finally {

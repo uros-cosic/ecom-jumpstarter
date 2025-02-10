@@ -4,13 +4,14 @@ export type ValidResponse<T> = {
 
 export type ErrorResponse = {
     message: string
+    test?: string[] | null
 }
 
 export type RequestQuery<T> = {
-    page?: number
-    sort?: string
-    limit?: number
-    fields?: string
+    page?: number | null
+    sort?: string | null
+    limit?: number | null
+    fields?: string | null
 } & Partial<T>
 
 export interface IBaseModel {
@@ -38,18 +39,18 @@ export interface IProductOption extends IBaseModel {
 export interface IProductVariant extends IBaseModel {
     title: string
     options: IProductOption[]
-    sku?: string
-    barcode?: string
-    ean?: string
-    upc?: string
-    hsCode?: string
-    midCode?: string
-    originCountry?: string
-    weight?: string
-    length?: string
-    height?: string
-    width?: string
-    material?: string
+    sku?: string | null
+    barcode?: string | null
+    ean?: string | null
+    upc?: string | null
+    hsCode?: string | null
+    midCode?: string | null
+    originCountry?: string | null
+    weight?: string | null
+    length?: string | null
+    height?: string | null
+    width?: string | null
+    material?: string | null
     price: number
     quantity: number
 }
@@ -57,18 +58,18 @@ export interface IProductVariant extends IBaseModel {
 export interface IProduct extends IBaseModel {
     name: string
     description: string
-    details?: string
+    details?: string | null
     keywords: string[]
     handle: string
     type: PRODUCT_TYPE
     thumbnail: string
     images: string[]
-    productCategory?: string
-    productCollection?: string
-    options?: IProductOptions[]
-    variants?: IProductVariant[]
+    productCategory?: string | null
+    productCollection?: string | null
+    options?: IProductOptions[] | null
+    variants?: IProductVariant[] | null
     region: string
-    sizeGuide?: string
+    sizeGuide?: string | null
     price: number
     quantity: number
     active: boolean
@@ -77,19 +78,19 @@ export interface IProduct extends IBaseModel {
 
 export interface ICartItem extends IBaseModel {
     product: string
-    variant?: string
+    variant?: string | null
     quantity: number
 }
 
 export interface ICart extends IBaseModel {
-    customer?: string
+    customer?: string | null
     items: ICartItem[]
     region: string
-    address?: string
-    email?: string
-    shippingMethod?: string
-    paymentMethod?: string
-    discountCode?: string
+    address?: string | null
+    email?: string | null
+    shippingMethod?: string | null
+    paymentMethod?: string | null
+    discountCode?: string | null
     totalPrice: number
 }
 
@@ -115,7 +116,7 @@ export interface IProductCategory extends IBaseModel {
     handle: string
     region: string
     keywords: string[]
-    parentCategory?: string
+    parentCategory?: string | null
     metadata: Record<string, string>
 }
 
@@ -150,7 +151,7 @@ export interface IUser extends IBaseModel {
     passwordChangedAt?: Date | null
     resetPasswordToken?: string | null
     resetPasswordExpires?: Date | null
-    googleId?: string
+    googleId?: string | null
     active: boolean
 }
 
@@ -177,9 +178,9 @@ export enum ORDER_FULFILLMENT_STATUS {
 }
 
 export interface IOrder extends IBaseModel {
-    customer?: string
+    customer?: string | null
     cart: string
-    payment?: string
+    payment?: string | null
     status: ORDER_STATUS
     fulfillmentStatus: ORDER_FULFILLMENT_STATUS
     region: string
@@ -187,14 +188,37 @@ export interface IOrder extends IBaseModel {
 }
 
 export interface IAddress extends IBaseModel {
-    user?: string
-    company?: string
+    user?: string | null
+    company?: string | null
     firstName: string
     lastName: string
     address: string
     city: string
     country: string
-    province?: string
+    province?: string | null
     postalCode: string
     phone: string
+}
+
+export enum DISCOUNT_TYPE {
+    PERCENTAGE = 'percentage',
+    FIXED = 'fixed',
+}
+
+export interface IDiscount extends IBaseModel {
+    code: string
+    type: DISCOUNT_TYPE
+    amount?: number | null
+    percentage?: number | null
+    usageLimit: number
+    usageCount: number
+    validFrom?: Date | null
+    validTo?: Date | null
+    metadata: Record<string, string>
+}
+
+export interface IShippingMethod extends IBaseModel {
+    name: string
+    cost: number
+    region: string
 }

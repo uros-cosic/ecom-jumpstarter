@@ -15,7 +15,19 @@
             "empty-bag-description": "There are no items in your bag",
             "shop-collections": "Shop collections",
             "shop-categories": "Shop categories",
-            "from-label": "From"
+            "from-label": "From",
+            "your-cart": "Your cart",
+            "yout-cart-description": "Manage your cart",
+            "quantity": "Quantity",
+            "price": "Price",
+            "name": "Name",
+            "subtotal": "Subtotal",
+            "total": "Total",
+            "estimated-shipping": "Estimated shipping",
+            "checkout-cta": "Checkout",
+            "discount-amount": "Discount amount",
+            "submit": "Submit",
+            "discount-applied": "Discount code applied"
         }
     },
 
@@ -48,7 +60,7 @@
             "heading": "Heading",
             "subheading": "Subheading",
             "primary-cta": "Shop now",
-            "secondary-cta": "Browse collection"
+            "secondary-cta": "Browse collections"
         },
         "InfoSection": {
             "heading": "Lorem ipsum",
@@ -65,7 +77,13 @@
         "created-at-ascending": "Date asc",
         "created-at-descending": "Date desc",
         "price-ascending": "Price asc",
-        "price-descending": "Price desc"
+        "price-descending": "Price desc",
+        "all-categories": "All categories",
+        "metadata": {
+            "title": "All categories",
+            "description": "Hi",
+            "keywords": "one, two, three"
+        }
     },
 
     "Collections": {
@@ -73,7 +91,13 @@
         "created-at-ascending": "Date asc",
         "created-at-descending": "Date desc",
         "price-ascending": "Price asc",
-        "price-descending": "Price desc"
+        "price-descending": "Price desc",
+        "all-collections": "All collections",
+        "metadata": {
+            "title": "All collections",
+            "description": "Hi",
+            "keywords": "one, two, three"
+        }
     },
 
     "Sale": {

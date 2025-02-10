@@ -46,11 +46,13 @@ const DiscountSchema = new Schema<IDiscount, DiscountModel, IDiscountMethods>(
             type: Number,
             min: 0,
             max: 1,
+            default: 0,
         },
 
         amount: {
             type: Number,
             min: 0,
+            default: 0,
         },
 
         usageLimit: {
