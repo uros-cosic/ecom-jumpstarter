@@ -11,6 +11,7 @@ import { IAddress } from './Address'
 import { IShippingMethod } from './ShippingMethod'
 import { StripeService } from '../services/stripe'
 import { AppError } from '../lib/app-error'
+import Payment from './Payment'
 
 export enum AUTOMATED_PAYMENT_METHODS {
     MANUAL = 'manual',
@@ -139,6 +140,15 @@ OrderSchema.pre('save', async function (next) {
         const sessionUrl = await StripeService.createCheckoutSession(
             this.toObject() as unknown as Omit<IOrder, 'cart'> & { cart: ICart }
         )
+
+        try {
+            const payment = await Payment.create({
+                method: paymentMethod._id,
+                amount: cart.totalPrice,
+            })
+
+            if (payment) this.payment = payment._id
+        } catch {}
 
         this.stripeSessionUrl = sessionUrl
     }

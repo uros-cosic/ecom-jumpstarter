@@ -41,4 +41,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 - [ ] Reset password
 - [ ] Gmail auth provider
 - [ ] Integration, unit & e2e testing
+- [ ] Track your order page
 - [ ] Fix redundency, prop drilling issues and improve product price calculation implementation
+- [ ] Product reviews integration for product page
+- [ ] Newsletter unsubscribe

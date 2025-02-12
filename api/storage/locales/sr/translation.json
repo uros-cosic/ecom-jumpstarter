@@ -43,7 +43,8 @@
         "contact-us-here": "Kontaktirajte nas ovde",
         "password-reset-sent": "Email za resetovanje lozinke je poslat",
         "product": "Proizvod",
-        "discount-code": "Kod za popust"
+        "discount-code": "Kod za popust",
+        "shipping-cost": "Dostava"
     },
 
     "emails": {

@@ -2,8 +2,6 @@
 
 import { z } from 'zod'
 
-// TODO: Localize error messages => use server func >:DDD
-
 const registerFormSchema = z.object({
     name: z.string(),
     email: z.string().email(),

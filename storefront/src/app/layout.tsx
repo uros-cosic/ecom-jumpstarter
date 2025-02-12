@@ -7,6 +7,7 @@ import { STORE } from "@/lib/constants";
 import "./globals.css"
 import Header from "@/components/layout/header";
 import Footer from "@/components/layout/footer";
+import CartSheetProvider from "@/components/cart-sheet-provider"
 
 export const viewport: Viewport = {
     width: "device-width",
@@ -63,10 +64,12 @@ export default async function RootLayout({
             <body
                 className={`${montserrat.variable} ${roboto.className} antialiased`}
             >
-                <Header />
-                {children}
-                <Footer />
-                <Toaster />
+                <CartSheetProvider>
+                    <Header />
+                    {children}
+                    <Footer />
+                    <Toaster position="top-right" />
+                </CartSheetProvider>
             </body>
         </html>
     );

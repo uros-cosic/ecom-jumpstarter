@@ -26,6 +26,7 @@
             "estimated-shipping": "Estimated shipping",
             "checkout-cta": "Checkout",
             "discount-amount": "Discount amount",
+            "discount-code": "Discount code",
             "submit": "Submit",
             "discount-applied": "Discount code applied"
         }
@@ -151,6 +152,10 @@
     },
 
     "Account": {
+        "metadata": {
+            "title": "Account",
+            "description": "Account"
+        },
         "overview": "Overview",
         "profile": "Profile",
         "addresses": "Addresses",
@@ -188,5 +193,143 @@
         "province-label": "Province",
         "phone-label": "Phone",
         "country-label": "Country"
+    },
+
+    "Checkout": {
+        "metadata": {
+            "title": "Checkout",
+            "description": "Checkout page"
+        },
+
+        "Address": {
+            "address": "Address",
+            "edit": "Edit",
+            "contact": "Contact",
+            "first-name": "First name",
+            "last-name": "Last name",
+            "company": "Company",
+            "province": "Province",
+            "phone": "Phone",
+            "submit": "Continue to delivery",
+            "city": "City",
+            "country": "Country",
+            "postal-code": "Postal code",
+            "choose-address": "Choose from addresses",
+            "hello-message": "Hello {field}, do you want to choose one of your saved addresses?"
+        },
+
+        "Delivery": {
+            "delivery": "Delivery",
+            "edit": "Edit",
+            "delivery-method": "Delivery method",
+            "submit": "Continue to payment"
+        },
+
+        "Payment": {
+            "payment": "Payment",
+            "payment-method": "Payment method",
+            "edit": "Edit",
+            "submit": "Continue to review",
+            "manual": "Manual",
+            "card": "Card"
+        },
+
+        "Review": {
+            "review": "Review",
+            "starting-agreement": "By clicking the Order button, you confirm that you have read, understood and agreed with our",
+            "privacy-policy": "privacy policy",
+            "refund-policy": "refund policy",
+            "and": "and",
+            "submit": "Order"
+        },
+
+        "Overview": {
+            "name": "Name",
+            "price": "Price",
+            "submit": "Submit",
+            "discount-code": "Discount code",
+            "in-your-cart": "In your cart",
+            "quantity": "Quantity",
+            "subtotal": "Subtotal",
+            "shipping": "Shipping",
+            "discount-amount": "Discount amount",
+            "total": "Total",
+            "discount-applied": "Discount code applied"
+        }
+    },
+
+    "Order": {
+        "Cancel": {
+            "title": "Order canceled",
+            "description": "Order canceled",
+            "order-canceled": "Your order has been canceled",
+            "order-canceled-description": "There was an error during payment process",
+            "home-page": "Home",
+            "contact-page": "Contact"
+        },
+        "title": "Order review",
+        "description": "Order review",
+        "order-sent": "Your order has been successfully submitted",
+        "order-details-sent": "We have sent order details to {field}",
+        "order-date": "Order date: {field}",
+        "order-status": "Order status: {field}",
+        "order-fulfillment-status": "Order fulfillment status: {field}",
+        "order-number": "Order number: {field}",
+        "overview": "Overview",
+        "name": "Name",
+        "quantity": "Quantity",
+        "price": "Price",
+        "subtotal": "Subtotal",
+        "total": "Total",
+        "shipping": "Shipping",
+        "delivery-information": "Delivery information",
+        "address": "Address",
+        "contact": "Contact",
+        "payment": "Payment",
+        "payment-method": "Payment method",
+        "manual": "Manual",
+        "card": "Card",
+        "paid-on": "paid on",
+        "payment-details": "Payment details"
+    },
+
+    "NotFound": {
+        "page-not-found": "Page that you are looking for is removed or doesn't exist",
+        "home-page": "Home",
+        "contact-page": "Contact"
+    },
+
+    "Contact": {
+        "contact": "Contact",
+        "company-info": "Company info",
+        "contact-description": "Need help or just have a question? Don't hesitate to contact us!",
+        "metadata": {
+            "title": "Contact",
+            "description": "Contact"
+        }
+    },
+
+    "Policies": {
+        "Privacy": {
+            "heading": "Privacy policy",
+            "metadata": {
+                "title": "Privacy policy",
+                "description": "Privacy policy"
+            }
+        },
+        "TermsOfUse": {
+            "heading": "Terms of use",
+            "metadata": {
+                "title": "Terms of use",
+                "description": "Terms of use"
+            }
+        },
+        "Refund": {
+            "heading": "Refund policy",
+            "metadata": {
+                "title": "Refund policy",
+                "description": "Refund policy"
+            }
+        }
     }
 }

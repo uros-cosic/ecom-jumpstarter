@@ -21,11 +21,6 @@ const nextConfig: NextConfig = {
                 protocol: 'https',
                 hostname: BACKEND_URL,
             },
-            // Remove if using backend file server to serve images
-            {
-                protocol: 'https',
-                hostname: 'static.vecteezy.com',
-            },
         ],
     },
 }

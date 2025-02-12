@@ -2,8 +2,6 @@
 
 import { z } from 'zod'
 
-// TODO: Localize error messages => use server func >:DDD
-
 export const createAddressFormSchema = z.object({
     company: z.string().optional(),
     firstName: z.string(),

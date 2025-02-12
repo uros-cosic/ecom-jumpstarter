@@ -27,6 +27,7 @@ const DiscountCodeForm = ({ successMessage, ctaLabel, className }: Props) => {
         }
     })
 
+
     const onSubmit = async (values: discountCodeFormSchemaValues) => {
         const [data, error] = await getDiscountCodeByCode(values.code)
 

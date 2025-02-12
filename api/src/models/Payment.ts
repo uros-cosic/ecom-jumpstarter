@@ -9,7 +9,6 @@ export enum PAYMENT_STATUS {
 }
 
 export interface IPayment extends IBaseModel {
-    order: ObjectId
     method: ObjectId
     amount: number
     status: PAYMENT_STATUS
@@ -17,12 +16,6 @@ export interface IPayment extends IBaseModel {
 
 const PaymentSchema = new Schema<IPayment>(
     {
-        order: {
-            type: Schema.Types.ObjectId,
-            ref: 'Order',
-            required: true,
-        },
-
         method: {
             type: Schema.Types.ObjectId,
             ref: 'PaymentMethod',

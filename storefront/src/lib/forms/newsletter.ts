@@ -2,7 +2,15 @@
 
 import { z } from 'zod'
 
-// TODO: Localize error messages => use server func >:DDD
+const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
+    if (issue.code === z.ZodIssueCode.invalid_type) {
+        return { message: 'Popunite polje' }
+    }
+
+    return { message: ctx.defaultError }
+}
+
+z.setErrorMap(customErrorMap)
 
 const newsletterFormSchema = z.object({ email: z.string().email() })
 

@@ -24,8 +24,8 @@ const InfoSection = () => {
                 <div className="hidden lg:block relative h-[26rem] w-1/2">
                     <Image
                         // Upload your own image
-                        src="https://static.vecteezy.com/system/resources/thumbnails/046/496/611/small_2x/handsome-young-man-pointing-away-png.png"
-                        alt="temp"
+                        src="http://localhost:5000/images/uploads/test.webp"
+                        alt="test"
                         fill
                         style={{ objectFit: 'contain', objectPosition: '50% 0%' }}
                         sizes="50vw"

@@ -147,6 +147,8 @@ CartSchema.methods.calculateTotalPrice = async function (): Promise<number> {
             if (discount.type === DISCOUNT_TYPE.PERCENTAGE)
                 totalPrice -= totalPrice * (discount.percentage || 0)
         }
+
+        totalPrice = Math.max(0, totalPrice)
     }
 
     if (this.shippingMethod) {
@@ -171,7 +173,12 @@ CartSchema.pre('save', async function (next) {
 
 CartSchema.pre('save', async function (next) {
     try {
-        if (this.isNew || this.isModified('items'))
+        if (
+            this.isNew ||
+            this.isModified('items') ||
+            this.isModified('shippingMethod') ||
+            this.isModified('discountCode')
+        )
             await this.calculateTotalPrice()
         next()
     } catch (error: any) {

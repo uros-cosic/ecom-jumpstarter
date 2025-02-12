@@ -56,7 +56,7 @@ const NewAddressForm = ({ user, countryLabel, submitLabel, cityLabel, phoneLabel
                             <FormControl>
                                 <Input
                                     {...field}
-                                    autoComplete='name'
+                                    autoComplete='given-name'
                                     required={true}
                                     placeholder={firstNameLabel}
                                     aria-label={firstNameLabel}
@@ -74,7 +74,7 @@ const NewAddressForm = ({ user, countryLabel, submitLabel, cityLabel, phoneLabel
                             <FormControl>
                                 <Input
                                     {...field}
-                                    autoComplete='given-name'
+                                    autoComplete='family-name'
                                     required={true}
                                     placeholder={lastNameLabel}
                                     aria-label={lastNameLabel}
@@ -109,7 +109,7 @@ const NewAddressForm = ({ user, countryLabel, submitLabel, cityLabel, phoneLabel
                             <FormControl>
                                 <Input
                                     {...field}
-                                    autoComplete='country'
+                                    autoComplete='country-name'
                                     placeholder={countryLabel}
                                     aria-label={countryLabel}
                                 />
@@ -162,7 +162,7 @@ const NewAddressForm = ({ user, countryLabel, submitLabel, cityLabel, phoneLabel
                             <FormControl>
                                 <Input
                                     {...field}
-                                    autoComplete='city'
+                                    autoComplete='home city'
                                     required={true}
                                     placeholder={cityLabel}
                                     aria-label={cityLabel}

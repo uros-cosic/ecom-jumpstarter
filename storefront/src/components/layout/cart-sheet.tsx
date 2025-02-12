@@ -4,18 +4,20 @@ import Image from "next/image"
 import { cookies } from "next/headers"
 
 import { Button } from "../ui/button"
-import { Sheet, SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
+import { SheetClose, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "../ui/sheet"
 import { getCart } from "@/lib/data/cart"
 import LocalizedLink from "../localized-link"
 import { formatCurrency } from "@/lib/utils"
 import { DEFAULT_REGION } from "@/lib/constants"
 import { getRegionByCountryCode } from "@/lib/data/regions"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Separator } from "../ui/separator"
 import { getShippingMethodById } from "@/lib/data/shipping-methods"
 import { getDiscountCodeById } from "@/lib/data/discount-codes"
 import { DISCOUNT_TYPE } from "@/lib/types"
 import DiscountCodeForm from "../forms/discount-code"
+import { getProductPrice } from "@/lib/data/products"
+import CartSheetWrapper from "./cart-sheet-wrapper"
+import QuantitySelect from "./quantity-select"
 
 const CartSheet = async () => {
     const t = await getTranslations("Header.Navbar")
@@ -32,7 +34,22 @@ const CartSheet = async () => {
     if (cart?.shippingMethod) shippingMethod = await getShippingMethodById(cart.shippingMethod)
     if (cart?.discountCode) discountCode = await getDiscountCodeById(cart.discountCode)
 
-    const calculatePrice = () => {
+    const prices = cart && await Promise.all(cart.items.map(item => getProductPrice(item.product._id, item.variant ?? undefined)))
+
+    if (prices) {
+        cart.items.forEach((item, idx) => {
+            const priceObj = prices[idx]
+
+            if (item.variant) {
+                const variant = item.product.variants!.find(v => v._id === item.variant)!
+                variant.price = priceObj?.discountedPrice ?? variant.price
+            } else {
+                item.product.price = priceObj?.discountedPrice ?? item.product.price
+            }
+        })
+    }
+
+    const calculateTotal = () => {
         if (!cart) return {
             subTotal: 0,
             discount: 0,
@@ -59,11 +76,11 @@ const CartSheet = async () => {
             }
         }
 
-        return { subTotal, discount, shipping: shippingCost }
+        return { subTotal: Math.max(0, subTotal), discount, shipping: shippingCost }
     }
 
     return (
-        <Sheet>
+        <CartSheetWrapper>
             <SheetTrigger className="hover:opacity-80 transition-opacity">
                 <ShoppingBag aria-label={t("bag-label")} size={22} />
             </SheetTrigger>
@@ -73,7 +90,7 @@ const CartSheet = async () => {
                         <SheetTitle className="text-center">{t("your-cart")}</SheetTitle>
                         <SheetDescription className="text-center">{t("yout-cart-description")}</SheetDescription>
                     </SheetHeader>
-                    <ul className="max-h-[200px] overflow-y-auto flex flex-col gap-3">
+                    <ul className="no-scrollbar max-h-[200px] overflow-y-auto flex flex-col gap-3">
                         {cart.items.map((item, idx) => (
                             <li
                                 key={idx}
@@ -97,18 +114,9 @@ const CartSheet = async () => {
                                 </div>
                                 <div className="flex flex-col gap-1">
                                     <p className="font-medium text-center">{t("quantity")}</p>
-                                    <Select value={item.quantity.toString()}>
-                                        <SelectTrigger className="h-7 w-16">
-                                            <SelectValue />
-                                        </SelectTrigger>
-                                        <SelectContent>
-                                            {
-                                                new Array(!item.variant ? item.product.quantity + 1 : item.product.variants!.find(v => v._id === item.variant)!.quantity + 1)
-                                                    .fill(null)
-                                                    .map((_, idx) => <SelectItem key={idx} value={idx.toString()}>{idx}</SelectItem>)
-                                            }
-                                        </SelectContent>
-                                    </Select>
+                                    <QuantitySelect
+                                        item={item}
+                                    />
                                 </div>
                                 <div className="flex flex-col text-right gap-1">
                                     <p className="font-medium">{t("price")}</p>
@@ -118,7 +126,7 @@ const CartSheet = async () => {
                         ))}
                     </ul>
                     <div className="flex flex-col gap-2">
-                        <p>Discount code?</p>
+                        <p>{t("discount-code")}?</p>
                         <DiscountCodeForm
                             ctaLabel={t("submit")}
                             successMessage={t("discount-applied")}
@@ -128,16 +136,16 @@ const CartSheet = async () => {
                     <div className="flex flex-col gap-2 w-full text-gray-600">
                         <div className="flex w-full justify-between items-end">
                             <span>{t("subtotal")}:</span>
-                            <span>{formatCurrency(locale, region!.currency, calculatePrice().subTotal)}</span>
+                            <span>{formatCurrency(locale, region!.currency, calculateTotal().subTotal)}</span>
                         </div>
                         <div className="flex w-full justify-between items-end">
                             <span>{t("estimated-shipping")}:</span>
-                            <span>{formatCurrency(locale, region!.currency, calculatePrice().shipping || 5)}</span>
+                            <span>{formatCurrency(locale, region!.currency, calculateTotal().shipping || 5)}</span>
                         </div>
                         {!!discountCode &&
-                            <div className="flex w-full justify-between items-end">
+                            <div className="flex w-full justify-between items-end text-blue-500">
                                 <span>{t("discount-amount")}:</span>
-                                <span>-{formatCurrency(locale, region!.currency, calculatePrice().discount)}</span>
+                                <span>-{formatCurrency(locale, region!.currency, calculateTotal().discount)}</span>
                             </div>
                         }
                         <div className="flex w-full justify-between items-end font-medium text-black">
@@ -146,7 +154,11 @@ const CartSheet = async () => {
                         </div>
                     </div>
                     <Separator />
-                    <Button className="uppercase font-medium">{t("checkout-cta")}</Button>
+                    <LocalizedLink href="/checkout">
+                        <SheetClose asChild>
+                            <Button className="uppercase font-medium w-full">{t("checkout-cta")}</Button>
+                        </SheetClose>
+                    </LocalizedLink>
                 </SheetContent>
                 :
                 <SheetContent>
@@ -173,8 +185,8 @@ const CartSheet = async () => {
                     </div>
                 </SheetContent>
             }
-        </Sheet>
 
+        </CartSheetWrapper>
     )
 }
 

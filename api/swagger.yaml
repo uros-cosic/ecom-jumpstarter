@@ -4627,6 +4627,24 @@ components:
                     type: string
                     format: date-time
 
+        Payment:
+            type: object
+            properties:
+                _id:
+                    type: string
+                method:
+                    type: string
+                amout:
+                    type: number
+                status:
+                    type: string
+                createdAt:
+                    type: string
+                    format: date-time
+                updatedAt:
+                    type: string
+                    format: date-time
+
         Discount:
             type: object
             properties:

@@ -6,6 +6,28 @@ import { getOptions } from './factory'
 import { IAddress } from '../types'
 import { createAddressFormSchemaValues } from '../forms/address'
 import { revalidateTag } from 'next/cache'
+import { checkoutAddressFormSchemaValues } from '../forms/checkout-address'
+
+export const getAddressById = cache(async function (
+    id: string
+): Promise<IAddress | null> {
+    try {
+        const res = await fetch(
+            `${API_STORE_URL}/addresses/${id}`,
+            await getOptions([`address-${id}`])
+        )
+
+        const data = await res.json()
+
+        if (res.ok) return data.data
+
+        console.error(data.message)
+        return null
+    } catch (e) {
+        console.error(e)
+        return null
+    }
+})
 
 /**
  * Gets last 5 created addresses for the current user
@@ -36,7 +58,7 @@ export const getMyAddresses = cache(async function (): Promise<
  * Returns tuple representing [data, null]
  */
 export const createAddress = async function (
-    values: createAddressFormSchemaValues
+    values: createAddressFormSchemaValues | checkoutAddressFormSchemaValues
 ): Promise<[IAddress | null, string | null]> {
     try {
         const options = await getOptions()

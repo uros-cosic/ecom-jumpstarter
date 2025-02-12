@@ -1,5 +1,6 @@
 import Stripe from 'stripe'
 import { Request } from 'express'
+import i18next from 'i18next'
 
 import '../config'
 import Order, { IOrder, ORDER_STATUS } from '../models/Order'
@@ -10,6 +11,7 @@ import Product from '../models/Product'
 import Sale, { SALE_TYPE } from '../models/Sale'
 import Payment, { PAYMENT_STATUS } from '../models/Payment'
 import * as redis from './redis'
+import ShippingMethod from '../models/ShippingMethod'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
 
@@ -29,6 +31,10 @@ export class StripeService {
             if (!region) {
                 throw new Error('Invalid region')
             }
+
+            const shippingMethod = await ShippingMethod.findById(
+                order.cart.shippingMethod
+            )
 
             const currency = region.currency
 
@@ -66,6 +72,19 @@ export class StripeService {
 
             const lineItemsResolved = await Promise.all(lineItemsPromises)
             const lineItems = lineItemsResolved.filter((i) => i !== null)
+
+            lineItems.push({
+                price_data: {
+                    currency,
+                    product_data: {
+                        name: i18next.t('words.shipping-cost', {
+                            lng: region.defaultLocale,
+                        }),
+                    },
+                    unit_amount: (shippingMethod?.cost ?? 0) * 100,
+                },
+                quantity: 1,
+            })
 
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],

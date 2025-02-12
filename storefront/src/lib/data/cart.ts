@@ -25,10 +25,33 @@ export const removeCartId = async () => {
     ;(await cookies()).set('cart_id', '', { maxAge: -1 })
 }
 
-type PopulatedCartItem = Omit<ICartItem, 'product'> & { product: IProduct }
+export type PopulatedCartItem = Omit<ICartItem, 'product'> & {
+    product: IProduct
+}
 
 export type ProductPopulatedCart = Omit<ICart, 'items'> & {
     items: PopulatedCartItem[]
+}
+
+export const getCartById = async (
+    id: string
+): Promise<ProductPopulatedCart | null> => {
+    try {
+        const res = await fetch(
+            `${API_STORE_URL}/carts/${id}`,
+            await getOptions()
+        )
+
+        const data = await res.json()
+
+        if (res.ok) return data.data
+
+        console.error(data.message)
+        return null
+    } catch (e) {
+        console.error(e)
+        return null
+    }
 }
 
 export const getCart = async (): Promise<ProductPopulatedCart | null> => {
@@ -101,11 +124,13 @@ export const getOrSetCart = async (): Promise<
 
 /**
  * Adds/Removes item to cart
- * To remove just set items quantity to 0
+ * To remove just set items quantity to 0 (subtract currents quantity)
  * Returns tuple representing [data, err]
  */
 export const addToCart = async (
-    item: Omit<ICartItem, '_id' | 'createdAt' | 'updatedAt'>
+    item:
+        | Omit<ICartItem, '_id' | 'createdAt' | 'updatedAt'>
+        | Omit<PopulatedCartItem, '_id' | 'creatdAt' | 'updatedAt'>
 ): Promise<[ICart | null, string | null]> => {
     try {
         const cart = (await getOrSetCart()) as ICart
@@ -118,23 +143,29 @@ export const addToCart = async (
             ? false
             : typeof cart.items[0].product !== 'string'
 
+        const productId =
+            typeof item.product === 'string' ? item.product : item.product._id
+
         for (const i of items) {
             if (!isPopulated) {
-                if (i.product === item.product && i.variant === item.variant) {
+                if (i.product === productId && i.variant === item.variant) {
                     i.quantity += item.quantity
                     found = true
                     break
                 }
             } else {
                 i.product = (i.product as unknown as IProduct)._id
-                if (i.product === item.product && i.variant === item.variant) {
+
+                if (i.product === productId && i.variant === item.variant) {
                     i.quantity += item.quantity
                     found = true
                 }
             }
         }
 
-        if (!found) items.push(item as ICartItem)
+        if (!found) {
+            items.push({ ...item, product: productId } as ICartItem)
+        }
 
         const [data, err] = await updateCart({
             items: items.filter((i) => i.quantity > 0),

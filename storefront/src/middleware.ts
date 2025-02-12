@@ -78,10 +78,14 @@ async function getCountryCode(
             .split('/')[1]
             ?.toLowerCase()
 
+        const countryCodeCookie = request.cookies.get('countryCode')?.value
+
         if (urlCountryCode && regionCache[urlCountryCode]) {
             countryCode = urlCountryCode
         } else if (vercelCountryCode && regionCache[vercelCountryCode]) {
             countryCode = vercelCountryCode
+        } else if (countryCodeCookie && regionCache[countryCodeCookie]) {
+            countryCode = countryCodeCookie
         } else if (regionCache[DEFAULT_REGION]) {
             countryCode = DEFAULT_REGION
         } else if (Object.keys(regionCache)[0]) {

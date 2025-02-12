@@ -43,7 +43,8 @@
         "contact-us-here": "Contact us here",
         "password-reset-sent": "Password reset email sent",
         "product": "Product",
-        "discount-code": "Discount code"
+        "discount-code": "Discount code",
+        "shipping-cost": "Shipping cost"
     },
 
     "emails": {

@@ -222,3 +222,28 @@ export interface IShippingMethod extends IBaseModel {
     cost: number
     region: string
 }
+
+export interface IPaymentMethod extends IBaseModel {
+    name: string
+    region: string
+    metadata: Record<string, string>
+}
+
+export enum PAYMENT_STATUS {
+    PENDING = 'pending',
+    COMPLETED = 'completed',
+    FAILED = 'failed',
+}
+
+export interface IPayment extends IBaseModel {
+    method: string
+    amount: number
+    status: PAYMENT_STATUS
+}
+
+export enum CHECKOUT_STEP {
+    ADDRESS = 'address',
+    DELIVERY = 'delivery',
+    PAYMENT = 'payment',
+    REVIEW = 'review',
+}

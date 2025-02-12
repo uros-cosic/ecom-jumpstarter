@@ -1,13 +1,15 @@
 "use client"
 
+import { toast } from "sonner"
+import { Minus, Plus, ShoppingBag } from "lucide-react"
+import { useContext, useEffect, useState } from "react"
+
 import { ICartItem, IProduct, IProductVariant, IRegion } from "@/lib/types"
 import { cn, formatCurrency } from "@/lib/utils"
-import { Minus, Plus, ShoppingBag } from "lucide-react"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { useEffect, useState } from "react"
 import { Button } from "../ui/button"
 import { addToCart } from "@/lib/data/cart"
-import { toast } from "sonner"
+import { CartSheetContext, CartSheetContent } from "@/lib/context/cart-sheet"
 
 type Props = {
     product: IProduct,
@@ -30,7 +32,10 @@ const CartAction = ({ priceObj, product, region, locale, quantityLabel, plusLabe
     const [available, setAvailable] = useState(!!product.quantity)
     const [variant, setVariant] = useState<IProductVariant | null>(null)
 
+    const { setOpen } = useContext<CartSheetContent>(CartSheetContext)
+
     const availableQuantity = variant?.quantity ?? product.quantity
+    const maxQuantity = Math.min(availableQuantity, Math.max(availableQuantity, 10))
 
     const searchParams = useSearchParams()
     const router = useRouter()
@@ -45,7 +50,10 @@ const CartAction = ({ priceObj, product, region, locale, quantityLabel, plusLabe
 
         if (err) {
             toast.error(err)
+            return
         }
+
+        setOpen(true)
     }
 
     const calculatePrice = () => {
@@ -106,7 +114,7 @@ const CartAction = ({ priceObj, product, region, locale, quantityLabel, plusLabe
                             <Minus size={16} aria-label={minusLabel} />
                         </button>
                         <span>{quantity}</span>
-                        <button className="disabled:cursor-not-allowed" disabled={!available} onClick={() => setQuantity(prev => Math.min(prev + 1, availableQuantity ?? 1))}>
+                        <button className="disabled:cursor-not-allowed" disabled={!available} onClick={() => setQuantity(prev => Math.min(prev + 1, maxQuantity ?? 1))}>
                             <Plus size={16} aria-label={plusLabel} />
                         </button>
                     </div>
