@@ -12,6 +12,7 @@ import LocalizedLink from "../localized-link"
 import { useParams } from "next/navigation"
 import { getRegionByCountryCode } from "@/lib/data/regions"
 import { SheetClose } from "../ui/sheet"
+import SearchListSkeleton from "../skeletons/search-list"
 
 type Props = {
     searchInputLabel: string
@@ -23,6 +24,7 @@ const SearchContainer = ({ searchInputLabel, fromLabel, locale }: Props) => {
     const [searchVal, setSearchVal] = useState("")
     const [products, setProducts] = useState<IProduct[]>([])
     const [region, setRegion] = useState<IRegion | null>(null)
+    const [loading, setLoading] = useState(false)
 
     const { countryCode } = useParams()
 
@@ -31,14 +33,17 @@ const SearchContainer = ({ searchInputLabel, fromLabel, locale }: Props) => {
     }, 300);
 
     const populateProducts = async (query: string) => {
+        setLoading(true)
         const data = await searchProducts(query, countryCode as string)
 
         if (data) {
             setProducts(data)
+            setLoading(false)
             return
         }
 
         setProducts([])
+        setLoading(false)
     }
 
     const populateRegion = async () => {
@@ -72,7 +77,7 @@ const SearchContainer = ({ searchInputLabel, fromLabel, locale }: Props) => {
                 </div>
             </div>
             {
-                !!products.length && (
+                loading ? <SearchListSkeleton /> : !!products.length && (
                     <ul className="flex flex-col py-5 gap-3">
                         {products.map(prod => (
                             <li key={prod._id}>

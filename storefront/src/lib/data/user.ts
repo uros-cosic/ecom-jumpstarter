@@ -5,6 +5,7 @@ import { revalidateTag } from 'next/cache'
 import { API_STORE_URL } from '@/lib/constants'
 import { getOptions } from './factory'
 import { IUser } from '../types'
+import { refreshToken } from './auth'
 
 export const getMe = async (): Promise<IUser | null> => {
     try {
@@ -18,6 +19,13 @@ export const getMe = async (): Promise<IUser | null> => {
         if (res.ok) return data.data
 
         console.error(data.message)
+
+        if (res.status === 401) {
+            // token expired
+            const user = await refreshToken()
+            return user
+        }
+
         return null
     } catch (e) {
         console.error(e)

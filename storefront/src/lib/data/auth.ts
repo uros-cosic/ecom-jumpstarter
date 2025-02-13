@@ -1,10 +1,11 @@
 'use server'
 
 import { revalidateTag } from 'next/cache'
+import { cookies } from 'next/headers'
+
 import { API_AUTH_URL } from '../constants'
 import { loginFormSchemaValues } from '../forms/log-in'
 import { getOptions } from './factory'
-import { cookies } from 'next/headers'
 import { IUser } from '../types'
 import { registerFormSchemaValues } from '../forms/register'
 import { passwordChangeFormSchemaValues } from '../forms/account'
@@ -161,5 +162,38 @@ export const changePassword = async (
         return [null, data.message]
     } catch (e) {
         return [null, String(e)]
+    }
+}
+
+export const refreshToken = async (): Promise<IUser | null> => {
+    try {
+        const refreshToken = (await cookies()).get('refreshToken')?.value
+
+        if (!refreshToken) return null
+
+        const options = await getOptions()
+
+        const res = await fetch(`${API_AUTH_URL}/refresh`, {
+            method: 'POST',
+            headers: {
+                ...options.headers,
+                Authorization: `RefreshToken ${refreshToken}`,
+            },
+        })
+
+        const data = await res.json()
+
+        if (res.ok) {
+            await setAuthToken('jwt', data.token)
+
+            return data.data
+        }
+
+        console.error(data.message)
+
+        return null
+    } catch (e) {
+        console.error(String(e))
+        return null
     }
 }

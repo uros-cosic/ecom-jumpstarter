@@ -35,14 +35,10 @@ const removeCookie = (name: string, res: Response) => {
 export const createSendToken = async (
     user: IUser,
     statusCode: number,
-    res: Response
+    res: Response,
+    createRefreshToken: boolean = true
 ) => {
     const token = signToken(String(user._id))
-
-    const refreshToken = await RefreshToken.create({
-        user: user._id,
-        token: crypto.randomBytes(32).toString('hex'),
-    })
 
     const cookieOptions: CookieOptions = {
         expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
@@ -56,18 +52,32 @@ export const createSendToken = async (
     }
 
     res.cookie('jwt', token, cookieOptions)
-    res.cookie('refreshToken', refreshToken.token, {
-        ...cookieOptions,
-        expires: refreshToken.expiresAt,
-    })
+
+    let refreshToken
+
+    if (createRefreshToken) {
+        refreshToken = await RefreshToken.create({
+            user: user._id,
+            token: crypto.randomBytes(32).toString('hex'),
+        })
+
+        res.cookie('refreshToken', refreshToken.token, {
+            ...cookieOptions,
+            expires: refreshToken.expiresAt,
+        })
+    }
 
     const freshUser = user.toObject()
 
-    res.status(statusCode).json({
+    const data: { token: string; data: IUser; refreshToken?: string } = {
         token,
-        refreshToken: refreshToken.token,
         data: freshUser,
-    })
+    }
+
+    if (createRefreshToken && refreshToken)
+        data.refreshToken = refreshToken.token
+
+    res.status(statusCode).json(data)
     return
 }
 
@@ -187,84 +197,33 @@ export const protect = catchAsync(
             return next(new AppError(req.t('errors.log-in'), 401))
         }
 
-        try {
-            const decoded = (await promisify(jwt.verify)(
-                token,
-                // @ts-ignore
-                process.env.JWT_SECRET!
-            )) as unknown as { id: string; iat: number }
+        const decoded = (await promisify(jwt.verify)(
+            token,
+            // @ts-ignore
+            process.env.JWT_SECRET!
+        )) as unknown as { id: string; iat: number }
 
-            const freshUser = await User.findById(decoded?.id)
+        const freshUser = await User.findById(decoded?.id)
 
-            if (!freshUser) {
-                return next(
-                    new AppError(
-                        req.t('errors.not-found', {
-                            field: req.t('words.user'),
-                        }),
-                        401
-                    )
+        if (!freshUser) {
+            return next(
+                new AppError(
+                    req.t('errors.not-found', {
+                        field: req.t('words.user'),
+                    }),
+                    401
                 )
-            }
-
-            if (freshUser.changedPasswordAfter(decoded.iat)) {
-                return next(
-                    new AppError(req.t('errors.recently-changed-password'), 401)
-                )
-            }
-
-            res.locals.user = freshUser
-            next()
-        } catch (e: any) {
-            if (e.name !== 'TokenExpiredError' || !req.cookies.refreshToken)
-                throw e
-
-            const refreshToken = await RefreshToken.findOne({
-                token: req.cookies.refreshToken,
-            })
-
-            if (
-                !refreshToken ||
-                refreshToken.revokedAt ||
-                new Date() > new Date(refreshToken.expiresAt)
-            ) {
-                removeCookie('jwt', res)
-                removeCookie('refreshToken', res)
-                throw e
-            }
-
-            const newToken = signToken(String(refreshToken.user))
-
-            const cookieOptions: CookieOptions = {
-                expires: new Date(Date.now() + 2 * 60 * 60 * 1000),
-                httpOnly: true,
-                sameSite: 'lax',
-            }
-
-            if (process.env.NODE_ENV === 'production') {
-                cookieOptions.secure = true
-                cookieOptions.sameSite = 'none'
-            }
-
-            res.cookie('jwt', newToken, cookieOptions)
-
-            const freshUser = await User.findById(refreshToken.user)
-
-            if (!freshUser) {
-                return next(
-                    new AppError(
-                        req.t('errors.not-found', {
-                            field: req.t('words.user'),
-                        }),
-                        401
-                    )
-                )
-            }
-
-            res.locals.user = freshUser
-
-            next()
+            )
         }
+
+        if (freshUser.changedPasswordAfter(decoded.iat)) {
+            return next(
+                new AppError(req.t('errors.recently-changed-password'), 401)
+            )
+        }
+
+        res.locals.user = freshUser
+        next()
     }
 )
 
@@ -431,6 +390,57 @@ export const updatePassword = catchAsync(
         )
 
         createSendToken(user, 200, res)
+        return
+    }
+)
+
+export const refreshToken = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        let token
+
+        if (
+            req.headers.authorization &&
+            req.headers.authorization.startsWith('RefreshToken')
+        ) {
+            token = req.headers.authorization.split(' ')[1]
+        } else if (req.cookies.refreshToken) {
+            token = req.cookies.refreshToken
+        }
+
+        if (!token) {
+            return next(new AppError(req.t('errors.bad-request'), 400))
+        }
+
+        const refreshToken = await RefreshToken.findOne({
+            token,
+        })
+
+        if (
+            !refreshToken ||
+            refreshToken.revokedAt ||
+            new Date() > new Date(refreshToken.expiresAt)
+        ) {
+            removeCookie('jwt', res)
+            removeCookie('refreshToken', res)
+            return next(
+                new AppError(req.t('errors.not-found', { field: 'Token' }), 404)
+            )
+        }
+
+        const user = await User.findById(refreshToken.user)
+
+        if (!user) {
+            return next(
+                new AppError(
+                    req.t('errors.not-found', {
+                        field: req.t('words.user'),
+                    }),
+                    401
+                )
+            )
+        }
+
+        createSendToken(user, 200, res, false)
         return
     }
 )

@@ -31,5 +31,5 @@ Check the ```package.json``` for all available scripts and dependencies versions
 
 **TODO:**
 
-- [ ] Storefront
+- [x] Storefront
 - [ ] Admin

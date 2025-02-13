@@ -20,4 +20,3 @@ Finally read swagger while in development at ```/docs``` and you can start editi
 
 - [ ] Fix redundency
 - [ ] Unit and integration tests for all routes
-- [ ] Dockerize the project

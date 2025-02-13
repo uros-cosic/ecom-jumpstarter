@@ -15,6 +15,7 @@ export const getOptions = async (tags: string[] = []) => {
     }
 
     const cookieStore = await cookies()
+
     const token = cookieStore.get('jwt')?.value
     const locale = await getLocale()
 
