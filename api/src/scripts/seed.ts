@@ -45,7 +45,13 @@ const seedRegions = async () => {
 
         if (!regions.length) throw new Error('No regions data')
 
-        const data = await Region.insertMany(regions)
+        const countries = (
+            await Country.find({ code: { $in: ['us', 'rs'] } })
+        ).map((c) => String(c._id))
+
+        const data = await Region.insertMany(
+            regions.map((r) => ({ ...r, countries }))
+        )
 
         console.log(`Inserted ${data.length} regions`)
     } catch (e) {
@@ -106,8 +112,11 @@ const seedPaymentMethods = async () => {
 const seed = async () => {
     try {
         await seedCountries()
+        await new Promise((r) => setTimeout(r, 2000))
         await seedRegions()
+        await new Promise((r) => setTimeout(r, 2000))
         await seedUsers()
+        await new Promise((r) => setTimeout(r, 2000))
         await seedPaymentMethods()
     } catch (e) {
         console.error('Error seeding data', e)

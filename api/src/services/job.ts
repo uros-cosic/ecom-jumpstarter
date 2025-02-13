@@ -3,6 +3,8 @@ import path from 'path'
 import fsp from 'fs/promises'
 import fs from 'fs'
 
+import '../config'
+
 export class JobService {
     static async backupDatabase() {
         const backupDir = path.join(process.cwd(), 'backups', 'db')

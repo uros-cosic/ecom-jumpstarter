@@ -1,6 +1,9 @@
 import { PopulatedOrder } from '../models/Order'
 import { OrderAnalytics } from '../models/OrderAnalytics'
 import { SiteAnalytics } from '../models/SiteAnalytics'
+
+import '../config'
+
 import * as redis from '../services/redis'
 
 export class AnalyticsService {

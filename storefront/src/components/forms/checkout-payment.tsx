@@ -1,7 +1,7 @@
 "use client"
 
 import { checkoutPaymentFormSchema, checkoutPaymentFormSchemaValues } from "@/lib/forms/checkout-payment"
-import { AUTOMATED_PAYMENT_METHODS, CHECKOUT_STEP, IPaymentMethod, IRegion } from "@/lib/types"
+import { AUTOMATED_PAYMENT_METHODS, CHECKOUT_STEP, IPaymentMethod } from "@/lib/types"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useState } from "react"
 import { useForm } from "react-hook-form"

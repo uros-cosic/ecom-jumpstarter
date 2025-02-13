@@ -1,6 +1,8 @@
 import { USER_ROLE } from '../models/User'
 import { io } from '../websocket'
 
+import '../config'
+
 export class NotificationService {
     public static notifyAdmins = async (
         event: string,

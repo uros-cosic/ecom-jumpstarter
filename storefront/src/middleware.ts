@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { IRegion } from './lib/types'
 
-const BACKEND_URL = process.env.BACKEND_URL
+const BACKEND_URL = process.env.NEXT_PUBLIC_API_URL ?? process.env.BACKEND_URL
 const DEFAULT_REGION = process.env.DEFAULT_REGION ?? 'us'
 
 interface IRegionCache {
@@ -14,50 +15,62 @@ const regionCache: IRegionCache = {
 }
 
 async function getRegionsCache() {
-    const { regions, updatedAt } = regionCache
-
     if (!BACKEND_URL) {
         throw new Error('No backend url provided')
     }
 
-    if (!Object.keys(regions).length || updatedAt < Date.now() - 3600 * 1000) {
-        const res = await fetch(`${BACKEND_URL}/api/store/regions?limit=999`, {
-            next: {
-                revalidate: 3600,
-                tags: ['regions'],
-            },
-        })
-
-        const data = await res.json()
-
-        if (!res.ok) throw new Error(data.message)
-
-        const fetchedRegions = data.data
-
-        if (!fetchedRegions?.length) {
-            throw new Error('No regions found while fetching')
-        }
-
-        const countryIds = []
-
-        for (const region of fetchedRegions) {
-            countryIds.push(region.countries)
-        }
-
-        const uniqueCountries = new Set(countryIds.flat())
-
-        const countriesRes = await Promise.all(
-            Array.from(uniqueCountries).map((id) =>
-                fetch(`${BACKEND_URL}/api/store/countries/${id}`)
+    if (
+        !Object.keys(regionCache.regions).length ||
+        regionCache.updatedAt < Date.now() - 3600 * 1000
+    ) {
+        try {
+            const res = await fetch(
+                `${BACKEND_URL}/api/store/regions?limit=999`,
+                {
+                    next: { revalidate: 3600, tags: ['regions'] },
+                }
             )
-        )
 
-        const countries = await Promise.all(countriesRes.map((c) => c.json()))
+            if (!res.ok)
+                throw new Error(`Failed to fetch regions: ${res.status}`)
 
-        for (const country of countries.map((c) => c.data).filter((c) => !!c))
-            regionCache.regions[country.code] = true
+            const data = await res.json()
+            const fetchedRegions = data?.data ?? []
 
-        regionCache.updatedAt = Date.now()
+            if (!fetchedRegions.length) {
+                throw new Error('No regions found while fetching')
+            }
+
+            const countryIds = fetchedRegions.flatMap(
+                (region: IRegion) => region.countries
+            )
+            const uniqueCountries = Array.from(new Set(countryIds))
+
+            const countryResponses = await Promise.allSettled(
+                uniqueCountries.map((id) =>
+                    fetch(`${BACKEND_URL}/api/store/countries/${id}`)
+                )
+            )
+
+            countryResponses.forEach((result) => {
+                if (result.status === 'fulfilled') {
+                    result.value.json().then((data) => {
+                        if (data?.data?.code) {
+                            regionCache.regions[data.data.code] = true
+                        }
+                    })
+                }
+            })
+
+            regionCache.updatedAt = Date.now()
+        } catch (error) {
+            console.error('Error fetching regions:', error)
+            return {}
+        }
+    }
+
+    if (!regionCache.regions[DEFAULT_REGION]) {
+        regionCache.regions[DEFAULT_REGION] = true
     }
 
     return regionCache.regions
@@ -68,76 +81,57 @@ async function getCountryCode(
     regionCache: Record<string, boolean>
 ) {
     try {
-        let countryCode
-
         const vercelCountryCode = request.headers
             .get('x-vercel-ip-country')
             ?.toLowerCase()
-
         const urlCountryCode = request.nextUrl.pathname
             .split('/')[1]
             ?.toLowerCase()
-
         const countryCodeCookie = request.cookies.get('countryCode')?.value
 
         if (urlCountryCode && regionCache[urlCountryCode]) {
-            countryCode = urlCountryCode
+            return urlCountryCode
         } else if (vercelCountryCode && regionCache[vercelCountryCode]) {
-            countryCode = vercelCountryCode
+            return vercelCountryCode
         } else if (countryCodeCookie && regionCache[countryCodeCookie]) {
-            countryCode = countryCodeCookie
+            return countryCodeCookie
         } else if (regionCache[DEFAULT_REGION]) {
-            countryCode = DEFAULT_REGION
-        } else if (Object.keys(regionCache)[0]) {
-            countryCode = Object.keys(regionCache)[0]
+            return DEFAULT_REGION
+        } else if (Object.keys(regionCache).length > 0) {
+            return Object.keys(regionCache)[0]
         }
 
-        return countryCode
+        return DEFAULT_REGION
     } catch (e) {
         console.error(e)
+        return DEFAULT_REGION
     }
 }
 
 export async function middleware(request: NextRequest) {
-    let redirectUrl = request.nextUrl.href
-
-    let response = NextResponse.redirect(redirectUrl, 307)
-
     const regionCache = await getRegionsCache()
+    const countryCode = await getCountryCode(request, regionCache)
 
-    const countryCode =
-        regionCache && (await getCountryCode(request, regionCache))
+    const response = NextResponse.next()
+    response.cookies.set('countryCode', countryCode)
 
     const urlHasCountryCode =
-        countryCode &&
-        request.nextUrl.pathname.split('/')[1].includes(countryCode)
-
-    response.cookies.set('countryCode', countryCode ?? DEFAULT_REGION)
+        request.nextUrl.pathname.split('/')[1] === countryCode
 
     if (urlHasCountryCode) {
-        response = NextResponse.next()
-
-        response.cookies.set('countryCode', countryCode ?? DEFAULT_REGION)
-
         return response
     }
 
     if (request.nextUrl.pathname.includes('.')) {
-        return NextResponse.next()
+        return response
     }
 
     const redirectPath =
         request.nextUrl.pathname === '/' ? '' : request.nextUrl.pathname
-
     const queryString = request.nextUrl.search ? request.nextUrl.search : ''
+    const redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`
 
-    if (!urlHasCountryCode && countryCode) {
-        redirectUrl = `${request.nextUrl.origin}/${countryCode}${redirectPath}${queryString}`
-        response = NextResponse.redirect(`${redirectUrl}`, 307)
-        response.cookies.set('countryCode', countryCode ?? DEFAULT_REGION)
-    }
-
-    return response
+    return NextResponse.redirect(redirectUrl, 307)
 }
 
 export const config = {

@@ -16,7 +16,7 @@ import { getShippingMethodById } from "@/lib/data/shipping-methods"
 import { AUTOMATED_PAYMENT_METHODS, DISCOUNT_TYPE } from "@/lib/types"
 import { formatCurrency, formatDate } from "@/lib/utils"
 
-export async function generateMetada(): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
     // orders shouldn't be indexable - robots
 
     const t = await getTranslations("Order")

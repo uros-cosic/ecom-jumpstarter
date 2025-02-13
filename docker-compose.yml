@@ -1,0 +1,78 @@
+services:
+  api:
+    build: ./api
+    container_name: api
+    restart: always
+    ports:
+      - "5000:5000"
+      - "5001:5001"
+    environment:
+      - MONGO_URI=mongodb://mongo:27017/ecom-jumpstarter
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_started
+    networks:
+      - app_network
+    healthcheck:
+      test: curl --fail http://localhost:5000/api/store/regions || exit 1
+      interval: 10s
+      retries: 5
+      timeout: 5s
+
+  seed:
+    build: ./api
+    container_name: seed
+    command: npm run seed:prod
+    depends_on:
+      api:
+        condition: service_started
+    networks:
+      - app_network
+    restart: "no"
+
+  storefront:
+    build: ./storefront
+    container_name: storefront
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - app_network
+
+  mongo:
+    image: mongo:6
+    container_name: mongodb
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongosh mongodb:27017/test --quiet
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - app_network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - app_network
+
+volumes:
+  mongodb_data:
+
+networks:
+  app_network:
+    driver: bridge

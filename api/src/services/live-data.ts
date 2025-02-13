@@ -1,5 +1,7 @@
 import eventBus from './event-bus'
 
+import '../config'
+
 export class LiveDataService {
     static readonly Events = {
         UPDATED: 'live-data.updated',

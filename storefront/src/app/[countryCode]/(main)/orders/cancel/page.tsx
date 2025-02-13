@@ -4,7 +4,7 @@ import { getTranslations } from "next-intl/server"
 import LocalizedLink from "@/components/localized-link"
 import { Button } from "@/components/ui/button"
 
-export async function generateMetada(): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
     // orders shouldn't be indexable - robots
 
     const t = await getTranslations("Order.Cancel")

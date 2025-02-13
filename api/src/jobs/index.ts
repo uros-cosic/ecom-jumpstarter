@@ -1,5 +1,7 @@
 import cron from 'node-cron'
 
+import '../config'
+
 import { JobService } from '../services/job'
 
 if (process.env.NODE_ENV !== 'test') {

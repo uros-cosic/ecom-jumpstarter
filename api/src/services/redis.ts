@@ -1,5 +1,7 @@
 import { createClient, SetOptions } from 'redis'
 
+import '../config'
+
 const redisClient = createClient({
     url: process.env.REDIS_URI!,
 })

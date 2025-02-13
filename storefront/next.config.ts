@@ -11,11 +11,16 @@ const nextConfig: NextConfig = {
             fullUrl: true,
         },
     },
+    output: 'standalone',
     images: {
         remotePatterns: [
             {
                 protocol: 'http',
                 hostname: 'localhost',
+            },
+            {
+                protocol: 'http',
+                hostname: 'api',
             },
             {
                 protocol: 'https',

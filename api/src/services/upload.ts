@@ -2,6 +2,8 @@ import path from 'path'
 import fs from 'fs/promises'
 import sharp from 'sharp'
 
+import '../config'
+
 const BACKEND_URL = process.env.BACKEND_URL ?? 'http://localhost:5000'
 
 interface IUploadOptions {

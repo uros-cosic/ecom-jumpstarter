@@ -95,14 +95,14 @@ describe('Store cart routes', () => {
                         },
                         {
                             product: variantProd,
-                            variant: variantProd!.variants[0]._id,
+                            variant: variantProd!.variants![0]!._id,
                             quantity: 3,
                         },
                     ],
                 })
 
             const totalPrice =
-                2 * nonVariantProd!.price + 3 * variantProd!.variants[0].price
+                2 * nonVariantProd!.price + 3 * variantProd!.variants![0]!.price
 
             expect(res.status).toBe(201)
             expect(res.body).toHaveProperty('data')

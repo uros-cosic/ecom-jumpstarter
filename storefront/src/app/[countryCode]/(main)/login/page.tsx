@@ -11,7 +11,7 @@ type Props = {
     params: Promise<{ countryCode: string }>
 }
 
-export async function generateMedatada({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { countryCode } = await params
 
     const t = await getTranslations("Login.metadata")

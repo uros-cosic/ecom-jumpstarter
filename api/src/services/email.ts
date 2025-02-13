@@ -5,6 +5,8 @@ import Mailgun, { MailgunMessageData } from 'mailgun.js'
 import Handlebars from 'handlebars'
 import i18next from 'i18next'
 
+import '../config'
+
 import { IUser } from '../models/User'
 import Region from '../models/Region'
 import { COLORS, STORE } from '../lib/constants'

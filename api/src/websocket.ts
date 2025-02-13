@@ -4,6 +4,8 @@ import { Server as SocketIOServer } from 'socket.io'
 import { WebsocketService } from './services/websocket'
 import LiveDataService from './services/live-data'
 
+import './config'
+
 const PORT = process.env.WS_PORT || 5001
 
 const httpServer = createServer()

@@ -10,7 +10,7 @@ import PaginatedProducts from "@/components/paginated-products";
 import { getRegionByCountryCode } from "@/lib/data/regions";
 import ProductsSkeleton from "@/components/skeletons/products";
 
-export async function generateMetada({ params }: Props): Promise<Metadata> {
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const { countryCode } = await params
     const t = await getTranslations("Sale.metadata")
 

@@ -1,11 +1,7 @@
 import { IAddress } from "@/lib/types"
-import { Button } from "../ui/button"
-import { Trash } from "lucide-react"
 import { getTranslations } from "next-intl/server"
 import NewAddressDialog from "./new-address-dialog"
 import { getMe } from "@/lib/data/user"
-import { deleteAddress } from "@/lib/data/addresses"
-import { toast } from "sonner"
 import DeleteAddressButton from "./delete-address-button"
 
 type Props = {

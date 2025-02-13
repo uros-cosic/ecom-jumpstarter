@@ -1,6 +1,8 @@
 import { isValidObjectId } from 'mongoose'
 import { Socket } from 'socket.io'
 
+import '../config'
+
 import * as redis from './redis'
 import User, { USER_ROLE } from '../models/User'
 
