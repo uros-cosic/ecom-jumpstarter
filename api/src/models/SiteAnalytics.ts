@@ -7,7 +7,7 @@ export interface ISiteAnalytics extends IBaseModel {
     totalVisits: number
     newSignups: number
     geoData: { country: string; visits: number }[]
-    deviceData: { deviceType: string; visits: number }[]
+    deviceData: { deviceType: string }[]
 }
 
 const SiteAnalyticsSchema = new Schema<ISiteAnalytics>(
@@ -16,7 +16,7 @@ const SiteAnalyticsSchema = new Schema<ISiteAnalytics>(
         totalVisits: { type: Number, default: 0 },
         newSignups: { type: Number, default: 0 },
         geoData: [{ country: String, visits: Number }],
-        deviceData: [{ deviceType: String, visits: Number }],
+        deviceData: [{ deviceType: String }],
     },
     { timestamps: true }
 )

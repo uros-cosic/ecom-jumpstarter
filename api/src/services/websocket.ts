@@ -14,7 +14,9 @@ export class WebsocketService {
             if (userId && isValidObjectId(userId)) {
                 let user
 
-                const cachedUser = await redis.getCachedValue(`user:${userId}`)
+                const cachedUser = await redis.getCachedValue(
+                    `${User.modelName.toLowerCase()}:${userId}`
+                )
 
                 if (cachedUser) {
                     user = await JSON.parse(cachedUser)
@@ -24,10 +26,14 @@ export class WebsocketService {
 
                 if (user && user.role === USER_ROLE.ADMIN) {
                     socket.join(USER_ROLE.ADMIN)
+                    return true
                 }
+                return false
             }
+            return false
         } catch (e) {
             console.error(e)
+            return false
         }
     }
 }

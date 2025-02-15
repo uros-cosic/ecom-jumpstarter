@@ -104,7 +104,6 @@ export const trackUser = async (
 
         const agent = useragent.parse(userAgent)
         const deviceType = agent.device.family || 'Unknown'
-        const browser = agent.toAgent()
 
         await SiteAnalytics.findOneAndUpdate(
             { date: today },
@@ -115,7 +114,7 @@ export const trackUser = async (
                         country: geoData.country,
                         region: geoData.region,
                     },
-                    deviceData: { deviceType, browser },
+                    deviceData: { deviceType },
                 },
             },
             { upsert: true, new: true }

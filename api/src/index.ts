@@ -59,7 +59,7 @@ const storeCorsOptions = {
         callback: (err: Error | null, allow?: boolean) => void
     ) => {
         if (
-            process.env.NODE_ENV === 'dev' ||
+            process.env.NODE_ENV === 'development' ||
             !origin ||
             STORE_CORS.includes(origin)
         ) {
@@ -78,7 +78,7 @@ const adminCorsOptions = {
         callback: (err: Error | null, allow?: boolean) => void
     ) => {
         if (
-            process.env.NODE_ENV === 'dev' ||
+            process.env.NODE_ENV === 'development' ||
             !origin ||
             ADMIN_CORS.includes(origin)
         ) {

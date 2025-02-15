@@ -18,11 +18,12 @@ export const io = new SocketIOServer(httpServer, {
 })
 
 io.on('connection', async (socket) => {
-    LiveDataService.updateLiveUsers(1)
-    WebsocketService.authenticateConnection(socket)
+    const adminUser = await WebsocketService.authenticateConnection(socket)
+
+    if (!adminUser) LiveDataService.increaseLiveUsers(1)
 
     socket.on('disconnect', () => {
-        LiveDataService.updateLiveUsers(-1)
+        if (!adminUser) LiveDataService.increaseLiveUsers(-1)
     })
 })
 

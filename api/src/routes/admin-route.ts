@@ -5,6 +5,7 @@ import { USER_ROLE } from '../models/User'
 import {
     createUser,
     deleteUser,
+    getMe,
     getUser,
     getUsers,
     updateUser,
@@ -116,6 +117,7 @@ router.use(protect, restrictTo(USER_ROLE.ADMIN))
 
 // Users
 router.route('/users').get(getUsers).post(createUser)
+router.route('/users/me').get(getMe, getUser)
 router.route('/users/:id').get(getUser).patch(updateUser).delete(deleteUser)
 
 // Orders

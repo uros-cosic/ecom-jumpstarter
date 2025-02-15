@@ -15,7 +15,7 @@ export class LiveDataService {
 
     getLiveUsers = () => this.users
 
-    updateLiveUsers = (increment: number) => {
+    increaseLiveUsers = (increment: number) => {
         this.users += increment
         eventBus.emit(LiveDataService.Events.UPDATED, this.getLiveData())
     }
