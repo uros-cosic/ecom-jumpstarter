@@ -3,6 +3,7 @@ import { JSDOM } from 'jsdom'
 import slugify from 'slugify'
 import DOMPurify from 'dompurify'
 import i18next from 'i18next'
+import { marked } from 'marked'
 
 import { IBaseModel } from '../lib/types'
 import { AppError } from '../lib/app-error'
@@ -253,9 +254,11 @@ const ProductSchema = new Schema<IProduct>(
 const window = new JSDOM('').window
 const purify = DOMPurify(window)
 
-ProductSchema.pre('save', function (next) {
+ProductSchema.pre('save', async function (next) {
     try {
-        if (this.details) this.details = purify.sanitize(this.details)
+        if (this.details) {
+            this.details = purify.sanitize(await marked(this.details))
+        }
         next()
     } catch (error: any) {
         next(new AppError(i18next.t('errors.default')))

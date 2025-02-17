@@ -27,3 +27,24 @@ export const getShippingMethods = cache(async function (
         return null
     }
 })
+
+export const getShippingMethodById = cache(async function (
+    id: IShippingMethod['_id']
+): Promise<IShippingMethod | null> {
+    try {
+        const res = await fetch(
+            `${API_ADMIN_URL}/shippingMethods/${id}`,
+            await getOptions([`shipping-method-${id}`])
+        )
+
+        const data = await res.json()
+
+        if (res.ok) return data.data
+
+        console.error(data.message)
+        return null
+    } catch (e) {
+        console.error(e)
+        return null
+    }
+})

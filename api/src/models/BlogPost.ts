@@ -3,6 +3,7 @@ import slugify from 'slugify'
 import DOMPurify from 'dompurify'
 import { JSDOM } from 'jsdom'
 import i18next from 'i18next'
+import { marked } from 'marked'
 
 import { AppError } from '../lib/app-error'
 import { IBaseModel } from '../lib/types'
@@ -106,9 +107,9 @@ const BlogPostSchema = new Schema<IBlogPost>(
 const window = new JSDOM('').window
 const purify = DOMPurify(window)
 
-BlogPostSchema.pre('save', function (next) {
+BlogPostSchema.pre('save', async function (next) {
     try {
-        this.content = purify.sanitize(this.content)
+        this.content = purify.sanitize(await marked(this.content))
         next()
     } catch (error: any) {
         next(new AppError(error?.message || i18next.t('errors.default')))

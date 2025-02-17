@@ -31,9 +31,9 @@ export const uploadImage = catchAsync(
     async (req: Request, res: Response, next: NextFunction) => {
         if (!req.file) return next(new AppError(req.t('errors.no-file'), 400))
 
-        const filePath = UploadService.uploadImage(
+        const filePath = await UploadService.uploadImage(
             req.file.buffer,
-            path.join(process.cwd(), 'public', 'images', 'uploads'),
+            path.join('public', 'images', 'uploads'),
             generateUniqueFileName(req.file)
         )
 

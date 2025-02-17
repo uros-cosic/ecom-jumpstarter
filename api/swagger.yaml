@@ -1477,6 +1477,82 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
 
+    /api/admin/carts/{id}:
+        get:
+            summary: Gets the cart
+            tags:
+                - Admin/Carts
+            security:
+                - bearerAuth: []
+            x-roles:
+                - admin
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns cart
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Cart'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/admin/addresses/{id}:
+        get:
+            summary: Gets the address
+            tags:
+                - Admin/Addresses
+            security:
+                - bearerAuth: []
+            x-roles:
+                - admin
+            parameters:
+                - in: path
+                  name: id
+                  required: true
+                  schema:
+                      type: string
+            responses:
+                200:
+                    description: Returns address
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/Cart'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
     /api/admin/orders:
         get:
             summary: Gets orders

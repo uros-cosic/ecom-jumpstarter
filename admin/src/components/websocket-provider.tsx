@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react"
 import { io, Socket } from 'socket.io-client'
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 import { WS_URL } from "@/lib/constants"
 import { WebSocketContext } from "@/lib/context/websocket"
 import { IOrder, IUser, LiveDataNotificationEvents } from "@/lib/types"
 import { getMe } from "@/lib/data/user"
-import { toast } from "sonner"
-import { usePathname, useRouter } from "next/navigation"
 
 
 type Props = {
@@ -20,7 +20,6 @@ const WebsocketProvider = ({ children }: Props) => {
     const [webSocket, setWebSocket] = useState<Socket | null>(null)
 
     const router = useRouter()
-    const pathname = usePathname()
 
     const fetchUser = async () => {
         const data = await getMe()
@@ -42,7 +41,7 @@ const WebsocketProvider = ({ children }: Props) => {
                 toast('New order', {
                     action: {
                         label: 'Review',
-                        onClick: () => { router.push(`${pathname}/orders/${data._id}`) }
+                        onClick: () => { router.push(`/orders/${data._id}`) }
                     },
                 })
             })
@@ -53,7 +52,7 @@ const WebsocketProvider = ({ children }: Props) => {
             }
         }
 
-    }, [user, pathname, router])
+    }, [user, router])
 
     return (
         <WebSocketContext.Provider value={{ webSocket }}>{children}</WebSocketContext.Provider>

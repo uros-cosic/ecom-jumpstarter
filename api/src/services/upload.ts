@@ -47,6 +47,6 @@ export class UploadService {
             .webp({ quality: sharpOptions.quality })
             .toFile(filePath)
 
-        return `${BACKEND_URL}/${destination}/${renamedFile}`
+        return `${BACKEND_URL}/${destination.replace('public/', '')}/${renamedFile}`
     }
 }

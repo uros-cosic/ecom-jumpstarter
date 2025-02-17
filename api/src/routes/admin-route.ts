@@ -110,6 +110,8 @@ import {
     updateProductReview,
 } from '../controllers/product-review-controller'
 import { getCountries, getCountry } from '../controllers/country-controller'
+import { getCart } from '../controllers/cart-controller'
+import { getAddress } from '../controllers/address-controller'
 
 const router = Router()
 
@@ -123,6 +125,12 @@ router.route('/users/:id').get(getUser).patch(updateUser).delete(deleteUser)
 // Orders
 router.route('/orders').get(getOrders)
 router.route('/orders/:id').get(getOrder).patch(updateOrder)
+
+// Carts
+router.route('/carts/:id').get(getCart)
+
+// Addresses
+router.route('/addresses/:id').get(getAddress)
 
 // Analytics (store, order)
 router.route('/analytics/site').get(getSiteAnalytics)

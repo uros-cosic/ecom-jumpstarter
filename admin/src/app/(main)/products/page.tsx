@@ -28,7 +28,6 @@ const Page = async ({ searchParams }: Props) => {
                 columnVisibilityObj={{ thumbnail: false }}
             />
         </div>
-
     )
 }
 

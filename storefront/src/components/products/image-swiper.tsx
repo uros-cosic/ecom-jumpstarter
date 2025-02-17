@@ -39,7 +39,9 @@ const ImageSwiper = ({ images, sizes, className, productLabel }: Props) => {
                     images.map((img, idx) => (
                         <li
                             key={idx}
-                            className="relative h-20 w-20 bg-gray-50 rounded-md border flex items-center justify-center cursor-pointer overflow-hidden"
+                            className={cn("relative h-20 w-20 bg-gray-50 rounded-md border flex items-center justify-center cursor-pointer overflow-hidden", {
+                                "border-black": image === images[idx]
+                            })}
                             onClick={() => setImage(images[idx])}
                         >
                             <Image

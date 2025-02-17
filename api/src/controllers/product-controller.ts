@@ -151,7 +151,7 @@ export const uploadProductImages = catchAsync(
             images.push(filePath)
         }
 
-        res.status(201).json({ data: res })
+        res.status(201).json({ data: images })
         return
     }
 )

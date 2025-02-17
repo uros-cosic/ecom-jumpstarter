@@ -8,6 +8,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { locale } from "@/lib/constants";
 import { IProduct, IProductVariant } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
 
 export const columns: ColumnDef<IProduct>[] = [
     {
@@ -69,12 +70,16 @@ export const columns: ColumnDef<IProduct>[] = [
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>
-                    Details
+                <DropdownMenuItem asChild>
+                    <Link href={`/products/${row.getValue('_id')}`}>
+                        Details
+                    </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Edit
+                <DropdownMenuItem asChild>
+                    <Link href={`/products/edit/${row.getValue('_id')}`}>
+                        Edit
+                    </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                     Delete
