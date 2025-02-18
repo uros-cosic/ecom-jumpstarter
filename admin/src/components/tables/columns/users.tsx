@@ -7,6 +7,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { locale } from "@/lib/constants";
 import { IUser } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
+import { deleteUser } from "@/lib/data/user";
+import { toast } from "sonner";
 
 export const columns: ColumnDef<IUser>[] = [
 
@@ -51,14 +54,21 @@ export const columns: ColumnDef<IUser>[] = [
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>
-                    Details
+                <DropdownMenuItem asChild>
+                    <Link href={`/users/edit/${row.getValue('_id')}`}>
+                        Edit
+                    </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={async () => {
+                    const [, err] = await deleteUser(row.getValue('_id'))
+
+                    if (err) {
+                        toast.error(err)
+                        return
+                    }
+
+                    toast.success('User deleted')
+                }}>
                     Delete
                 </DropdownMenuItem>
             </DropdownMenuContent>

@@ -59,6 +59,7 @@ export interface IProduct extends IBaseModel {
     name: string
     description: string
     details?: string | null
+    detailsMarkdown?: string | null
     keywords: string[]
     handle: string
     type: PRODUCT_TYPE

@@ -13,6 +13,7 @@ export interface IBlogPost extends IBaseModel {
     description: string
     handle: string
     content: string
+    contentMarkdown: string
     thumbnail: string
     region: ObjectId
     author?: ObjectId
@@ -77,6 +78,10 @@ const BlogPostSchema = new Schema<IBlogPost>(
             required: true,
         },
 
+        contentMarkdown: {
+            type: String,
+        },
+
         author: {
             type: Schema.Types.ObjectId,
             ref: 'User',
@@ -109,10 +114,11 @@ const purify = DOMPurify(window)
 
 BlogPostSchema.pre('save', async function (next) {
     try {
+        this.contentMarkdown = this.content
         this.content = purify.sanitize(await marked(this.content))
         next()
-    } catch (error: any) {
-        next(new AppError(error?.message || i18next.t('errors.default')))
+    } catch (error) {
+        next(new AppError(String(error) || i18next.t('errors.default')))
     }
 })
 

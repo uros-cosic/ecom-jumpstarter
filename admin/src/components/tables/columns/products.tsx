@@ -9,6 +9,8 @@ import { locale } from "@/lib/constants";
 import { IProduct, IProductVariant } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
 import Link from "next/link";
+import { deleteProduct } from "@/lib/data/product";
+import { toast } from "sonner";
 
 export const columns: ColumnDef<IProduct>[] = [
     {
@@ -81,7 +83,16 @@ export const columns: ColumnDef<IProduct>[] = [
                         Edit
                     </Link>
                 </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={async () => {
+                    const [, err] = await deleteProduct(row.getValue('_id'))
+
+                    if (err) {
+                        toast.error(err)
+                        return
+                    }
+
+                    toast.success('Product deleted')
+                }}>
                     Delete
                 </DropdownMenuItem>
             </DropdownMenuContent>

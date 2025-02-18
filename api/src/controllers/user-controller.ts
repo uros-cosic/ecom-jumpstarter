@@ -2,7 +2,13 @@ import { NextFunction, Request, Response } from 'express'
 import geoip from 'geoip-lite'
 import useragent from 'useragent'
 
-import { getAll, getOne, createOne, updateOne } from './handler-factory'
+import {
+    getAll,
+    getOne,
+    createOne,
+    updateOne,
+    deleteOne,
+} from './handler-factory'
 import catchAsync from '../lib/catch-async'
 import { filterObj } from '../lib/util'
 import User from '../models/User'
@@ -59,30 +65,7 @@ export const getUser = getOne(User)
 export const getUsers = getAll(User)
 export const createUser = createOne(User)
 export const updateUser = updateOne(User)
-export const deleteUser = catchAsync(
-    async (req: Request, res: Response, next: NextFunction) => {
-        const user = await User.findByIdAndUpdate(req.params.id, {
-            active: false,
-        })
-
-        if (!user)
-            return next(
-                new AppError(
-                    req.t('errors.not-found', { field: req.t('words.user') }),
-                    404
-                )
-            )
-
-        await redis.deleteCachedValueByKey(
-            `${User.modelName.toLowerCase()}:${String(user._id)}`
-        )
-
-        res.status(204).json({
-            data: null,
-        })
-        return
-    }
-)
+export const deleteUser = deleteOne(User)
 
 export const trackUser = async (
     req: Request,

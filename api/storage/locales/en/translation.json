@@ -44,7 +44,8 @@
         "password-reset-sent": "Password reset email sent",
         "product": "Product",
         "discount-code": "Discount code",
-        "shipping-cost": "Shipping cost"
+        "shipping-cost": "Shipping cost",
+        "post": "Post"
     },
 
     "emails": {

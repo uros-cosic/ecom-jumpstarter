@@ -19,8 +19,6 @@ const Page = async ({ params }: Props) => {
 
     if (!product) notFound()
 
-    console.log(product)
-
     return (
         <div className="grid gap-10">
             <div className="grid gap-2">

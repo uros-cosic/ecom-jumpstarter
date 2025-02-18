@@ -3,23 +3,51 @@ import path from 'path'
 
 import catchAsync from '../lib/catch-async'
 import Product from '../models/Product'
-import {
-    getAll,
-    getOne,
-    createOne,
-    updateOne,
-    deleteOne,
-} from './handler-factory'
+import { getAll, getOne, createOne, deleteOne } from './handler-factory'
 import { AppError } from '../lib/app-error'
 import { UploadService } from '../services/upload'
 import { generateUniqueFileName } from '../lib/util'
 import Sale, { SALE_TYPE } from '../models/Sale'
 import { APIFeatures } from '../lib/api-features'
+import * as redis from '../services/redis'
 
 export const getProducts = getAll(Product)
 export const getProduct = getOne(Product)
 export const createProduct = createOne(Product)
-export const updateProduct = updateOne(Product)
+export const updateProduct = catchAsync(
+    async (req: Request, res: Response, next: NextFunction) => {
+        const product = await Product.findById(req.params.id)
+
+        if (!product)
+            return next(
+                new AppError(
+                    req.t('errors.not-found', {
+                        field: req.t('words.product'),
+                    }),
+                    404
+                )
+            )
+
+        const body = req.body
+
+        Object.keys(body).forEach((key) => {
+            // @ts-ignore
+            product[key] = body[key]
+        })
+
+        // Trigger pre-save middleware
+        await product.save()
+
+        await redis.deleteCachedValueByKey(
+            `${Product.modelName.toLowerCase()}:${String(product._id)}`
+        )
+
+        res.status(200).json({
+            data: product,
+        })
+        return
+    }
+)
 export const deleteProduct = deleteOne(Product)
 
 export const searchProducts = catchAsync(

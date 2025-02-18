@@ -44,7 +44,8 @@
         "password-reset-sent": "Email za resetovanje lozinke je poslat",
         "product": "Proizvod",
         "discount-code": "Kod za popust",
-        "shipping-cost": "Dostava"
+        "shipping-cost": "Dostava",
+        "post": "Post"
     },
 
     "emails": {

@@ -7,6 +7,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { locale } from "@/lib/constants";
 import { IProductCategory } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
+import { deleteCategory } from "@/lib/data/category";
+import { toast } from "sonner";
 
 export const columns: ColumnDef<IProductCategory>[] = [
     {
@@ -47,14 +50,21 @@ export const columns: ColumnDef<IProductCategory>[] = [
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>
-                    Details
+                <DropdownMenuItem asChild>
+                    <Link href={`/categories/edit/${row.getValue('_id')}`}>
+                        Edit
+                    </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={async () => {
+                    const [, err] = await deleteCategory(row.getValue('_id'))
+
+                    if (err) {
+                        toast.error(err)
+                        return
+                    }
+
+                    toast.success('Category deleted')
+                }}>
                     Delete
                 </DropdownMenuItem>
             </DropdownMenuContent>

@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form"
 import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
-import { IProductCategory, IProductCollection, IRegion, PRODUCT_TYPE } from "@/lib/types"
+import { IProduct, IProductCategory, IProductCollection, IRegion, PRODUCT_TYPE } from "@/lib/types"
 import DropFileInput from "../drop-file-input"
 import { useEffect, useState } from "react"
 import { Label } from "../ui/label"
@@ -14,22 +14,24 @@ import { Button } from "../ui/button"
 import { Dialog, DialogClose, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
 import { Plus } from "lucide-react"
 import { Badge } from "../ui/badge"
-import { createProduct, uploadImages, uploadThumbnail } from "@/lib/data/product"
+import { updateProduct, uploadImages, uploadThumbnail } from "@/lib/data/product"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
 
 import TextEditor from "../text-editor"
+import Image from "next/image"
 
 type Props = {
+    product: IProduct
     regions: IRegion[]
     categories: IProductCategory[]
     collections: IProductCollection[]
 }
 
-const CreateProductForm = ({ regions, categories, collections }: Props) => {
+const EditProductForm = ({ product, regions, categories, collections }: Props) => {
     const [loading, setLoading] = useState(false)
-    const [options, setOptions] = useState<productOptionsSchemaValues[]>([])
-    const [variants, setVariants] = useState<productVariantSchemaValues[]>([])
+    const [options, setOptions] = useState<productOptionsSchemaValues[]>(product.options ?? [])
+    const [variants, setVariants] = useState<productVariantSchemaValues[]>(product.variants as productVariantSchemaValues[] ?? [])
 
     const [thumbnail, setThumbnail] = useState<File>()
     const [images, setImages] = useState<File[]>([])
@@ -41,43 +43,61 @@ const CreateProductForm = ({ regions, categories, collections }: Props) => {
     const form = useForm<productSchemaValues>({
         resolver: zodResolver(productSchema),
         defaultValues: {
-            name: '',
-            description: '',
-            type: '',
-            thumbnail: '',
-            images: [],
-            region: '',
-            price: 0,
-            quantity: 1,
+            name: product.name,
+            description: product.description,
+            type: product.type,
+            thumbnail: product.thumbnail,
+            images: product.images,
+            region: product.region,
+            price: product.price,
+            quantity: product.quantity,
+            details: product.details ?? undefined,
+            keywords: product.keywords,
+            metadata: product.metadata,
+            options: product.options ?? undefined,
+            productCategory: product.productCategory ?? undefined,
+            productCollection: product.productCollection ?? undefined,
+            sizeGuide: product.sizeGuide ?? undefined,
+            variants: product.variants as productVariantSchemaValues[] ?? undefined
         }
     })
 
     const onSubmit = async (values: productSchemaValues) => {
         setLoading(true)
 
-        const thumbnailFormData = new FormData()
-        thumbnailFormData.append('thumbnail', thumbnail!)
+        const newValues = { ...values }
 
-        const [thumbnailUrl, thumbnailErr] = await uploadThumbnail(thumbnailFormData)
+        if (thumbnail) {
+            const thumbnailFormData = new FormData()
+            thumbnailFormData.append('thumbnail', thumbnail!)
 
-        if (thumbnailErr) {
-            toast.error(thumbnailErr)
-            setLoading(false)
-            return
+            const [thumbnailUrl, thumbnailErr] = await uploadThumbnail(thumbnailFormData)
+
+            if (thumbnailErr) {
+                toast.error(thumbnailErr)
+                setLoading(false)
+                return
+            }
+
+            newValues.thumbnail = thumbnailUrl!
         }
 
-        const imagesFormData = new FormData()
-        for (const img of images) imagesFormData.append('images', img)
+        if (images.length) {
+            const imagesFormData = new FormData()
+            for (const img of images) imagesFormData.append('images', img)
 
-        const [imageUrls, imgErr] = await uploadImages(imagesFormData)
+            const [imageUrls, imgErr] = await uploadImages(imagesFormData)
 
-        if (imgErr) {
-            toast.error(imgErr)
-            setLoading(false)
-            return
+            if (imgErr) {
+                toast.error(imgErr)
+                setLoading(false)
+                return
+            }
+
+            newValues.images = imageUrls!
         }
 
-        const [data, err] = await createProduct({ ...values, thumbnail: thumbnailUrl!, images: imageUrls! })
+        const [data, err] = await updateProduct(product._id, newValues)
 
         if (err) {
             toast.error(err)
@@ -85,7 +105,7 @@ const CreateProductForm = ({ regions, categories, collections }: Props) => {
             return
         }
 
-        toast('Product created', {
+        toast('Product updated', {
             action: {
                 label: 'Review',
                 onClick: () => { router.push(`/products/${data!._id}`) }
@@ -233,6 +253,7 @@ const CreateProductForm = ({ regions, categories, collections }: Props) => {
                             <FormLabel>Keywords</FormLabel>
                             <FormControl>
                                 <Input
+                                    defaultValue={form.getValues("keywords")?.join(', ')}
                                     onChange={e => {
                                         form.setValue('keywords', e.target.value.split(',').map(w => w.trim()))
                                     }}
@@ -297,6 +318,17 @@ const CreateProductForm = ({ regions, categories, collections }: Props) => {
                                 accept={"image/png, image/jpeg, image/webp"}
                                 onFileChange={(values) => setThumbnail((values as File[])[0])}
                             />
+                            {!thumbnail &&
+                                <div className="relative flex items-center justify-center h-16 w-16 rounded-md border bg-gray-50 overflow-hidden">
+                                    <Image
+                                        src={product.thumbnail}
+                                        alt={product.name}
+                                        height={64}
+                                        width={64}
+                                        quality={70}
+                                    />
+                                </div>
+                            }
                             <FormMessage />
                         </FormItem>
                     )}
@@ -312,6 +344,23 @@ const CreateProductForm = ({ regions, categories, collections }: Props) => {
                                 accept={"image/png, image/jpeg, image/webp"}
                                 onFileChange={(values) => setImages(values as File[])}
                             />
+                            {!images.length &&
+                                <div className="flex flex-wrap gap-2">
+                                    {
+                                        product.images.map((img, idx) => (
+                                            <div key={idx} className="relative flex items-center justify-center h-16 w-16 rounded-md border bg-gray-50 overflow-hidden">
+                                                <Image
+                                                    src={img}
+                                                    alt={product.name}
+                                                    height={64}
+                                                    width={64}
+                                                    quality={70}
+                                                />
+                                            </div>
+                                        ))
+                                    }
+                                </div>
+                            }
                             <FormMessage />
                         </FormItem>
                     )}
@@ -556,14 +605,15 @@ const CreateProductForm = ({ regions, categories, collections }: Props) => {
                 <div className="lg:col-span-4">
                     <Label>Details</Label>
                     <TextEditor
-                        markdown=""
+                        markdown={product.detailsMarkdown ?? ''}
                         onChange={val => form.setValue('details', val)}
                     />
                 </div>
-                <Button disabled={loading} className="lg:col-span-4">Create product</Button>
+                <Button disabled={loading} className="lg:col-span-4">Update product</Button>
             </form>
         </Form>
     )
 }
 
-export default CreateProductForm
+export default EditProductForm
+

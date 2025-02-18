@@ -83,6 +83,67 @@ export const createProduct = async (
 }
 
 /**
+ * Updates the product
+ * Retruns a tuple representing [data, err]
+ */
+export const updateProduct = async (
+    id: IProduct['_id'],
+    values: productSchemaValues
+): Promise<[IProduct | null, string | null]> => {
+    try {
+        const options = await getOptions()
+        const res = await fetch(`${API_ADMIN_URL}/products/${id}`, {
+            method: 'PATCH',
+            headers: {
+                ...options.headers,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        })
+
+        const data = await res.json()
+
+        if (res.ok) {
+            revalidateTag('products')
+            revalidateTag(`product-${id}`)
+            return [data.data, null]
+        }
+
+        return [null, data.message]
+    } catch (e) {
+        return [null, String(e)]
+    }
+}
+
+/**
+ * Deletes product
+ * Retruns tuple representing [data, err]
+ */
+export const deleteProduct = async (
+    id: IProduct['_id']
+): Promise<[boolean | null, string | null]> => {
+    try {
+        const options = await getOptions()
+        const res = await fetch(`${API_ADMIN_URL}/products/${id}`, {
+            method: 'DELETE',
+            headers: options.headers,
+        })
+
+        if (res.ok) {
+            revalidateTag('products')
+            revalidateTag(`product-${id}`)
+            return [true, null]
+        }
+
+        const data = await res.json()
+
+        return [null, data.message]
+    } catch (e) {
+        return [null, String(e)]
+    }
+}
+
+/**
  * Gets uploaded thumbnail URL
  * Returns tuple representing [data, null]
  */

@@ -20,6 +20,7 @@ export interface IProduct extends IBaseModel {
     name: string
     description: string
     details?: string
+    detailsMarkdown?: string
     keywords: string[]
     handle: string
     type: PRODUCT_TYPE
@@ -148,6 +149,7 @@ const ProductSchema = new Schema<IProduct>(
         },
 
         details: String,
+        detailsMarkdown: String,
 
         thumbnail: {
             type: String,
@@ -257,11 +259,12 @@ const purify = DOMPurify(window)
 ProductSchema.pre('save', async function (next) {
     try {
         if (this.details) {
+            this.detailsMarkdown = this.details
             this.details = purify.sanitize(await marked(this.details))
         }
         next()
-    } catch (error: any) {
-        next(new AppError(i18next.t('errors.default')))
+    } catch (error) {
+        next(new AppError(String(error) || i18next.t('errors.default')))
     }
 })
 

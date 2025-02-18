@@ -7,6 +7,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { locale } from "@/lib/constants";
 import { IProductCollection } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import { deleteCollection } from "@/lib/data/collection";
+import { toast } from "sonner";
+import Link from "next/link";
 
 export const columns: ColumnDef<IProductCollection>[] = [
     {
@@ -47,14 +50,21 @@ export const columns: ColumnDef<IProductCollection>[] = [
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>
-                    Details
+                <DropdownMenuItem asChild>
+                    <Link href={`/collections/edit/${row.getValue('_id')}`}>
+                        Edit
+                    </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={async () => {
+                    const [, err] = await deleteCollection(row.getValue('_id'))
+
+                    if (err) {
+                        toast.error(err)
+                        return
+                    }
+
+                    toast.success('Collection deleted')
+                }}>
                     Delete
                 </DropdownMenuItem>
             </DropdownMenuContent>

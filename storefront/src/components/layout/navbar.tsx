@@ -114,6 +114,15 @@ const Navbar = async () => {
                                                     </li>
                                                 ))
                                             }
+                                            {
+                                                categories
+                                                    .filter(c => !items.find(i => i.parentCategory._id === c._id) && !items.find(i => i.childCategories.find(ctg => ctg._id === c._id)))
+                                                    .map((ctg, idx) => (
+                                                        <li key={idx}>
+                                                            <LocalizedLink key={ctg._id} href={`/categories/${ctg.handle}`} className={navigationMenuTriggerStyle()}>{ctg.name}</LocalizedLink>
+                                                        </li>
+                                                    ))
+                                            }
                                         </ul>
                                     }
                                     {

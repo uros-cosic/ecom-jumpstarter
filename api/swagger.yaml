@@ -4488,6 +4488,10 @@ components:
                     oneOf:
                         - type: string
                         - type: 'null'
+                detailsMarkdown:
+                    oneOf:
+                        - type: string
+                        - type: 'null'
                 keywords:
                     type: array
                     items:
@@ -4842,6 +4846,8 @@ components:
                 handle:
                     type: string
                 content:
+                    type: string
+                contentMarkdown:
                     type: string
                 thumbnail:
                     type: string
