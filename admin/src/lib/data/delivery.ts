@@ -5,7 +5,7 @@ import { IShippingMethod, RequestQuery } from '../types'
 import { API_ADMIN_URL } from '../constants'
 import { toQueryString } from '../utils'
 import { getOptions } from './factory'
-import { shippingMethodSchema } from '../forms/delivery'
+import { shippingMethodSchemaValues } from '../forms/delivery'
 import { revalidateTag } from 'next/cache'
 
 export const getShippingMethods = cache(async function (
@@ -56,7 +56,7 @@ export const getShippingMethodById = cache(async function (
  * Returns tuple representing [data, error]
  */
 export const createShippingMethod = async (
-    values: shippingMethodSchema
+    values: shippingMethodSchemaValues
 ): Promise<[IShippingMethod | null, string | null]> => {
     try {
         const options = await getOptions()
@@ -88,7 +88,7 @@ export const createShippingMethod = async (
  */
 export const updateShippingMethod = async (
     id: IShippingMethod['_id'],
-    values: shippingMethodSchema
+    values: shippingMethodSchemaValues
 ): Promise<[IShippingMethod | null, string | null]> => {
     try {
         const options = await getOptions()

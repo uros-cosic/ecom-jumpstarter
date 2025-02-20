@@ -32,12 +32,9 @@ export const logIn = async (
     values: loginFormSchemaValues
 ): Promise<[IUser | null, string | null]> => {
     try {
-        const options = await getOptions()
-
         const res = await fetch(`${API_AUTH_URL}/login`, {
             method: 'POST',
             headers: {
-                ...options.headers,
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify(values),

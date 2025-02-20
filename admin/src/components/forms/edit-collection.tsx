@@ -9,7 +9,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "../ui/input"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select"
 import { Button } from "@/components/ui/button"
-import { updateCategory } from "@/lib/data/category"
 import { toast } from "sonner"
 import { updateCollection } from "@/lib/data/collection"
 

@@ -19,7 +19,7 @@ const SimilarProducts = async ({ product }: Props) => {
 
     const products = await getProducts(options)
 
-    if (!products || !products.length) return null
+    if (!products || !products.length || !products.filter(p => p._id !== product._id).length) return null
 
     const region = await getRegionById(product.region)
 

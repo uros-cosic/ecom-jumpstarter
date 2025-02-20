@@ -1,9 +1,7 @@
 "use client"
 
-import { EllipsisVertical } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { locale } from "@/lib/constants";
 import { INewsletter } from "@/lib/types";
 import { formatDate } from "@/lib/utils";

@@ -53,6 +53,11 @@ const PORT = process.env.PORT || 5000
 const STORE_CORS = process.env.STORE_CORS?.split(',') ?? []
 const ADMIN_CORS = process.env.ADMIN_CORS?.split(',') ?? []
 
+app.use((req, _res, next) => {
+    console.log(req.method, req.originalUrl)
+    next()
+})
+
 const storeCorsOptions = {
     origin: (
         origin: string | undefined,

@@ -3,7 +3,7 @@
 import { EllipsisVertical } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { locale } from "@/lib/constants";
 import { IUser } from "@/lib/types";
 import { formatDate } from "@/lib/utils";

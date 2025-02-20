@@ -69,6 +69,8 @@ const getMe = async function (
 }
 
 export async function middleware(request: NextRequest) {
+    console.log(API_URL)
+    console.log(request.json())
     const response = NextResponse.next()
 
     const jwt = request.cookies.get('jwt')?.value

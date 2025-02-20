@@ -86,10 +86,10 @@ async function imageUploadHandler(image: File) {
 
     if (err) {
         toast.error(err)
-        return
+        return ''
     }
 
-    return data
+    return data!
 }
 
 export default EditorInitializer

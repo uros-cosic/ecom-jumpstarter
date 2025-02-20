@@ -26,6 +26,8 @@ type Props = {
     children: Readonly<React.ReactNode>,
 }
 
+export const dynamic = 'force-dynamic'
+
 export default function RootLayout({
     children,
 }: Props
