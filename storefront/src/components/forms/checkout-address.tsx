@@ -60,15 +60,40 @@ const CheckoutAddressForm = ({ customer, address, addresses, email, addressLabel
     const onSubmit = async (values: checkoutAddressFormSchemaValues) => {
         setLoading(true)
 
-        const [addressData, addressErr] = await createAddress(values)
+        let differentAddress = false
+        let existingAddress = null
 
-        if (addressErr) {
-            toast.error(addressErr)
-            setLoading(false)
-            return
+        if (!addresses || !addresses.length) differentAddress = true
+        else {
+            const keys = Object.keys(values)
+            existingAddress = addresses.find(obj => {
+                for (const key of keys) {
+                    if (key in obj && obj[key as keyof typeof obj] !== values[key as keyof typeof values]) return false
+                }
+
+                return true
+            })
+
+            if (!existingAddress) differentAddress = true
         }
 
-        const [, cartErr] = await updateCart({ address: addressData!._id, email: values.email })
+        const data: { address?: string; email: string } = { email: values.email }
+
+        if (differentAddress) {
+            const [addressData, addressErr] = await createAddress(values)
+
+            if (addressErr) {
+                toast.error(addressErr)
+                setLoading(false)
+                return
+            }
+
+            data.address = addressData!._id
+        } else {
+            data.address = existingAddress!._id
+        }
+
+        const [, cartErr] = await updateCart(data)
 
         if (cartErr) {
             toast.error(cartErr)
