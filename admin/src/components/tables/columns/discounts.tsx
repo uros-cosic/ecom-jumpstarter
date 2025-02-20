@@ -3,10 +3,13 @@
 import { EllipsisVertical } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { locale } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";
 import { IDiscount } from "@/lib/types";
+import Link from "next/link";
+import { deleteDiscount } from "@/lib/data/discount";
+import { toast } from "sonner";
 
 export const columns: ColumnDef<IDiscount>[] = [
     {
@@ -50,7 +53,7 @@ export const columns: ColumnDef<IDiscount>[] = [
         accessorKey: 'validTo',
         header: () => <span>To</span>,
         cell: ({ row }) => {
-            const end = row.getValue('validrTo')
+            const end = row.getValue('validTo')
             const text = !end ? '/' : formatDate(end as Date, locale)
 
             return <span>{text}</span>
@@ -77,14 +80,21 @@ export const columns: ColumnDef<IDiscount>[] = [
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>
-                    Details
+                <DropdownMenuItem asChild>
+                    <Link href={`/discounts/edit/${row.getValue('_id')}`}>
+                        Edit
+                    </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={async () => {
+                    const [, err] = await deleteDiscount(row.getValue('_id'))
+
+                    if (err) {
+                        toast.error(err)
+                        return
+                    }
+
+                    toast.success('Discount deleted')
+                }}>
                     Delete
                 </DropdownMenuItem>
             </DropdownMenuContent>

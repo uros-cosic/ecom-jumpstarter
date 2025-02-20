@@ -1,4 +1,4 @@
-import { BadgePercent, Command, Gauge, Globe, Newspaper, Package, Package2, PackageSearch, ShoppingBag, TicketPercent, Truck, User } from "lucide-react"
+import { BadgePercent, Command, Gauge, Package, Settings2, ShoppingBag, User } from "lucide-react"
 
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "../ui/sidebar"
 import { STORE } from "@/lib/constants"
@@ -20,50 +20,63 @@ const items = [
         icon: <ShoppingBag />,
     },
     {
-        name: "Products",
-        url: "/products",
-        icon: <PackageSearch />,
-    },
-    {
-        name: "Categories",
-        url: "/categories",
-        icon: <Package />,
-    },
-    {
-        name: "Collections",
-        url: "/collections",
-        icon: <Package2 />,
-    },
-    {
         name: "Users",
         url: "/users",
         icon: <User />,
     },
+]
+
+const groups = [
     {
-        name: "Sales",
-        url: "/sales",
+        label: 'Product',
+        icon: <Package />,
+        items: [
+            {
+                name: "Products",
+                url: "/products",
+            },
+            {
+                name: "Categories",
+                url: "/categories",
+            },
+            {
+                name: "Collections",
+                url: "/collections",
+            },
+        ]
+    },
+    {
+        label: 'Sale',
         icon: <BadgePercent />,
+        items: [
+            {
+                name: "Sales",
+                url: "/sales",
+            },
+            {
+                name: "Discounts",
+                url: "/discounts",
+            },
+        ]
     },
     {
-        name: "Discounts",
-        url: "/discounts",
-        icon: <TicketPercent />,
-    },
-    {
-        name: "Delivery",
-        url: "/delivery",
-        icon: <Truck />,
-    },
-    {
-        name: "Newsletters",
-        url: "/newsletters",
-        icon: <Newspaper />,
-    },
-    {
-        name: "Regions",
-        url: "/regions",
-        icon: <Globe />,
-    },
+        label: 'Other',
+        icon: <Settings2 />,
+        items: [
+            {
+                name: "Regions",
+                url: "/regions",
+            },
+            {
+                name: "Delivery",
+                url: "/delivery",
+            },
+            {
+                name: "Newsletters",
+                url: "/newsletters",
+            },
+        ]
+    }
 ]
 
 const SideNav = async ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
@@ -90,7 +103,7 @@ const SideNav = async ({ ...props }: React.ComponentProps<typeof Sidebar>) => {
                 </SidebarMenu>
             </SidebarHeader>
             <SidebarContent>
-                <NavItems items={items} />
+                <NavItems items={items} groups={groups} />
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={user} />

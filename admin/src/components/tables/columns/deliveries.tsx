@@ -3,10 +3,13 @@
 import { EllipsisVertical } from "lucide-react";
 import { ColumnDef } from "@tanstack/react-table";
 
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { currency, locale } from "@/lib/constants";
 import { IShippingMethod } from "@/lib/types";
 import { formatCurrency, formatDate } from "@/lib/utils";
+import Link from "next/link";
+import { deleteShippingMethod } from "@/lib/data/delivery";
+import { toast } from "sonner";
 
 export const columns: ColumnDef<IShippingMethod>[] = [
     {
@@ -47,14 +50,21 @@ export const columns: ColumnDef<IShippingMethod>[] = [
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>
-                    Details
+                <DropdownMenuItem asChild>
+                    <Link href={`/delivery/edit/${row.getValue('_id')}`}>
+                        Edit
+                    </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={async () => {
+                    const [, err] = await deleteShippingMethod(row.getValue('_id'))
+
+                    if (err) {
+                        toast.error(err)
+                        return
+                    }
+
+                    toast.success('Delivery method deleted')
+                }}>
                     Delete
                 </DropdownMenuItem>
             </DropdownMenuContent>

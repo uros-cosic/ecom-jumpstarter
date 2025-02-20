@@ -7,6 +7,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { locale } from "@/lib/constants";
 import { IRegion } from "@/lib/types";
 import { formatDate } from "@/lib/utils";
+import Link from "next/link";
+import { deleteRegion } from "@/lib/data/region";
+import { toast } from "sonner";
 
 export const columns: ColumnDef<IRegion>[] = [
     {
@@ -57,14 +60,21 @@ export const columns: ColumnDef<IRegion>[] = [
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>
-                    Details
+                <DropdownMenuItem asChild>
+                    <Link href={`/regions/edit/${row.getValue('_id')}`}>
+                        Edit
+                    </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={async () => {
+                    const [, err] = await deleteRegion(row.getValue('_id'))
+
+                    if (err) {
+                        toast.error(err)
+                        return
+                    }
+
+                    toast.success('Region deleted')
+                }}>
                     Delete
                 </DropdownMenuItem>
             </DropdownMenuContent>

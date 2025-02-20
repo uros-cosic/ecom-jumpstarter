@@ -8,6 +8,7 @@ import {
     getMe,
     getUser,
     getUsers,
+    updateMe,
     updateUser,
 } from '../controllers/user-controller'
 import {
@@ -120,6 +121,7 @@ router.use(protect, restrictTo(USER_ROLE.ADMIN))
 // Users
 router.route('/users').get(getUsers).post(createUser)
 router.route('/users/me').get(getMe, getUser)
+router.route('/users/updateMe').patch(updateMe)
 router.route('/users/:id').get(getUser).patch(updateUser).delete(deleteUser)
 
 // Orders
@@ -147,11 +149,11 @@ router
     .route('/uploads/products/images')
     .post(upload.array('images', 8), uploadProductImages)
 router
-    .route('/uploads/sales/thumbnail')
-    .post(upload.single('thumbnail'), uploadSaleThumbnail)
-router
     .route('/uploads/blogs/thumbnail')
     .post(upload.single('thumbnail'), uploadBlogPostThumbnail)
+router
+    .route('/uploads/sales/thumbnail')
+    .post(upload.single('thumbnail'), uploadSaleThumbnail)
 router
     .route('/uploads/sizeMetrics/image')
     .post(upload.single('image'), uploadSizeMetricImage)

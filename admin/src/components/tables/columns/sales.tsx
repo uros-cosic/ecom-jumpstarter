@@ -7,6 +7,9 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSepara
 import { locale } from "@/lib/constants";
 import { formatDate } from "@/lib/utils";
 import { ISale } from "@/lib/types";
+import Link from "next/link";
+import { deleteSale } from "@/lib/data/sale";
+import { toast } from "sonner";
 
 export const columns: ColumnDef<ISale>[] = [
     {
@@ -72,14 +75,21 @@ export const columns: ColumnDef<ISale>[] = [
                 </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem>
-                    Details
+                <DropdownMenuItem asChild>
+                    <Link href={`/sales/edit/${row.getValue('_id')}`}>
+                        Edit
+                    </Link>
                 </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Edit
-                </DropdownMenuItem>
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={async () => {
+                    const [, err] = await deleteSale(row.getValue('_id'))
+
+                    if (err) {
+                        toast.error(err)
+                        return
+                    }
+
+                    toast.success('Sale deleted')
+                }}>
                     Delete
                 </DropdownMenuItem>
             </DropdownMenuContent>

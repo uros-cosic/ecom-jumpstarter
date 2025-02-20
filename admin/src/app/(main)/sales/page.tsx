@@ -27,7 +27,6 @@ const Page = async ({ searchParams }: Props) => {
                 data={sales ?? []}
             />
         </div>
-
     )
 }
 

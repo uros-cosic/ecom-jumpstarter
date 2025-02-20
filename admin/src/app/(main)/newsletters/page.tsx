@@ -1,3 +1,4 @@
+import DownloadDropdown from "@/components/newsletters/download-dropdown"
 import { columns } from "@/components/tables/columns/newsletters"
 import { DataTable } from "@/components/tables/data-table"
 import { getNewsletters } from "@/lib/data/newsletter"
@@ -13,7 +14,10 @@ const Page = async ({ searchParams }: Props) => {
 
     return (
         <div className="w-full flex flex-col gap-5">
-            <h1 className="font-[family-name:var(--font-montserrat)] font-medium text-2xl">Newsletters</h1>
+            <div className="flex items-end justify-between gap-5">
+                <h1 className="font-[family-name:var(--font-montserrat)] font-medium text-2xl">Newsletters</h1>
+                <DownloadDropdown />
+            </div>
             <DataTable
                 columns={columns}
                 data={newsletters ?? []}
@@ -24,6 +28,3 @@ const Page = async ({ searchParams }: Props) => {
 }
 
 export default Page
-
-
-

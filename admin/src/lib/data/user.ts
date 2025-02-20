@@ -7,6 +7,7 @@ import { getOptions } from './factory'
 import { toQueryString } from '../utils'
 import { userSchemaValues } from '../forms/user'
 import { revalidateTag } from 'next/cache'
+import { accountSchemaValues } from '../forms/account'
 
 export const getMe = async (): Promise<IUser | null> => {
     try {
@@ -125,6 +126,38 @@ export const deleteUser = async (
         }
 
         const data = await res.json()
+
+        return [null, data.message]
+    } catch (e) {
+        return [null, String(e)]
+    }
+}
+
+/**
+ * Updates current user
+ * Returns tuple representing [data, error]
+ */
+export const updateMe = async (
+    values: accountSchemaValues
+): Promise<[IUser | null, string | null]> => {
+    try {
+        const options = await getOptions()
+
+        const res = await fetch(`${API_ADMIN_URL}/users/updateMe`, {
+            method: 'PATCH',
+            headers: {
+                ...options.headers,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+        })
+
+        const data = await res.json()
+
+        if (res.ok) {
+            revalidateTag('user')
+            return [data.data, null]
+        }
 
         return [null, data.message]
     } catch (e) {

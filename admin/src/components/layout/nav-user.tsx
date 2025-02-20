@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { SidebarMenu, SidebarMenuButton, SidebarMenuItem, useSidebar } from "@/components/ui/sidebar"
 import { IUser } from "@/lib/types"
+import { logOut } from "@/lib/data/auth"
+import Link from "next/link"
 
 type Props = {
     user: IUser
@@ -60,17 +62,21 @@ export function NavUser({ user }: Props) {
                         </DropdownMenuLabel>
                         <DropdownMenuSeparator />
                         <DropdownMenuGroup>
-                            <DropdownMenuItem>
-                                <BadgeCheck />
-                                Account
+                            <DropdownMenuItem asChild>
+                                <Link href="/account">
+                                    <BadgeCheck />
+                                    Account
+                                </Link>
                             </DropdownMenuItem>
-                            <DropdownMenuItem>
-                                <Lock />
-                                Change password
+                            <DropdownMenuItem asChild>
+                                <Link href="/account/change-password">
+                                    <Lock />
+                                    Change password
+                                </Link>
                             </DropdownMenuItem>
                         </DropdownMenuGroup>
                         <DropdownMenuSeparator />
-                        <DropdownMenuItem>
+                        <DropdownMenuItem onClick={logOut}>
                             <LogOut />
                             Log out
                         </DropdownMenuItem>

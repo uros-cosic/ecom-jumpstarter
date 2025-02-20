@@ -108,7 +108,7 @@ export const getProductPrice = catchAsync(
 
         const data = {
             originalPrice: variant?.price ?? product.price,
-            discountedPrice: price,
+            discountedPrice: Math.max(0, price),
         }
 
         res.status(200).json({ data })

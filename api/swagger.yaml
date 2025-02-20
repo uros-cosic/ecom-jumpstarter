@@ -1368,6 +1368,70 @@ paths:
                             schema:
                                 $ref: '#/components/schemas/Error'
 
+    /api/admin/users/me:
+        get:
+            summary: Gets current user
+            tags:
+                - Admin/Users
+            security:
+                - bearerAuth: []
+            x-roles:
+                - admin
+            responses:
+                200:
+                    description: Returns user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
+    /api/admin/users/updateMe:
+        patch:
+            summary: Updates the current user
+            tags:
+                - Admin/Users
+            security:
+                - bearerAuth: []
+            x-roles:
+                - admin
+            responses:
+                200:
+                    description: Returns user
+                    content:
+                        application/json:
+                            schema:
+                                type: object
+                                properties:
+                                    data:
+                                        $ref: '#/components/schemas/User'
+                401:
+                    description: Unauthorized
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+                403:
+                    description: Forbidden
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/Error'
+
     /api/admin/users/{id}:
         get:
             summary: Gets the user
@@ -4687,9 +4751,9 @@ components:
                         type: string
                 type:
                     type: string
-                region:
-                    type: string
                 thumbnail:
+                    type: string
+                region:
                     type: string
                 dicsountPercentage:
                     oneOf:

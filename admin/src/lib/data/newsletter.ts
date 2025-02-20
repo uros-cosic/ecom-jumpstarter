@@ -27,3 +27,26 @@ export const getNewsletters = cache(async function (
         return null
     }
 })
+
+/**
+ * Gets download url
+ * Returns tuple representing [data, err]
+ */
+export const handleDownload = async (
+    format: 'txt' | 'csv'
+): Promise<[string | null, string | null]> => {
+    try {
+        const res = await fetch(
+            `${API_ADMIN_URL}/newsletters/download?format=${format}`,
+            await getOptions()
+        )
+
+        const data = await res.json()
+
+        if (res.ok) return [data.data, null]
+
+        return [null, data.message]
+    } catch (e) {
+        return [null, String(e)]
+    }
+}

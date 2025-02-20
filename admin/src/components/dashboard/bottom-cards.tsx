@@ -34,7 +34,7 @@ const BottomCards = async () => {
                             Sessions by device type
                         </CardTitle>
                         <CardDescription>
-                            Showing total visits by device type
+                            Showing visits by device type
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -59,7 +59,7 @@ const BottomCards = async () => {
                     <CardHeader>
                         <CardTitle>Site visits</CardTitle>
                         <CardDescription>
-                            Showing total visitors in the last month
+                            Showing visits in the last month
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
